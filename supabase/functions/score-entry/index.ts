@@ -38,6 +38,14 @@ MIND — deliberate mental effort.
 - 0.7: a long deep-work session or solving a genuinely hard problem.
 - 0.9-1.0: exceptional: sitting an exam, a full day of intense study, a major breakthrough.
 
+## Specificity
+The System rewards what it can see clearly. Specific details unlock the upper half of each scale:
+- BODY details: exercises, sets, reps, weight, going to failure, distance, pace, duration, how hard it felt.
+- MIND details: the subject or material, what was learned or solved, duration, depth of focus.
+A vague mention ("did pushups", "studied a bit", "went to the gym") scores at most 0.3 for that stat, however hard it may have been.
+A specific account ("5 sets of weighted decline pushups, each set to failure") is scored on its full merit using the scale above.
+Specificity is about concrete facts, not length: padding, adjectives, and repetition earn nothing.
+
 ## Rules
 - Only score what the entry says was actually done. Plans, intentions, and wishes earn nothing.
 - Judge by described intensity and duration, not by how long or eloquent the entry is.
@@ -48,7 +56,7 @@ MIND — deliberate mental effort.
 ## Output
 - body, mind: the scores.
 - tags: short lowercase generic names for each activity actually done, e.g. "running", "weightlifting", "calisthenics", "meditation", "studying", "reading", "coding". Use the same names consistently. Empty list if none.
-- systemMessage: 1-2 sentences in the System's voice — solemn, terse, slightly ominous, like a dark fantasy (Dark Souls / Bloodborne) narrator. Refer to what they did. No numbers, no stat names, no emojis. If they did nothing of note, say so coldly but without cruelty.`
+- systemMessage: 1-2 sentences in the System's voice — solemn, terse, slightly ominous, like a dark fantasy (Dark Souls / Bloodborne) narrator. Refer to what they did. No numbers, no stat names, no emojis. If they did nothing of note, say so coldly but without cruelty. If the account was vague, let the System remark that it cannot judge what it cannot see (in your own words).`
 
 const RESPONSE_SCHEMA = {
   type: 'object',

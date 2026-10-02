@@ -69,3 +69,22 @@ export function computeStats(entries) {
     daysToNextWill: DAYS_PER_WILL - (currentStreak % DAYS_PER_WILL),
   }
 }
+
+// Display only: 7.4 Body is shown as Lv. 7 with 40% progress to Lv. 8.
+// Will is already a whole number; its progress is how far along the current
+// streak is towards the next point.
+export function statLevels(stats) {
+  const split = (raw) => {
+    const value = round1(raw)
+    const level = Math.floor(value)
+    return { level, progress: Math.round((value - level) * 100) }
+  }
+  return {
+    body: split(stats.body),
+    mind: split(stats.mind),
+    will: {
+      level: stats.will,
+      progress: Math.round(((stats.currentStreak % DAYS_PER_WILL) / DAYS_PER_WILL) * 100),
+    },
+  }
+}

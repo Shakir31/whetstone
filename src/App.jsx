@@ -1,17 +1,20 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import AuthForm from './components/AuthForm.jsx'
 import EntryForm from './components/EntryForm.jsx'
 import StatsPanel from './components/StatsPanel.jsx'
-import SystemMessage from './components/SystemMessage.jsx'
+import SystemOverlay from './components/SystemOverlay.jsx'
 import EntryList from './components/EntryList.jsx'
 import { supabase } from './lib/supabase.js'
 import { fetchEntries, submitEntry } from './lib/entries.js'
 import { computeStats } from './lib/stats.js'
 
+// Keep the "judging" screen up at least this long so the moment has weight.
+const MIN_JUDGING_MS = 1500
+
 export default function App() {
   const [session, setSession] = useState(undefined) // undefined = still checking
   const [entries, setEntries] = useState([])
-  const [latestEntry, setLatestEntry] = useState(null)
+  const [overlay, setOverlay] = useState(null) // null | { result: null | { entry, before, after } }
   const [loadError, setLoadError] = useState(null)
 
   // Keep track of whether the user is signed in.
@@ -25,7 +28,7 @@ export default function App() {
   const userId = session?.user.id
   useEffect(() => {
     setEntries([])
-    setLatestEntry(null)
+    setOverlay(null)
     setLoadError(null)
     if (!userId) return
     fetchEntries()
@@ -36,10 +39,22 @@ export default function App() {
   const stats = useMemo(() => computeStats(entries), [entries])
 
   async function handleSubmit(text) {
-    const entry = await submitEntry(text)
-    setEntries((prev) => [entry, ...prev])
-    setLatestEntry(entry)
+    setOverlay({ result: null })
+    try {
+      const [entry] = await Promise.all([
+        submitEntry(text),
+        new Promise((resolve) => setTimeout(resolve, MIN_JUDGING_MS)),
+      ])
+      const after = computeStats([entry, ...entries])
+      setEntries((prev) => [entry, ...prev])
+      setOverlay({ result: { entry, before: stats, after } })
+    } catch (err) {
+      setOverlay(null)
+      throw err // EntryForm shows the message
+    }
   }
+
+  const closeOverlay = useCallback(() => setOverlay(null), [])
 
   return (
     <main className="app">
@@ -59,13 +74,12 @@ export default function App() {
         <>
           <StatsPanel stats={stats} />
           <EntryForm onSubmit={handleSubmit} />
-          {latestEntry && (
-            <SystemMessage entry={latestEntry} onDismiss={() => setLatestEntry(null)} />
-          )}
           {loadError && <p className="form-message">{loadError}</p>}
           <EntryList entries={entries} />
         </>
       )}
+
+      {overlay && <SystemOverlay result={overlay.result} onClose={closeOverlay} />}
     </main>
   )
 }

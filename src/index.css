@@ -86,7 +86,7 @@ h2 {
 }
 
 .stat-value {
-  font-size: 2rem;
+  font-size: 1.6rem;
   color: var(--gold);
 }
 
@@ -138,38 +138,11 @@ button.primary:disabled {
   cursor: default;
 }
 
-/* System message */
-.system-message {
-  position: relative;
-  padding: 16px 40px 16px 16px;
-  border: 1px solid var(--gold);
-  background: rgba(201, 164, 92, 0.06);
-  animation: fade-in 0.6s ease-out;
-}
-
-.system-message p {
-  margin: 6px 0 0;
-}
-
+/* Shared */
 .system-label {
   color: var(--gold);
   letter-spacing: 0.2em;
   font-size: 0.8rem;
-}
-
-.dismiss {
-  position: absolute;
-  top: 8px;
-  right: 10px;
-  background: none;
-  border: none;
-  color: var(--text-dim);
-  font-size: 1.2rem;
-}
-
-@keyframes fade-in {
-  from { opacity: 0; transform: translateY(-4px); }
-  to { opacity: 1; transform: none; }
 }
 
 /* Entry list */
@@ -247,7 +220,139 @@ button.link {
   font-size: 0.9rem;
 }
 
-.system-gains {
-  color: var(--gold);
+
+/* Level bars */
+.bar {
+  height: 4px;
+  background: var(--border);
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  background: var(--gold);
+  transition: width 0.7s ease-out;
+}
+
+.bar-fill.no-transition {
+  transition: none;
+}
+
+.stat-progress {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+/* Judging overlay */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  background: rgba(0, 0, 0, 0.88);
+  animation: fade-in 0.8s ease-out;
+}
+
+.overlay-judging {
+  color: var(--text-dim);
+  font-style: italic;
   letter-spacing: 0.1em;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.overlay-reveal {
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+}
+
+.overlay-reveal .system-label {
+  animation: fade-in 0.8s ease-out;
+}
+
+.overlay-message {
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.6;
+  animation: fade-in 1.6s ease-out both;
+}
+
+.overlay-gains {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 8px;
+}
+
+.gain-row {
+  text-align: left;
+  animation: fade-in 0.6s ease-out both;
+}
+
+.gain-row-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.gain-level {
+  color: var(--text);
+}
+
+.gain-amount {
+  margin-left: auto;
+  color: var(--gold);
+}
+
+.level-up {
+  margin: 6px 0 0;
+  color: var(--gold);
+  letter-spacing: 0.3em;
+  font-size: 0.85rem;
+  animation: level-up 1.2s ease-out;
+}
+
+.gain-note {
+  margin: 6px 0 0;
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--text-dim);
+}
+
+.overlay-continue {
+  align-self: center;
+  margin-top: 12px;
+  animation: fade-in 0.6s ease-out;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 1; }
+}
+
+@keyframes level-up {
+  0% { opacity: 0; letter-spacing: 0.8em; }
+  100% { opacity: 1; letter-spacing: 0.3em; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
