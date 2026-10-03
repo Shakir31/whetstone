@@ -53,24 +53,35 @@ export default function EntryForm({ onSubmit }) {
       <label htmlFor="entry" className="entry-form__label">
         What did you do today?
       </label>
-      <textarea
-        id="entry"
-        className="ws-textarea entry-form__text"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        placeholder="Set down the day as it happened."
-        maxLength={MAX_LENGTH}
-        disabled={submitting}
-      />
+      <div className="entry-form__field">
+        <textarea
+          id="entry"
+          className={`ws-textarea entry-form__text${submitting ? ' entry-form__text--judging' : ''}`}
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          placeholder="Set down the day as it happened."
+          maxLength={MAX_LENGTH}
+          readOnly={submitting}
+          aria-busy={submitting}
+        />
+        {/* While judging, a line passes down the page as the System reads it. */}
+        {submitting && <div className="reading-line" aria-hidden="true" />}
+      </div>
       {error && (
         <p className="form-error" role="alert">
           {error}
         </p>
       )}
       <div className="entry-form__foot">
-        <span className="ws-small">{plural(words, 'word')} · An entry cannot be altered once judged.</span>
+        {submitting ? (
+          <span className="reading-note" role="status">
+            The System is reading…
+          </span>
+        ) : (
+          <span className="ws-small">{plural(words, 'word')} · An entry cannot be altered once judged.</span>
+        )}
         <Button type="submit" variant="primary" disabled={!trimmed || submitting}>
-          Submit to judgement
+          {submitting ? 'Judging' : 'Submit to judgement'}
         </Button>
       </div>
     </Panel>

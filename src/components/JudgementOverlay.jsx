@@ -17,12 +17,11 @@ const LEVEL_UP_NOTES = {
   will: 'Discipline has taken root.',
 }
 
-// Full-screen overlay shown while an entry is judged, then the reveal.
-// `result` is null while judging, or { entry, before, after } once scored.
-export default function JudgementOverlay({ result, onClose }) {
+// Full-screen reveal of the System's verdict once an entry has been judged.
+export default function JudgementOverlay(props) {
   return (
     <div className="judgement" role="dialog" aria-modal="true" aria-label="Judgement" aria-live="polite">
-      {result ? <Reveal {...result} onClose={onClose} /> : <p className="judgement__waiting">The System is judging…</p>}
+      <Reveal {...props} />
     </div>
   )
 }

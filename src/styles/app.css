@@ -310,8 +310,51 @@ a:hover {
   color: var(--bone);
 }
 
+.entry-form__field {
+  position: relative;
+}
+
 .entry-form__text {
   height: 360px;
+  transition: color var(--duration-fade) var(--ease-weight);
+}
+
+/* While the System judges: the words dim and a line passes down the page. */
+.entry-form__text--judging,
+.entry-form__text--judging:hover {
+  color: var(--ash);
+  border-color: var(--iron);
+  cursor: progress;
+}
+
+.reading-line {
+  position: absolute;
+  left: 1px;
+  right: 1px;
+  height: 2px;
+  background: var(--blood-bar);
+  pointer-events: none;
+  animation: reading 3.2s var(--ease-grind) infinite;
+}
+
+.reading-note {
+  font-style: italic;
+  font-size: 16px;
+  line-height: 21px;
+  color: var(--bone);
+  animation: reading-note 2.4s ease-in-out infinite;
+}
+
+@keyframes reading {
+  0% { top: var(--space-4); opacity: 0; }
+  12% { opacity: 1; }
+  88% { opacity: 1; }
+  100% { top: calc(100% - var(--space-4)); opacity: 0; }
+}
+
+@keyframes reading-note {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
 }
 
 .entry-form__foot {
@@ -665,15 +708,6 @@ a:hover {
   animation: ws-fade var(--duration-fade) var(--ease-weight) both;
 }
 
-.judgement__waiting {
-  margin: 0;
-  font-style: italic;
-  font-size: 20px;
-  line-height: 30px;
-  color: var(--ash);
-  animation: judging-pulse 2.4s ease-in-out infinite;
-}
-
 .judgement__reveal {
   width: 100%;
   max-width: 560px;
@@ -719,16 +753,6 @@ a:hover {
   align-self: center;
   min-width: 200px;
   animation: ws-fade var(--duration-fade) var(--ease-weight) both;
-}
-
-@keyframes judging-pulse {
-  0%,
-  100% {
-    opacity: 0.35;
-  }
-  50% {
-    opacity: 1;
-  }
 }
 
 /* ---------- Sign in / sign up ---------- */
@@ -923,6 +947,7 @@ a:hover {
 
 @media (prefers-reduced-motion: reduce) {
   .meter__fill,
+  .reading-note,
   .judgement,
   .judgement__row,
   .judgement__continue {
@@ -930,8 +955,7 @@ a:hover {
     animation: none !important;
   }
 
-  .judgement__waiting {
-    animation: none;
-    opacity: 1;
+  .reading-line {
+    display: none;
   }
 }

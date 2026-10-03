@@ -91,7 +91,27 @@ function cleanScore(value: unknown) {
   return Math.round(Math.min(Math.max(n, 0), 1) * 10) / 10
 }
 
+// Gemini (especially the free tier) occasionally fails for a moment: "model
+// overloaded" errors or an empty reply. Retry a few times before giving up.
+const MAX_ATTEMPTS = 3
+
 async function scoreWithGemini(text: string) {
+  let lastError: unknown
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    try {
+      return await callGemini(text)
+    } catch (err) {
+      lastError = err
+      // Don't retry the rate limit: retrying straight away only makes it worse.
+      if (err instanceof HttpError && err.status === 429) throw err
+      console.error(`Gemini attempt ${attempt} of ${MAX_ATTEMPTS} failed:`, err instanceof Error ? err.message : err)
+      if (attempt < MAX_ATTEMPTS) await new Promise((resolve) => setTimeout(resolve, 800 * attempt))
+    }
+  }
+  throw lastError
+}
+
+async function callGemini(text: string) {
   const res = await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`,
     {
@@ -127,7 +147,13 @@ async function scoreWithGemini(text: string) {
     throw new HttpError(502, 'The System could not judge this entry. Try again.')
   }
 
-  const result = JSON.parse(raw)
+  let result
+  try {
+    result = JSON.parse(raw)
+  } catch {
+    console.error('Gemini returned invalid JSON', raw)
+    throw new HttpError(502, 'The System could not judge this entry. Try again.')
+  }
   return {
     body: cleanScore(result.body),
     mind: cleanScore(result.mind),
