@@ -1,0 +1,21 @@
+<!-- @dsCard group="Actions" height=150 -->
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Button — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+  var W = window.Whetstone, h = React.createElement;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'ws-demo'},
+  h('div',{className:'ws-demo-row'},
+    h(W.Button,{variant:'primary'},'Submit to judgement'),
+    h(W.Button,null,'Save draft'),
+    h(W.Button,{variant:'ghost'},'Discard')),
+  h('div',{className:'ws-demo-row'},
+    h(W.Button,{variant:'primary',size:'sm'},'Inscribe'),
+    h(W.Button,{size:'sm'},'View chronicle'),
+    h(W.Button,{variant:'primary',disabled:true},'Submit to judgement'),
+    h(W.Button,{disabled:true},'Save draft'))));
+</script>
+</body>
+</html>

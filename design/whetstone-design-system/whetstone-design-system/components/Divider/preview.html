@@ -1,0 +1,16 @@
+<!-- @dsCard group="Surfaces" height=200 -->
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Divider — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+  var W = window.Whetstone, h = React.createElement;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'ws-demo',style:{maxWidth:640}},
+  h('div',null,h('span',{className:'ws-micro',style:{color:'var(--ash)'}},'Plain'),h(W.Divider,null)),
+  h('div',null,h('span',{className:'ws-micro',style:{color:'var(--ash)'}},'Heavy'),h(W.Divider,{variant:'heavy'})),
+  h(W.Divider,{variant:'ornament'}),
+  h(W.Divider,{variant:'ornament',label:'Week XVII'})));
+</script>
+</body>
+</html>

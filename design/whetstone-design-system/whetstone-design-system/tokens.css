@@ -1,0 +1,65 @@
+/* Whetstone tokens — generated from tokens.json. Load before components/bundle.css. */
+
+@font-face { font-family: 'Libre Caslon Condensed'; src: url('fonts/LibreCaslonCondensed-Medium.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Libre Caslon Condensed'; src: url('fonts/LibreCaslonCondensed-SemiBold.woff2') format('woff2'); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Libre Caslon Condensed'; src: url('fonts/LibreCaslonCondensed-Bold.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Source Serif 4'; src: url('fonts/SourceSerif4-Variable.woff2') format('woff2'); font-weight: 200 900; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Source Serif 4'; src: url('fonts/SourceSerif4-Variable-Italic.woff2') format('woff2'); font-weight: 200 900; font-style: italic; font-display: swap; }
+
+:root, [data-theme="night"] {
+  --void: #0b0c0d;
+  --crypt: #131416;
+  --slate: #1b1c1f;
+  --grave: #232428;
+  --line: #2f3034;
+  --iron: #676b70;
+  --pewter: #8d9196;
+  --pewter-light: #b7babd;
+  --bone: #d9d5cd;
+  --ash: #a19e98;
+  --ash-faint: #86847f;
+  --blood: #7a1a14;
+  --blood-hover: #8e2118;
+  --blood-deep: #2a0d0b;
+  --blood-bar: #b5372b;
+  --blood-ink: #cd5e4f;
+  --on-blood: var(--bone);
+  --focus: var(--bone);
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --radius-none: 0px;
+  --radius-hair: 1px;
+  --chip: 4px;
+  --shadow-panel: 0 1px 0 0 rgba(255,255,255,0.03) inset, 0 16px 40px -8px rgba(0,0,0,0.7);
+  --shadow-well: inset 0 2px 4px 0 rgba(0,0,0,0.6);
+  --shadow-press: inset 0 2px 0 0 rgba(0,0,0,0.45);
+  --grain: 0.06;
+  --vignette: 0.6;
+  --disabled: 0.45;
+  --duration-quick: 160ms;
+  --duration-fade: 600ms;
+  --duration-fill: 1400ms;
+  --duration-ceremony: 2400ms;
+  --ease-weight: cubic-bezier(0.2, 0, 0, 1);
+  --ease-grind: cubic-bezier(0.45, 0, 0.15, 1);
+  --font-display: "Libre Caslon Condensed", "Iowan Old Style", Georgia, serif;
+  --font-text: "Source Serif 4", "Iowan Old Style", Georgia, serif;
+}
+
+.display-xl { font-family: var(--font-display); font-size: 56px; line-height: 60px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+.title { font-family: var(--font-display); font-size: 32px; line-height: 36px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+.heading { font-family: var(--font-display); font-size: 20px; line-height: 24px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+.numeral { font-family: var(--font-display); font-size: 24px; line-height: 24px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+.label { font-family: var(--font-display); font-size: 14px; line-height: 16px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
+.micro { font-family: var(--font-display); font-size: 12px; line-height: 14px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; }
+.entry { font-family: var(--font-text); font-size: 19px; line-height: 31px; font-weight: 400; }
+.body { font-family: var(--font-text); font-size: 16px; line-height: 26px; font-weight: 400; }
+.body-strong { font-family: var(--font-text); font-size: 16px; line-height: 26px; font-weight: 600; }
+.verdict { font-family: var(--font-text); font-size: 17px; line-height: 27px; font-weight: 400; font-style: italic; }
+.small { font-family: var(--font-text); font-size: 14px; line-height: 21px; font-weight: 400; }

@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Journal — Whetstone</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Condensed:wght@500;600;700&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;display=swap">
+<style>
+body{margin:0;background:#0b0c0d}
+a{color:#b7babd}a:hover{color:#d9d5cd}
+a:focus-visible,button:focus-visible,textarea:focus-visible{outline:2px solid #d9d5cd;outline-offset:2px}
+textarea::placeholder{color:#86847f;font-style:italic}
+.ws-links a,.ws-links button{transition:color 160ms cubic-bezier(0.2,0,0,1)}
+.ws-links a:hover,.ws-links button:hover{color:#d9d5cd}
+.ws-links .ws-active,.ws-links .ws-active:hover{color:#cd5e4f;box-shadow:inset 0 -2px 0 0 #b5372b}
+.ws-primary{transition:background 160ms cubic-bezier(0.2,0,0,1)}
+.ws-primary:hover{background:#8e2118}
+.ws-primary:active{box-shadow:inset 0 2px 0 0 rgba(0,0,0,0.45)}
+.ws-secondary:hover{background:#1b1c1f;border-color:#b7babd}
+@media (max-width:640px){
+.ws-links{position:fixed;left:0;right:0;bottom:0;z-index:10;height:64px;background:#131416;border-top:1px solid #2f3034;display:grid !important;grid-template-columns:repeat(4,minmax(0,1fr));gap:0 !important}
+.ws-links li{border:0 !important;margin:0 !important;padding:0 !important}
+.ws-links a,.ws-links button{flex-direction:column;justify-content:center;gap:4px !important;height:64px !important;width:100%;padding:0 !important;font-size:12px !important;letter-spacing:0.16em !important}
+.ws-links .ws-active,.ws-links .ws-active:hover{box-shadow:inset 0 2px 0 0 #b5372b}
+.ws-main{padding:32px 16px 112px !important}
+.ws-title{font-size:28px !important;line-height:32px !important}
+.ws-pad{padding:16px !important}
+.ws-text{font-size:17px !important;line-height:28px !important}
+.ws-entry-row{grid-template-columns:minmax(0,1fr) !important;gap:8px !important}
+}
+</style>
+</helmet>
+<div style="position: relative; min-height: 100vh; background: #0b0c0d; color: #d9d5cd; font-family: 'Source Serif 4', 'Iowan Old Style', Georgia, serif; overflow: hidden">
+<svg aria-hidden="true" width="0" height="0" style="position: absolute"><filter id="ws-grain"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter></svg>
+<svg aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.06; pointer-events: none"><rect width="100%" height="100%" filter="url(#ws-grain)"></rect></svg>
+<div aria-hidden="true" style="position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse at 50% 40%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.6) 100%)"></div>
+
+<header style="position: relative; z-index: 2; background: #131416; border-bottom: 1px solid #2f3034">
+<div style="max-width: 1120px; margin: 0 auto; padding: 0 32px; height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 24px">
+<a href="#" style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 700; font-size: 18px; letter-spacing: 0.18em; text-transform: uppercase; color: #d9d5cd; text-decoration: none">Whetstone</a>
+<nav aria-label="Primary">
+<ul class="ws-links" style="list-style: none; margin: 0; padding: 0; display: flex; align-items: center; gap: 4px">
+<li><a href="#" class="ws-active" aria-current="page" style="display: flex; align-items: center; gap: 8px; height: 72px; padding: 0 16px; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 14px; letter-spacing: 0.14em; text-transform: uppercase; color: #8d9196; text-decoration: none">
+<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter"><path d="M5 3h14v18H5z"></path><path d="M8.5 8h7M8.5 12h7M8.5 16h4"></path></svg>Journal</a></li>
+<li><a href="#" style="display: flex; align-items: center; gap: 8px; height: 72px; padding: 0 16px; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 14px; letter-spacing: 0.14em; text-transform: uppercase; color: #8d9196; text-decoration: none">
+<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter"><path d="M4 13h4v8H4zM10 4h4v17h-4zM16 9h4v12h-4z"></path></svg>Status</a></li>
+<li><a href="#" style="display: flex; align-items: center; gap: 8px; height: 72px; padding: 0 16px; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 14px; letter-spacing: 0.14em; text-transform: uppercase; color: #8d9196; text-decoration: none">
+<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter"><path d="M3 5h18v16H3zM3 10h18M8 3v4M16 3v4M7 14h2M11 14h2M15 14h2M7 17h2M11 17h2"></path></svg>Chronicle</a></li>
+<li style="margin-left: 8px; padding-left: 8px; border-left: 1px solid #2f3034"><button type="button" style="display: flex; align-items: center; gap: 8px; height: 72px; padding: 0 16px; background: none; border: 0; cursor: pointer; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 14px; letter-spacing: 0.14em; text-transform: uppercase; color: #8d9196">
+<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter"><path d="M11 3H4v18h7"></path><path d="M15 8l4 4-4 4M9 12h10"></path></svg>Sign out</button></li>
+</ul>
+</nav>
+</div>
+</header>
+
+<main class="ws-main" style="position: relative; z-index: 1; max-width: 880px; margin: 0 auto; padding: 48px 32px 96px; display: flex; flex-direction: column; gap: 32px">
+
+<section aria-label="Stats" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1px; background: #2f3034; border: 1px solid #2f3034; clip-path: polygon(6px 0, calc(100% - 4px) 0, 100% 5px, 100% calc(100% - 7px), calc(100% - 5px) 100%, 8px 100%, 0 calc(100% - 4px), 0 6px)">
+<div style="background: #131416; padding: 16px 20px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; align-items: baseline; justify-content: space-between; gap: 8px">
+<span style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 14px; line-height: 16px; letter-spacing: 0.14em; text-transform: uppercase; color: #b7babd">Body</span>
+<span style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 24px; line-height: 24px; letter-spacing: 0.04em; text-transform: uppercase; font-variant-numeric: lining-nums tabular-nums; color: #d9d5cd">Lv. 7</span>
+</div>
+<div style="display: flex; align-items: center; gap: 10px">
+<div role="progressbar" aria-label="Body, progress to Lv. 8" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="flex: 1; height: 8px; background: #0b0c0d; border: 1px solid #676b70; box-shadow: inset 0 2px 4px 0 rgba(0,0,0,0.6)"><div style="width: 40%; height: 100%; background: #b5372b"></div></div>
+<span style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 12px; line-height: 14px; letter-spacing: 0.16em; font-variant-numeric: tabular-nums; color: #a19e98; min-width: 32px; text-align: right">40%</span>
+</div>
+</div>
+<div style="background: #131416; padding: 16px 20px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; align-items: baseline; justify-content: space-between; gap: 8px">
+<span style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 14px; line-height: 16px; letter-spacing: 0.14em; text-transform: uppercase; color: #b7babd">Mind</span>
+<span style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 24px; line-height: 24px; letter-spacing: 0.04em; text-transform: uppercase; font-variant-numeric: lining-nums tabular-nums; color: #d9d5cd">Lv. 4</span>
+</div>
+<div style="display: flex; align-items: center; gap: 10px">
+<div role="progressbar" aria-label="Mind, progress to Lv. 5" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="flex: 1; height: 8px; background: #0b0c0d; border: 1px solid #676b70; box-shadow: inset 0 2px 4px 0 rgba(0,0,0,0.6)"><div style="width: 70%; height: 100%; background: #b5372b"></div></div>
+<span style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 12px; line-height: 14px; letter-spacing: 0.16em; font-variant-numeric: tabular-nums; color: #a19e98; min-width: 32px; text-align: right">70%</span>
+</div>
+</div>
+<div style="background: #131416; padding: 16px 20px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; align-items: baseline; justify-content: space-between; gap: 8px">
+<span style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 14px; line-height: 16px; letter-spacing: 0.14em; text-transform: uppercase; color: #b7babd">Will</span>
+<span style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 24px; line-height: 24px; letter-spacing: 0.04em; text-transform: uppercase; font-variant-numeric: lining-nums tabular-nums; color: #d9d5cd">Lv. 2</span>
+</div>
+<div style="display: flex; align-items: center; gap: 10px">
+<div role="progressbar" aria-label="Will, progress to Lv. 3" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="flex: 1; height: 8px; background: #0b0c0d; border: 1px solid #676b70; box-shadow: inset 0 2px 4px 0 rgba(0,0,0,0.6)"><div style="width: 33%; height: 100%; background: #b5372b"></div></div>
+<span style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 12px; line-height: 14px; letter-spacing: 0.16em; font-variant-numeric: tabular-nums; color: #a19e98; min-width: 32px; text-align: right">33%</span>
+</div>
+</div>
+<div style="background: #131416; padding: 16px 20px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; align-items: baseline; justify-content: space-between; gap: 8px">
+<span style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 14px; line-height: 16px; letter-spacing: 0.14em; text-transform: uppercase; color: #b7babd">Streak</span>
+<span style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 24px; line-height: 24px; letter-spacing: 0.04em; text-transform: uppercase; font-variant-numeric: lining-nums tabular-nums; color: #d9d5cd">4 days</span>
+</div>
+<div style="display: flex; align-items: center; gap: 10px">
+<div aria-hidden="true" style="display: flex; gap: 3px">
+<span style="width: 8px; height: 10px; background: #b7babd"></span><span style="width: 8px; height: 10px; background: #b7babd"></span><span style="width: 8px; height: 10px; background: #b7babd"></span><span style="width: 8px; height: 10px; background: #b7babd"></span><span style="width: 6px; height: 8px; border: 1px solid #676b70"></span><span style="width: 6px; height: 8px; border: 1px solid #676b70"></span>
+</div>
+<span style="font-size: 14px; line-height: 16px; color: #a19e98">2 more for Will Lv. 3</span>
+</div>
+</div>
+</section>
+
+<section aria-labelledby="today-title" style="display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 12px; line-height: 14px; letter-spacing: 0.16em; text-transform: uppercase; color: #a19e98">Saturday, 3 October</span>
+<h1 id="today-title" class="ws-title" style="margin: 0; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 32px; line-height: 36px; letter-spacing: 0.06em; text-transform: uppercase; color: #d9d5cd">Today's deeds</h1>
+</div>
+<form class="ws-pad" style="position: relative; background: #131416; border: 1px solid #2f3034; padding: 24px; display: flex; flex-direction: column; gap: 16px; clip-path: polygon(7px 0, calc(100% - 5px) 0, 100% 4px, 100% calc(100% - 8px), calc(100% - 4px) 100%, 6px 100%, 0 calc(100% - 5px), 0 7px)">
+<svg aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.06; pointer-events: none"><rect width="100%" height="100%" filter="url(#ws-grain)"></rect></svg>
+<label for="entry" class="ws-text" style="position: relative; font-size: 19px; line-height: 31px; font-style: italic; color: #d9d5cd">What did you do today?</label>
+<textarea id="entry" name="entry" class="ws-text" placeholder="Set down the day as it happened." style="position: relative; display: block; box-sizing: border-box; width: 100%; height: 360px; resize: vertical; margin: 0; padding: 16px 24px; background-color: #1b1c1f; background-image: repeating-linear-gradient(to bottom, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 30px, #2f3034 30px, #2f3034 31px); background-position: 0 16px; background-attachment: local; border: 1px solid #676b70; border-radius: 1px; box-shadow: inset 0 2px 4px 0 rgba(0,0,0,0.6); font-family: 'Source Serif 4', 'Iowan Old Style', Georgia, serif; font-size: 19px; line-height: 31px; color: #d9d5cd"></textarea>
+<div style="position: relative; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px">
+<span style="font-size: 14px; line-height: 21px; color: #a19e98">0 words · An entry cannot be altered once judged.</span>
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<button type="button" class="ws-secondary" style="height: 48px; padding: 0 20px; background: transparent; border: 1px solid #676b70; cursor: pointer; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 14px; letter-spacing: 0.14em; text-transform: uppercase; color: #b7babd">Save draft</button>
+<button type="submit" class="ws-primary" style="height: 48px; padding: 0 28px; background: #7a1a14; border: 0; cursor: pointer; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 14px; letter-spacing: 0.14em; text-transform: uppercase; color: #d9d5cd; clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px)">Submit to judgement</button>
+</div>
+</div>
+</form>
+</section>
+
+<section aria-labelledby="recent-title" style="display: flex; flex-direction: column; gap: 16px; padding-top: 16px">
+<div style="display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding-bottom: 12px; border-bottom: 3px double #676b70">
+<h2 id="recent-title" style="margin: 0; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 20px; line-height: 24px; letter-spacing: 0.08em; text-transform: uppercase; color: #d9d5cd">Recent entries</h2>
+<a href="#" style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 12px; line-height: 14px; letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none; padding: 15px 0">View chronicle</a>
+</div>
+<ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column">
+<li class="ws-entry-row" style="display: grid; grid-template-columns: 136px minmax(0, 1fr) 150px; gap: 24px; padding: 20px 0; border-bottom: 1px solid #2f3034">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<span style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 12px; line-height: 14px; letter-spacing: 0.16em; text-transform: uppercase; color: #b7babd">Yesterday</span>
+<span style="font-size: 14px; line-height: 21px; color: #a19e98">21:14</span>
+</div>
+<p class="ws-text" style="margin: 0; font-size: 19px; line-height: 31px; color: #d9d5cd; max-width: 68ch">5 sets of weighted decline pushups, each to failure. Then read two chapters on Roman history.</p>
+<div style="display: flex; flex-direction: column; gap: 6px; align-items: flex-start; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 12px; line-height: 14px; letter-spacing: 0.16em; text-transform: uppercase; font-variant-numeric: tabular-nums; color: #cd5e4f; padding-top: 2px">
+<span>Body +0.7</span><span>Mind +0.3</span>
+</div>
+</li>
+<li class="ws-entry-row" style="display: grid; grid-template-columns: 136px minmax(0, 1fr) 150px; gap: 24px; padding: 20px 0; border-bottom: 1px solid #2f3034">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<span style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 12px; line-height: 14px; letter-spacing: 0.16em; text-transform: uppercase; color: #b7babd">Thu 1 Oct</span>
+<span style="font-size: 14px; line-height: 21px; color: #a19e98">22:40</span>
+</div>
+<p class="ws-text" style="margin: 0; font-size: 19px; line-height: 31px; color: #d9d5cd; max-width: 68ch">Finished the translation exercise I had put off all week. Wrote every irregular verb out by hand, twice.</p>
+<div style="display: flex; flex-direction: column; gap: 6px; align-items: flex-start; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 12px; line-height: 14px; letter-spacing: 0.16em; text-transform: uppercase; font-variant-numeric: tabular-nums; color: #cd5e4f; padding-top: 2px">
+<span>Mind +0.6</span><span>Will +0.2</span>
+</div>
+</li>
+<li class="ws-entry-row" style="display: grid; grid-template-columns: 136px minmax(0, 1fr) 150px; gap: 24px; padding: 20px 0; border-bottom: 1px solid #2f3034">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<span style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 12px; line-height: 14px; letter-spacing: 0.16em; text-transform: uppercase; color: #b7babd">Wed 30 Sep</span>
+<span style="font-size: 14px; line-height: 21px; color: #a19e98">06:52</span>
+</div>
+<p class="ws-text" style="margin: 0; font-size: 19px; line-height: 31px; color: #d9d5cd; max-width: 68ch">Up at 5:30 without the alarm. Cold shower, then forty minutes on the rower before work.</p>
+<div style="display: flex; flex-direction: column; gap: 6px; align-items: flex-start; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 12px; line-height: 14px; letter-spacing: 0.16em; text-transform: uppercase; font-variant-numeric: tabular-nums; color: #cd5e4f; padding-top: 2px">
+<span>Body +0.5</span><span>Will +0.4</span>
+</div>
+</li>
+</ol>
+</section>
+
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1500}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

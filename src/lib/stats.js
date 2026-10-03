@@ -66,8 +66,34 @@ export function computeStats(entries) {
     mind: round1(sumWithDailyCap(entries, 'mind')),
     will,
     currentStreak,
+    longestStreak: runs.length ? Math.max(...runs) : 0,
     daysToNextWill: DAYS_PER_WILL - (currentStreak % DAYS_PER_WILL),
+    // How many of the days in the current Will cycle are done (for the streak pips).
+    willCycleDone: currentStreak % DAYS_PER_WILL,
+    willCycleLength: DAYS_PER_WILL,
   }
+}
+
+// Groups entries (newest first) into days, newest first, with each day's
+// totals after the daily cap — the same amounts that count towards the stats.
+export function entriesByDay(entries) {
+  const days = []
+  for (const entry of entries) {
+    const key = dayKey(entry.createdAt)
+    let day = days[days.length - 1]
+    if (!day || day.key !== key) {
+      day = { key, date: entry.createdAt, entries: [], body: 0, mind: 0 }
+      days.push(day)
+    }
+    day.entries.push(entry)
+    day.body += entry.body
+    day.mind += entry.mind
+  }
+  for (const day of days) {
+    day.body = round1(Math.min(day.body, DAILY_CAP))
+    day.mind = round1(Math.min(day.mind, DAILY_CAP))
+  }
+  return days
 }
 
 // Display only: 7.4 Body is shown as Lv. 7 with 40% progress to Lv. 8.

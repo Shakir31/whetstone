@@ -1,0 +1,17 @@
+<!-- @dsCard group="Status" height=72 -->
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Tag — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+  var W = window.Whetstone, h = React.createElement;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'ws-demo-row',style:{padding:24}},
+  h(W.Tag,null,'Day 113'),
+  h(W.Tag,{tone:'iron'},'Unjudged'),
+  h(W.Tag,{tone:'blood'},'+22 Will'),
+  h(W.Tag,{tone:'blood'},'Missed'),
+  h(W.Tag,{tone:'bone'},'Judged')));
+</script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!-- @dsCard group="Surfaces" height=300 -->
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Panel — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+  var W = window.Whetstone, h = React.createElement;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'ws-demo',style:{maxWidth:640}},
+  h(W.Panel,{eyebrow:'Day 113 · Tuesday',title:"Today’s deeds",actions:h(W.Tag,{tone:'iron'},'Unjudged')},
+    h('p',{className:'ws-entry',style:{margin:0}},'Walked the long way home in the rain. Did not stop for the bus. Cooked instead of ordering. Wrote three pages of the report nobody asked for.'),
+    h(W.Divider,null),
+    h('div',{className:'ws-demo-row',style:{justifyContent:'space-between'}},
+      h('span',{className:'ws-small'},'Recorded 23:41 · 212 words'),
+      h(W.Button,{variant:'primary',size:'sm'},'Submit')))));
+</script>
+</body>
+</html>

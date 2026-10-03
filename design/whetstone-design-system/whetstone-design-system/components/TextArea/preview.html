@@ -1,0 +1,16 @@
+<!-- @dsCard group="Inputs" height=380 -->
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>TextArea — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+  var W = window.Whetstone, h = React.createElement;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'ws-demo',style:{maxWidth:720}},
+  h(W.TextArea,{label:"Today’s deeds",showCount:true,maxLength:2000,rows:6,
+    placeholder:'Write what you did. Plainly. The System reads everything.',
+    defaultValue:'Up at six. Ran the river path twice in the cold, the second lap slower.\nRead forty pages of the Meditations. Did not open the phone until noon.',
+    hint:'Judgement happens once per day. Entries cannot be edited after submission.'})));
+</script>
+</body>
+</html>

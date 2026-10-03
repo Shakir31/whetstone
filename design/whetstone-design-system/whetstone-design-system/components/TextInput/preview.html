@@ -1,0 +1,14 @@
+<!-- @dsCard group="Inputs" height=220 -->
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>TextInput — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+  var W = window.Whetstone, h = React.createElement;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'ws-demo',style:{maxWidth:520}},
+  h(W.TextInput,{label:'Name to be recorded',placeholder:'What the System calls you',hint:'Shown at the head of every verdict.'}),
+  h(W.TextInput,{label:'Day title',defaultValue:'',placeholder:'One line',error:true,hint:'A day must be named before it is judged.'})));
+</script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!-- @dsCard group="Stats" height=300 -->
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>StatBar — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+  var W = window.Whetstone, h = React.createElement;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'ws-demo',style:{maxWidth:520}},
+  h(W.Panel,{title:'Attributes',eyebrow:'Character'},
+    h('div',{style:{display:'grid',gap:24}},
+      h(W.StatBar,{name:'Body',level:7,value:62}),
+      h(W.StatBar,{name:'Mind',level:12,value:18}),
+      h(W.StatBar,{name:'Will',level:4,value:91,from:40}))),
+  h('div',{style:{display:'grid',gap:12,maxWidth:280}},
+    h(W.StatBar,{name:'Will',level:4,value:91,compact:true}),
+    h(W.StatBar,{name:'Mind',level:12,value:0,compact:true,tone:'iron'}))));
+</script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!-- @dsCard height=288 -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Whetstone</title>
+<style>
+  html, body { margin:0; height:100%; }
+  body { background:var(--void); color:var(--bone); font-family:var(--font-text); overflow:hidden; }
+  .cover { position:relative; height:288px; overflow:hidden; }
+  .art { position:absolute; top:0; left:480px; width:480px; height:288px; overflow:hidden; }
+  .art svg { display:block; width:480px; height:288px; }
+  .blood { fill:var(--blood); }
+  .iron { fill:var(--iron); }
+  .pewter { fill:var(--pewter); }
+  .bone { fill:var(--bone); }
+  .bar { fill:var(--blood-bar); }
+  .cut { fill:var(--void); }
+  .edge { fill:var(--bone); }
+  .words { position:absolute; left:var(--space-6); bottom:var(--space-6); max-width:440px; }
+  .name { margin:0; font-family:var(--font-display); font-weight:700; font-size:88px; line-height:.92; letter-spacing:.02em; color:var(--bone); }
+  .tag { margin:var(--space-3) 0 0 3px; font-size:14px; line-height:20px; color:var(--ash); }
+</style>
+</head>
+<body>
+<div class="cover">
+<div class="art" aria-hidden="true">
+<svg viewBox="0 0 480 288" width="480" height="288">
+<!--
+  blocks      blood 200×248 slab bled off the top (identity, largest) · iron 152×152 stone · pewter 80×152 bled off the right · blood-bar 152×24 strip · bone 64×24 relief — ≈ 37% of 960×288
+  arrangement one tall blood slab with stone satellites, tops on space-6 (40px ≈ space-6+space-1), bottoms on one line at space-7 from the foot; worn chamfer (chip × 4) on the slab's foot
+  pattern     three void hairlines cut across every block at quarter pitch, from the StatBar's quarter notches and "thin hard divider lines"; one 2px bone honed edge where the bar stops
+  scales      gutters space-4 (16); strip and relief height space-5 (24); rules 1px (line weight); corners radius-none, chamfer 16 = chip × 4
+-->
+<polygon class="blood" points="16,-8 216,-8 216,224 200,240 16,240"/>
+<rect class="iron" x="232" y="40" width="152" height="152"/>
+<rect class="pewter" x="400" y="40" width="88" height="152"/>
+<rect class="bar" x="232" y="208" width="112" height="32"/>
+<rect class="edge" x="342" y="208" width="2" height="32"/>
+<rect class="bone" x="360" y="208" width="64" height="32"/>
+<rect class="cut" x="0" y="80" width="480" height="1"/>
+<rect class="cut" x="0" y="120" width="480" height="1"/>
+<rect class="cut" x="0" y="160" width="480" height="1"/>
+</svg>
+</div>
+<div class="words">
+<h1 class="name">Whetstone</h1>
+<p class="tag">A journal that judges. Cold stone, dried blood, slow weight.</p>
+</div>
+</div>
+</body>
+</html>

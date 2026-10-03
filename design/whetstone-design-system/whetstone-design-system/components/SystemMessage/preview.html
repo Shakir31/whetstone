@@ -1,0 +1,18 @@
+<!-- @dsCard group="Feedback" height=600 -->
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>SystemMessage — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+  var W = window.Whetstone, h = React.createElement;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'ws-demo',style:{maxWidth:640}},
+  h(W.SystemMessage,{kind:'verdict',meta:'Day 113 · 23:52',title:'The day is weighed',
+    verdict:'Effort noted. Discipline sufficient.',
+    awards:[{stat:'Body',amount:'+14 XP'},{stat:'Mind',amount:'+6 XP'},{stat:'Will',amount:'+22 XP'}]},
+    h('p',null,'Three deeds recorded. The run in the cold is counted twice: once for the body, once for refusing to stop.')),
+  h(W.SystemMessage,{meta:'Day 113'},h('p',null,'The ledger opens at dawn. One entry may be submitted before the day ends.')),
+  h(W.SystemMessage,{kind:'warning',meta:'Day 112'},h('p',null,'No entry was submitted yesterday. Will decays by 3 XP for each day left unrecorded.'))));
+</script>
+</body>
+</html>

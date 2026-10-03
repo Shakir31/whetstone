@@ -1,0 +1,16 @@
+<!-- @dsCard group="Surfaces" height=420 -->
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Surface — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+  var W = window.Whetstone, h = React.createElement;
+  ReactDOM.createRoot(document.getElementById('root')).render(h(W.Surface,{style:{minHeight:420}},
+  h('p',{className:'ws-micro',style:{color:'var(--ash)',margin:'0 0 8px'}},'Day 113 · Tuesday'),
+  h('h1',{className:'ws-title'},'What did you do today'),
+  h('p',{className:'ws-entry',style:{color:'var(--ash)'}},'Grain at 6%, vignette at 60% in the corners. Text sits above both and stays clean.'),
+  h('div',{style:{maxWidth:520,marginTop:24}},h(W.StatBar,{name:'Will',level:4,value:55}))));
+</script>
+</body>
+</html>
