@@ -71,7 +71,8 @@ export function Panel({ title, eyebrow, actions, worn = true, as: Tag = 'section
   )
 }
 
-export function LevelUp({ stat, from, to, note, word = 'Level up', className }) {
+// `format` turns a level into its label (default "Lv. 7"; skills use rank numerals).
+export function LevelUp({ stat, from, to, note, word = 'Level up', format = (n) => `Lv. ${n}`, className }) {
   return (
     <div className={cx('ws-levelup', className)} role="status" aria-live="polite">
       <div className="ws-levelup__band ws-grain" aria-hidden="true" />
@@ -81,13 +82,13 @@ export function LevelUp({ stat, from, to, note, word = 'Level up', className }) 
       {stat && (
         <div className="ws-levelup__line ws-label">
           <span className="ws-levelup__stat">{stat}</span>
-          {from != null && <span>Lv. {from}</span>}
+          {from != null && <span>{format(from)}</span>}
           {from != null && (
             <span className="ws-levelup__arrow" aria-label="to">
               →
             </span>
           )}
-          {to != null && <span className="ws-levelup__stat">Lv. {to}</span>}
+          {to != null && <span className="ws-levelup__stat">{format(to)}</span>}
         </div>
       )}
       {note && <p className="ws-levelup__note">{note}</p>}

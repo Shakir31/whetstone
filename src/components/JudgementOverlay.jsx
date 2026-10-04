@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Button, LevelUp, SystemMessage } from '../ui/whetstone.jsx'
 import { statLevels } from '../lib/stats.js'
+import { numeral, skillName } from '../lib/skills.js'
 import { time } from '../lib/format.js'
 
 // Timing of the reveal, in milliseconds.
@@ -17,6 +18,9 @@ const LEVEL_UP_NOTES = {
   will: 'Discipline has taken root.',
 }
 
+const SKILL_WORDS = { acquired: 'Skill acquired', ranked: 'Skill advanced', restored: 'Skill restored' }
+const SKILL_NOTES = { ranked: 'The habit deepens.', restored: 'What was lost has been reclaimed.' }
+
 // Full-screen reveal of the System's verdict once an entry has been judged.
 export default function JudgementOverlay(props) {
   return (
@@ -26,13 +30,14 @@ export default function JudgementOverlay(props) {
   )
 }
 
-function Reveal({ entry, before, after, onClose }) {
+function Reveal({ entry, before, after, skillEvents = [], skillNames = {}, onClose }) {
   const rows = gainRows(entry, before, after)
   const levelUps = rows.filter((row) => row.to.level > row.from.level)
 
   const rowsDone = ROWS_START + rows.length * ROW_STAGGER + BAR_FILL
   const levelUpAt = rowsDone
-  const continueAt = levelUps.length ? levelUpAt + CEREMONY : rowsDone + CONTINUE_AFTER
+  const hasCeremony = levelUps.length > 0 || skillEvents.length > 0
+  const continueAt = hasCeremony ? levelUpAt + CEREMONY : rowsDone + CONTINUE_AFTER
 
   const [showLevelUps, setShowLevelUps] = useState(false)
   const [canContinue, setCanContinue] = useState(false)
@@ -74,6 +79,19 @@ function Reveal({ entry, before, after, onClose }) {
             from={row.from.level}
             to={row.to.level}
             note={LEVEL_UP_NOTES[row.stat]}
+          />
+        ))}
+
+      {showLevelUps &&
+        skillEvents.map((event) => (
+          <LevelUp
+            key={event.tag}
+            word={SKILL_WORDS[event.kind]}
+            stat={skillName(event.tag, skillNames)}
+            from={event.kind === 'ranked' ? event.from : undefined}
+            to={event.to}
+            format={(rank) => `Rank ${numeral(rank)}`}
+            note={event.kind === 'acquired' ? skillNames[event.tag]?.description : SKILL_NOTES[event.kind]}
           />
         ))}
 

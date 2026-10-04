@@ -4,6 +4,7 @@ import { statLevels } from '../lib/stats.js'
 import { plural } from '../lib/format.js'
 import StreakPips from '../components/StreakPips.jsx'
 import { LockIcon } from '../components/Icons.jsx'
+import SkillsPanel from '../components/SkillsPanel.jsx'
 
 // Will level at which a class is assigned (feature not built yet).
 const CLASS_UNLOCK_WILL = 5
@@ -15,7 +16,7 @@ const ATTRIBUTES = [
 ]
 
 export default function StatusPage() {
-  const { stats } = useOutletContext()
+  const { stats, skills, skillNames } = useOutletContext()
   const levels = statLevels(stats)
 
   return (
@@ -79,17 +80,7 @@ export default function StatusPage() {
             </div>
           </Panel>
 
-          <Panel title="Skills" actions={<Tag>Sealed</Tag>} className="side-panel">
-            <div className="sealed">
-              <div className="sealed__slots" aria-hidden="true">
-                <span />
-                <span />
-                <span />
-                <span />
-              </div>
-              <p className="sealed__text">Skills are not chosen. They are earned by the same deed, repeated over many days.</p>
-            </div>
-          </Panel>
+          <SkillsPanel skills={skills} skillNames={skillNames} />
         </div>
       </div>
     </main>

@@ -585,6 +585,113 @@ a:hover {
   background: repeating-linear-gradient(45deg, transparent 0, transparent 6px, #17181a 6px, #17181a 7px);
 }
 
+/* ---------- Status: skills ---------- */
+.skill-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.skill {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: var(--space-4) 0;
+}
+
+.skill:first-child {
+  padding-top: 0;
+}
+
+.skill + .skill {
+  border-top: 1px solid var(--line);
+}
+
+.skill__top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.skill__name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 22px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bone);
+}
+
+.skill__rank {
+  color: var(--blood-ink);
+}
+
+.skill__desc {
+  margin: 0;
+  font-style: italic;
+  font-size: 15px;
+  line-height: 23px;
+  color: var(--pewter-light);
+}
+
+.skill__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) 10px;
+}
+
+.skill__tag {
+  color: var(--pewter);
+}
+
+.skill__status--warn {
+  color: var(--blood-ink);
+}
+
+.skill--lost .skill__name,
+.skill--lost .skill__desc {
+  color: var(--ash-faint);
+}
+
+.forming {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: var(--space-4);
+  border-top: 3px double var(--iron);
+}
+
+.skill-list + .forming {
+  margin-top: var(--space-1);
+}
+
+.forming__title {
+  color: var(--ash);
+}
+
+.forming__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.forming__item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.forming__name {
+  color: var(--bone);
+}
+
 /* ---------- Chronicle ---------- */
 .day {
   padding: 0 28px;
