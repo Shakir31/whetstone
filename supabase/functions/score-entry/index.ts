@@ -5,12 +5,19 @@
 // Runs on Supabase's servers, so the Gemini API key is never exposed to the browser.
 //
 // Secrets (Supabase dashboard → Edge Functions → Secrets):
-//   GEMINI_API_KEY  (required)
-//   GEMINI_MODEL    (optional, defaults to the latest Flash model)
+//   GEMINI_API_KEY         (required)
+//   GEMINI_MODEL           (optional, defaults to the latest Flash model)
+//   GEMINI_FALLBACK_MODEL  (optional, used when the main model's quota is used up;
+//                           defaults to the latest Flash-Lite model)
 
 import { createClient } from 'npm:@supabase/supabase-js@2'
 
-const GEMINI_MODEL = Deno.env.get('GEMINI_MODEL') ?? 'gemini-flash-latest'
+// Tried in order. Free-tier quotas are per model, so when one runs out the next
+// usually still has room.
+const GEMINI_MODELS = [
+  Deno.env.get('GEMINI_MODEL') ?? 'gemini-flash-latest',
+  Deno.env.get('GEMINI_FALLBACK_MODEL') ?? 'gemini-flash-lite-latest',
+]
 const MAX_LENGTH = 5000
 
 // How many past entries to read for known activities and skill streaks.
@@ -135,23 +142,25 @@ const MAX_ATTEMPTS = 3
 
 async function askGemini(systemPrompt: string, userText: string, schema: object) {
   let lastError: unknown
-  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
-    try {
-      return await callGemini(systemPrompt, userText, schema)
-    } catch (err) {
-      lastError = err
-      // Don't retry the rate limit: retrying straight away only makes it worse.
-      if (err instanceof HttpError && err.status === 429) throw err
-      console.error(`Gemini attempt ${attempt} of ${MAX_ATTEMPTS} failed:`, err instanceof Error ? err.message : err)
-      if (attempt < MAX_ATTEMPTS) await new Promise((resolve) => setTimeout(resolve, 800 * attempt))
+  for (const model of GEMINI_MODELS) {
+    for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+      try {
+        return await callGemini(model, systemPrompt, userText, schema)
+      } catch (err) {
+        lastError = err
+        // Quota used up: retrying the same model won't help, so move on to the next one.
+        if (err instanceof HttpError && err.status === 429) break
+        console.error(`Gemini ${model} attempt ${attempt} of ${MAX_ATTEMPTS} failed:`, err instanceof Error ? err.message : err)
+        if (attempt < MAX_ATTEMPTS) await new Promise((resolve) => setTimeout(resolve, 800 * attempt))
+      }
     }
   }
   throw lastError
 }
 
-async function callGemini(systemPrompt: string, userText: string, schema: object) {
+async function callGemini(model: string, systemPrompt: string, userText: string, schema: object) {
   const res = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`,
+    `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
     {
       method: 'POST',
       headers: {
@@ -170,10 +179,12 @@ async function callGemini(systemPrompt: string, userText: string, schema: object
   )
 
   if (res.status === 429) {
-    throw new HttpError(429, 'The System is overwhelmed. Try again in a minute.')
+    // Google's reply says which quota ran out (per minute or per day).
+    console.error(`Gemini ${model} quota exceeded`, await res.text())
+    throw new HttpError(429, 'The System is overwhelmed. Try again later.')
   }
   if (!res.ok) {
-    console.error('Gemini error', res.status, await res.text())
+    console.error(`Gemini ${model} error`, res.status, await res.text())
     throw new HttpError(502, 'The System could not judge this entry. Try again.')
   }
 
