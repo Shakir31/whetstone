@@ -101,10 +101,10 @@ Specificity is about concrete facts, not length: padding, adjectives, and repeti
 
 ## Output
 - body, mind: the scores.
-- tags: one name per activity actually done, used to track habits over time.
-  - Name the kind of activity, not the specific exercise or detail: "weightlifting" not "squats", "running" not "5k run", "studying" not "calculus homework".
-  - Short, lowercase, 1-2 words.
+- tags: one per activity actually done, used to track habits over time. Each has a name and a path.
+  - name: the kind of activity, not the specific exercise or detail: "weightlifting" not "squats", "running" not "5k run", "studying" not "calculus homework". Short, lowercase, 1-2 words.
   - <known_activities> lists names this person has used before. If an activity matches one of them, reuse that exact name. Only create a new name for a genuinely different activity.
+  - path: the closest of strength (lifting, calisthenics, climbing, martial arts — force), endurance (running, cycling, swimming, hiking — distance), knowledge (studying, reading, languages, research — learning), craft (coding, writing, music, drawing, cooking — making), discipline (meditation, cold exposure, fasting, waking early — restraint and routine).
   - Only deliberate activities worth building a habit around. Empty list if none.
 - systemMessage: the System's verdict, 1-2 short declarative sentences. The System names the fact, then the verdict. It is cold, exact and impartial: it neither praises nor scolds, it records. Third person; it refers to itself only as "the System", never "I" or "we". Never address the person as "mortal", and use no mystical or spiritual language (no souls, spirits, fate, journeys, awakening). No exclamation marks, no numbers, no stat names, no emojis.
   Examples of the voice: "Physical exertion recorded. Do not grow complacent." / "Attention held. Barely." / "Distance recorded. The cold is counted." / "Rose before the alarm. Discipline is noted." / "The System observed nothing of note."
@@ -115,7 +115,17 @@ const SCORING_SCHEMA = {
   properties: {
     body: { type: 'number', minimum: 0, maximum: 1 },
     mind: { type: 'number', minimum: 0, maximum: 1 },
-    tags: { type: 'array', items: { type: 'string' } },
+    tags: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          name: { type: 'string' },
+          path: { type: 'string', enum: [...PATHS] },
+        },
+        required: ['name', 'path'],
+      },
+    },
     systemMessage: { type: 'string' },
   },
   required: ['body', 'mind', 'tags', 'systemMessage'],
@@ -282,13 +292,18 @@ async function scoreEntry(text: string, knownTags: string[]) {
   const userText =
     `<known_activities>${knownTags.join(', ')}</known_activities>\n\n` + `<entry>\n${text}\n</entry>`
   const result = await askGemini(SCORING_PROMPT, userText, SCORING_SCHEMA)
-  const tags = Array.isArray(result.tags)
-    ? result.tags.map((t: unknown) => String(t).toLowerCase().trim()).filter(Boolean)
-    : []
+
+  // { name: path } for each activity, so new activities are sorted in the same call.
+  const tagPaths: Record<string, Path> = {}
+  for (const item of Array.isArray(result.tags) ? result.tags : []) {
+    const name = String(item?.name ?? '').toLowerCase().trim()
+    if (name && isPath(item?.path) && !(name in tagPaths)) tagPaths[name] = item.path
+  }
   return {
     body: cleanScore(result.body),
     mind: cleanScore(result.mind),
-    tags: [...new Set<string>(tags)].slice(0, 10),
+    tags: Object.keys(tagPaths).slice(0, 10),
+    tagPaths,
     systemMessage: String(result.systemMessage ?? '').slice(0, 500),
   }
 }
@@ -352,15 +367,9 @@ async function nameNewSkills(
   tags: string[],
   history: HistoryRow[],
   timeZone: string,
+  alreadyNamed: Set<string>,
 ) {
   if (tags.length === 0) return []
-
-  const { data: named, error } = await admin.from('skills').select('tag').eq('user_id', userId)
-  if (error) {
-    console.error('Could not read skills', error)
-    return []
-  }
-  const alreadyNamed = new Set((named ?? []).map((s: { tag: string }) => s.tag))
 
   const newSkills = []
   for (const tag of tags) {
@@ -402,35 +411,38 @@ function pathOfClass(baseClass: string): Path | null {
   return PATHS.find((p) => CLASS_OF_PATH[p] === baseClass) ?? null
 }
 
-// Sorts any of the person's activities that have no path yet, in one AI call.
-// Returns the full { tag: path } map.
-async function classifyActivities(admin: ReturnType<typeof createClient>, userId: string, history: HistoryRow[]) {
-  const { data, error } = await admin.from('activities').select('tag, path').eq('user_id', userId)
-  if (error) {
-    console.error('Could not read activities', error)
-    return {} as Record<string, Path>
-  }
-  const paths: Record<string, Path> = Object.fromEntries(
-    (data ?? []).map((a: { tag: string; path: Path }) => [a.tag, a.path]),
-  )
+// Saves the paths of any new activities (sorted by the scoring call), and sorts
+// any older activities that still have no path in one extra AI call — normally
+// only once, the first time this runs. Returns the full { tag: path } map.
+async function classifyActivities(
+  admin: ReturnType<typeof createClient>,
+  userId: string,
+  history: HistoryRow[],
+  known: Record<string, Path>,
+  fromScoring: Record<string, Path>,
+) {
+  // An activity keeps the path it was first given.
+  const paths: Record<string, Path> = { ...fromScoring, ...known }
+  const toSave = new Map<string, Path>(Object.entries(fromScoring).filter(([tag]) => !known[tag]))
 
   const missing = [...new Set(history.flatMap((row) => row.tags ?? []))].filter((tag) => !paths[tag]).slice(0, 60)
-  if (missing.length === 0) return paths
+  if (missing.length > 0) {
+    const result = await askGemini(CLASSIFY_PROMPT, `<activities>${missing.join(', ')}</activities>`, CLASSIFY_SCHEMA)
+    for (const item of Array.isArray(result.activities) ? result.activities : []) {
+      const tag = String(item?.tag ?? '').toLowerCase().trim()
+      if (missing.includes(tag) && isPath(item?.path)) {
+        paths[tag] = item.path
+        toSave.set(tag, item.path)
+      }
+    }
+  }
 
-  const result = await askGemini(CLASSIFY_PROMPT, `<activities>${missing.join(', ')}</activities>`, CLASSIFY_SCHEMA)
-  const sorted = new Map<string, Path>()
-  for (const item of Array.isArray(result.activities) ? result.activities : []) {
-    const tag = String(item?.tag ?? '').toLowerCase().trim()
-    if (missing.includes(tag) && isPath(item?.path)) sorted.set(tag, item.path)
+  if (toSave.size > 0) {
+    const rows = [...toSave].map(([tag, path]) => ({ user_id: userId, tag, path }))
+    const { error } = await admin.from('activities').upsert(rows, { onConflict: 'user_id,tag', ignoreDuplicates: true })
+    if (error) console.error('Could not save activities', error)
   }
-  if (sorted.size > 0) {
-    const rows = [...sorted].map(([tag, path]) => ({ user_id: userId, tag, path }))
-    const { error: saveError } = await admin
-      .from('activities')
-      .upsert(rows, { onConflict: 'user_id,tag', ignoreDuplicates: true })
-    if (saveError) console.error('Could not save activities', saveError)
-  }
-  return { ...paths, ...Object.fromEntries(sorted) }
+  return paths
 }
 
 // Will, worked out the same way as in the app: +1 for every DAYS_PER_WILL
@@ -491,13 +503,9 @@ async function updateClass(
   paths: Record<string, Path>,
   timeZone: string,
   now: string,
+  existing: ClassRow | null,
 ) {
-  const { data: existing, error } = await admin.from('classes').select('*').eq('user_id', userId).maybeSingle()
-  if (error) {
-    console.error('Could not read class', error)
-    return null
-  }
-  let row = existing as ClassRow | null
+  let row = existing
 
   if (!row) {
     if (willOf(history, timeZone) < WILL_FOR_CLASS) return null
@@ -598,15 +606,37 @@ Deno.serve(async (req) => {
       throw new HttpError(400, `Entries can be at most ${MAX_LENGTH} characters.`)
     }
 
-    // Past entries: for the activity names this person already uses, skill streaks, Will and class.
-    const { data: history, error: historyError } = await admin
-      .from('entries')
-      .select('created_at, tags, body, mind')
-      .eq('user_id', userId)
-      .order('created_at', { ascending: false })
-      .limit(HISTORY_LIMIT)
-    if (historyError) console.error('Could not read history', historyError)
-    const pastRows: HistoryRow[] = history ?? []
+    // Everything about this person's record, read at the same time: past entries
+    // (for known activity names, skill streaks, Will and class), skill names,
+    // activity paths and class.
+    const [historyResult, skillsResult, activitiesResult, classResult] = await Promise.all([
+      admin
+        .from('entries')
+        .select('created_at, tags, body, mind')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false })
+        .limit(HISTORY_LIMIT),
+      admin.from('skills').select('tag').eq('user_id', userId),
+      admin.from('activities').select('tag, path').eq('user_id', userId),
+      admin.from('classes').select('*').eq('user_id', userId).maybeSingle(),
+    ])
+    for (const [what, result] of [
+      ['history', historyResult],
+      ['skills', skillsResult],
+      ['activities', activitiesResult],
+      ['class', classResult],
+    ] as const) {
+      if (result.error) console.error(`Could not read ${what}`, result.error)
+    }
+    const pastRows: HistoryRow[] = historyResult.data ?? []
+    const namedSkills = new Set<string>((skillsResult.data ?? []).map((s: { tag: string }) => s.tag))
+    const knownPaths: Record<string, Path> = Object.fromEntries(
+      (activitiesResult.data ?? []).map((a: { tag: string; path: Path }) => [a.tag, a.path]),
+    )
+    const existingClass = (classResult.data ?? null) as ClassRow | null
+    // If the class couldn't be read, don't risk assigning a second one.
+    const classReadable = !classResult.error
+
     const knownTags = [...new Set(pastRows.flatMap((row) => row.tags ?? []))].slice(0, KNOWN_TAGS_LIMIT)
 
     const score = await scoreEntry(entryText, knownTags)
@@ -632,21 +662,26 @@ Deno.serve(async (req) => {
     const allRows: HistoryRow[] = [entry, ...pastRows]
     const zone = validTimeZone(timeZone)
 
-    let newSkills: unknown[] = []
-    try {
-      newSkills = await nameNewSkills(admin, userId, score.tags, allRows, zone)
-    } catch (err) {
+    // Skills and class don't depend on each other, so they run side by side.
+    const skillsTask = nameNewSkills(admin, userId, score.tags, allRows, zone, namedSkills).catch((err) => {
       console.error('Skill check failed', err)
-    }
+      return []
+    })
+    const classTask = (async () => {
+      let paths: Record<string, Path> = { ...score.tagPaths, ...knownPaths }
+      let playerClass: ClassRow | null = existingClass
+      try {
+        paths = await classifyActivities(admin, userId, allRows, knownPaths, score.tagPaths)
+        if (classReadable) {
+          playerClass = await updateClass(admin, userId, allRows, paths, zone, entry.created_at, existingClass)
+        }
+      } catch (err) {
+        console.error('Class check failed', err)
+      }
+      return { paths, playerClass }
+    })()
 
-    let activityPaths: Record<string, Path> = {}
-    let playerClass: ClassRow | null = null
-    try {
-      activityPaths = await classifyActivities(admin, userId, allRows)
-      playerClass = await updateClass(admin, userId, allRows, activityPaths, zone, entry.created_at)
-    } catch (err) {
-      console.error('Class check failed', err)
-    }
+    const [newSkills, { paths: activityPaths, playerClass }] = await Promise.all([skillsTask, classTask])
 
     return json({ entry, newSkills, activityPaths, playerClass })
   } catch (err) {
