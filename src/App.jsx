@@ -6,14 +6,25 @@ import JournalPage from './pages/JournalPage.jsx'
 import StatusPage from './pages/StatusPage.jsx'
 import ChroniclePage from './pages/ChroniclePage.jsx'
 import { supabase } from './lib/supabase.js'
-import { fetchEntries, fetchSkillNames } from './lib/entries.js'
+import { fetchActivityPaths, fetchClass, fetchEntries, fetchSkillNames } from './lib/entries.js'
 import { computeStats } from './lib/stats.js'
 import { computeSkills } from './lib/skills.js'
+import { classDayOf } from './lib/classes.js'
+
+// Loads something the app can live without, falling back if it fails.
+function optional(promise, fallback, what) {
+  return promise.catch((err) => {
+    console.warn(`${what} could not be loaded`, err)
+    return fallback
+  })
+}
 
 export default function App() {
   const [session, setSession] = useState(undefined) // undefined = still checking
   const [entries, setEntries] = useState([])
   const [skillNames, setSkillNames] = useState({}) // { [tag]: { name, description } }
+  const [activityPaths, setActivityPaths] = useState({}) // { [tag]: path }
+  const [playerClass, setPlayerClass] = useState(null)
   const [loadError, setLoadError] = useState(null)
 
   // Keep track of whether the user is signed in.
@@ -23,39 +34,48 @@ export default function App() {
     return () => data.subscription.unsubscribe()
   }, [])
 
-  // Load the user's entries and skill names whenever they sign in.
+  // Load the user's record whenever they sign in.
   const userId = session?.user.id
   useEffect(() => {
     setEntries([])
     setSkillNames({})
+    setActivityPaths({})
+    setPlayerClass(null)
     setLoadError(null)
     if (!userId) return
-    // Skill names are a nice-to-have: without them, skills show their activity name.
-    const names = fetchSkillNames().catch((err) => {
-      console.warn('Skill names could not be loaded', err)
-      return {}
-    })
-    Promise.all([fetchEntries(), names])
-      .then(([loadedEntries, loadedNames]) => {
+    // Only the entries are essential; without the rest, skills and the class just show less.
+    Promise.all([
+      fetchEntries(),
+      optional(fetchSkillNames(), {}, 'Skill names'),
+      optional(fetchActivityPaths(), {}, 'Activity paths'),
+      optional(fetchClass(), null, 'Class'),
+    ])
+      .then(([loadedEntries, loadedNames, loadedPaths, loadedClass]) => {
         setEntries(loadedEntries)
         setSkillNames(loadedNames)
+        setActivityPaths(loadedPaths)
+        setPlayerClass(loadedClass)
       })
       .catch(() => setLoadError('The record could not be retrieved. Reload the page.'))
   }, [userId])
 
-  const stats = useMemo(() => computeStats(entries), [entries])
+  const classDay = classDayOf(playerClass)
+  const stats = useMemo(() => computeStats(entries, classDay), [entries, classDay])
   const skills = useMemo(() => computeSkills(entries), [entries])
 
-  const addEntry = useCallback((entry, newSkillNames = {}) => {
+  // Takes what submitEntry() returns.
+  const addEntry = useCallback(({ entry, newSkillNames, activityPaths: newPaths, playerClass: newClass }) => {
     setEntries((prev) => [entry, ...prev])
     setSkillNames((prev) => ({ ...prev, ...newSkillNames }))
+    setActivityPaths((prev) => ({ ...prev, ...newPaths }))
+    if (newClass) setPlayerClass(newClass)
   }, [])
 
   if (session === undefined) return <div className="surface" />
   if (session === null) return <AuthPage />
 
   // Everything the pages need, shared through the layout.
-  const context = { entries, stats, skills, skillNames, addEntry, loadError }
+  const context = { entries, stats, skills, skillNames, activityPaths, playerClass, addEntry, loadError }
 
   return (
     <Routes>

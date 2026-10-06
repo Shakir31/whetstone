@@ -1,13 +1,10 @@
 import { useOutletContext } from 'react-router-dom'
-import { Meter, Panel, Tag } from '../ui/whetstone.jsx'
+import { Meter, Panel } from '../ui/whetstone.jsx'
 import { statLevels } from '../lib/stats.js'
 import { plural } from '../lib/format.js'
 import StreakPips from '../components/StreakPips.jsx'
-import { LockIcon } from '../components/Icons.jsx'
 import SkillsPanel from '../components/SkillsPanel.jsx'
-
-// Will level at which a class is assigned (feature not built yet).
-const CLASS_UNLOCK_WILL = 5
+import ClassPanel from '../components/ClassPanel.jsx'
 
 const ATTRIBUTES = [
   { key: 'body', name: 'Body', description: 'Physical exertion.' },
@@ -16,7 +13,7 @@ const ATTRIBUTES = [
 ]
 
 export default function StatusPage() {
-  const { stats, skills, skillNames } = useOutletContext()
+  const { entries, stats, skills, skillNames, activityPaths, playerClass } = useOutletContext()
   const levels = statLevels(stats)
 
   return (
@@ -70,15 +67,7 @@ export default function StatusPage() {
             </div>
           </Panel>
 
-          <Panel title="Class" actions={<Tag>Sealed</Tag>} className="side-panel">
-            <div className="sealed">
-              <LockIcon />
-              <p className="sealed__text">Sealed. Reach Will Lv. {CLASS_UNLOCK_WILL}.</p>
-              <span className="ws-micro sealed__meta">
-                Will Lv. {Math.min(stats.will, CLASS_UNLOCK_WILL)} of {CLASS_UNLOCK_WILL}
-              </span>
-            </div>
-          </Panel>
+          <ClassPanel playerClass={playerClass} will={stats.will} entries={entries} activityPaths={activityPaths} />
 
           <SkillsPanel skills={skills} skillNames={skillNames} />
         </div>

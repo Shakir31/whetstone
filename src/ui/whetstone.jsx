@@ -79,9 +79,9 @@ export function LevelUp({ stat, from, to, note, word = 'Level up', format = (n) 
       <span className="ws-levelup__rule ws-levelup__rule--top" aria-hidden="true" />
       <span className="ws-levelup__rule ws-levelup__rule--bottom" aria-hidden="true" />
       <p className="ws-levelup__word ws-display">{word}</p>
-      {stat && (
+      {(stat || from != null || to != null) && (
         <div className="ws-levelup__line ws-label">
-          <span className="ws-levelup__stat">{stat}</span>
+          {stat && <span className="ws-levelup__stat">{stat}</span>}
           {from != null && <span>{format(from)}</span>}
           {from != null && (
             <span className="ws-levelup__arrow" aria-label="to">

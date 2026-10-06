@@ -2,14 +2,16 @@ import { useMemo, useState } from 'react'
 import { Link, useOutletContext } from 'react-router-dom'
 import { Button, Divider, Panel } from '../ui/whetstone.jsx'
 import { entriesByDay } from '../lib/stats.js'
+import { classDayOf } from '../lib/classes.js'
 import { dayMonth, longDate, plural, time } from '../lib/format.js'
 import Gains from '../components/Gains.jsx'
 
 const DAYS_PER_PAGE = 7
 
 export default function ChroniclePage() {
-  const { entries } = useOutletContext()
-  const days = useMemo(() => entriesByDay(entries), [entries])
+  const { entries, playerClass } = useOutletContext()
+  const classDay = classDayOf(playerClass)
+  const days = useMemo(() => entriesByDay(entries, classDay), [entries, classDay])
   const [shownDays, setShownDays] = useState(DAYS_PER_PAGE)
   const visible = days.slice(0, shownDays)
 

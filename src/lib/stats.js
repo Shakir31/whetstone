@@ -3,6 +3,13 @@
 
 // Max points a single stat can gain in one day (stops entry-spamming).
 export const DAILY_CAP = 1.5
+// The higher cap from the day a person receives their class onward.
+export const CLASS_DAILY_CAP = 3
+
+// The cap for a day. `classDay` is the "YYYY-MM-DD" the class was assigned, or null.
+export function dailyCap(key, classDay) {
+  return classDay && key >= classDay ? CLASS_DAILY_CAP : DAILY_CAP
+}
 
 // An entry counts toward a streak if Body or Mind gained at least this much.
 const MEANINGFUL_GAIN = 0.2
@@ -22,13 +29,13 @@ function round1(n) {
   return Math.round(n * 10) / 10
 }
 
-function sumWithDailyCap(entries, stat) {
+function sumWithDailyCap(entries, stat, classDay) {
   const perDay = {}
   for (const e of entries) {
     const key = dayKey(e.createdAt)
     perDay[key] = (perDay[key] ?? 0) + e[stat]
   }
-  return Object.values(perDay).reduce((sum, v) => sum + Math.min(v, DAILY_CAP), 0)
+  return Object.entries(perDay).reduce((sum, [key, v]) => sum + Math.min(v, dailyCap(key, classDay)), 0)
 }
 
 // Lengths of each run of consecutive meaningful days, oldest first.
@@ -51,7 +58,7 @@ function streakRuns(entries) {
   return { runs, lastDay: prev }
 }
 
-export function computeStats(entries) {
+export function computeStats(entries, classDay = null) {
   const { runs, lastDay } = streakRuns(entries)
   const will = runs.reduce((sum, len) => sum + Math.floor(len / DAYS_PER_WILL), 0)
 
@@ -62,8 +69,8 @@ export function computeStats(entries) {
   const currentStreak = alive ? runs[runs.length - 1] : 0
 
   return {
-    body: round1(sumWithDailyCap(entries, 'body')),
-    mind: round1(sumWithDailyCap(entries, 'mind')),
+    body: round1(sumWithDailyCap(entries, 'body', classDay)),
+    mind: round1(sumWithDailyCap(entries, 'mind', classDay)),
     will,
     currentStreak,
     longestStreak: runs.length ? Math.max(...runs) : 0,
@@ -76,7 +83,7 @@ export function computeStats(entries) {
 
 // Groups entries (newest first) into days, newest first, with each day's
 // totals after the daily cap — the same amounts that count towards the stats.
-export function entriesByDay(entries) {
+export function entriesByDay(entries, classDay = null) {
   const days = []
   for (const entry of entries) {
     const key = dayKey(entry.createdAt)
@@ -90,8 +97,8 @@ export function entriesByDay(entries) {
     day.mind += entry.mind
   }
   for (const day of days) {
-    day.body = round1(Math.min(day.body, DAILY_CAP))
-    day.mind = round1(Math.min(day.mind, DAILY_CAP))
+    day.body = round1(Math.min(day.body, dailyCap(day.key, classDay)))
+    day.mind = round1(Math.min(day.mind, dailyCap(day.key, classDay)))
   }
   return days
 }

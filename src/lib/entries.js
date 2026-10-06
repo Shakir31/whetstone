@@ -1,4 +1,5 @@
 import { supabase } from './supabase.js'
+import { classFromRow } from './classes.js'
 
 // Database rows use snake_case; the app uses camelCase.
 function fromRow(row) {
@@ -34,9 +35,23 @@ export async function fetchSkillNames() {
   return namesFromRows(data)
 }
 
+// { [activity]: path }, as sorted by the System.
+export async function fetchActivityPaths() {
+  const { data, error } = await supabase.from('activities').select('tag, path')
+  if (error) throw error
+  return Object.fromEntries(data.map((a) => [a.tag, a.path]))
+}
+
+// The user's class, or null before it has been assigned.
+export async function fetchClass() {
+  const { data, error } = await supabase.from('classes').select('*').maybeSingle()
+  if (error) throw error
+  return classFromRow(data)
+}
+
 // Sends the entry to the score-entry Edge Function, which asks the AI to score
-// it, saves it, and names any skill it unlocked.
-// Returns { entry, newSkillNames }.
+// it, saves it, names any skill it unlocked, and assigns or evolves the class.
+// Returns { entry, newSkillNames, activityPaths, playerClass }.
 export async function submitEntry(text) {
   // The user's time zone, so "days in a row" are counted in their own days.
   const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
@@ -46,5 +61,10 @@ export async function submitEntry(text) {
     const body = await error.context?.json?.().catch(() => null)
     throw new Error(body?.error ?? 'The System is silent. Try again.')
   }
-  return { entry: fromRow(data.entry), newSkillNames: namesFromRows(data.newSkills ?? []) }
+  return {
+    entry: fromRow(data.entry),
+    newSkillNames: namesFromRows(data.newSkills ?? []),
+    activityPaths: data.activityPaths ?? {},
+    playerClass: classFromRow(data.playerClass),
+  }
 }

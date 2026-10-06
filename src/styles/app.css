@@ -585,6 +585,59 @@ a:hover {
   background: repeating-linear-gradient(45deg, transparent 0, transparent 6px, #17181a 6px, #17181a 7px);
 }
 
+/* ---------- Status: class ---------- */
+.class {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.class__rank {
+  color: var(--blood-ink);
+}
+
+.class__name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 32px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--bone);
+}
+
+.class__title {
+  margin: 0;
+  font-style: italic;
+  font-size: 17px;
+  line-height: 27px;
+  color: var(--bone);
+}
+
+.class__desc {
+  margin: var(--space-1) 0 0;
+  font-size: 14px;
+  line-height: 21px;
+  color: var(--ash);
+}
+
+.class__progress {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.class__lineage {
+  margin: 0;
+  color: var(--pewter-light);
+}
+
+.sealed--compact {
+  padding: 18px var(--space-4);
+  gap: var(--space-2);
+}
+
 /* ---------- Status: skills ---------- */
 .skill-list {
   list-style: none;

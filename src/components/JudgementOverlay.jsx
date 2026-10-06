@@ -20,6 +20,7 @@ const LEVEL_UP_NOTES = {
 
 const SKILL_WORDS = { acquired: 'Skill acquired', ranked: 'Skill advanced', restored: 'Skill restored' }
 const SKILL_NOTES = { ranked: 'The habit deepens.', restored: 'What was lost has been reclaimed.' }
+const CLASS_WORDS = { assigned: 'Class assigned', ranked: 'Class advanced', evolved: 'Class evolved' }
 
 // Full-screen reveal of the System's verdict once an entry has been judged.
 export default function JudgementOverlay(props) {
@@ -30,13 +31,13 @@ export default function JudgementOverlay(props) {
   )
 }
 
-function Reveal({ entry, before, after, skillEvents = [], skillNames = {}, onClose }) {
+function Reveal({ entry, before, after, skillEvents = [], skillNames = {}, classEvent = null, onClose }) {
   const rows = gainRows(entry, before, after)
   const levelUps = rows.filter((row) => row.to.level > row.from.level)
 
   const rowsDone = ROWS_START + rows.length * ROW_STAGGER + BAR_FILL
   const levelUpAt = rowsDone
-  const hasCeremony = levelUps.length > 0 || skillEvents.length > 0
+  const hasCeremony = levelUps.length > 0 || skillEvents.length > 0 || classEvent !== null
   const continueAt = hasCeremony ? levelUpAt + CEREMONY : rowsDone + CONTINUE_AFTER
 
   const [showLevelUps, setShowLevelUps] = useState(false)
@@ -95,6 +96,8 @@ function Reveal({ entry, before, after, skillEvents = [], skillNames = {}, onClo
           />
         ))}
 
+      {showLevelUps && classEvent && <ClassCeremony event={classEvent} />}
+
       {canContinue && (
         <Button variant="primary" className="judgement__continue" onClick={onClose} autoFocus>
           Continue
@@ -102,6 +105,25 @@ function Reveal({ entry, before, after, skillEvents = [], skillNames = {}, onClo
       )}
     </div>
   )
+}
+
+function ClassCeremony({ event }) {
+  const rank = (n) => 'Rank ' + numeral(n)
+  if (event.kind === 'assigned') {
+    return <LevelUp word={CLASS_WORDS.assigned} stat={event.name} to={event.to} format={rank} note={event.title} />
+  }
+  if (event.kind === 'evolved') {
+    return (
+      <LevelUp
+        word={CLASS_WORDS.evolved}
+        from={event.from}
+        to={event.name}
+        format={(name) => name}
+        note={event.description}
+      />
+    )
+  }
+  return <LevelUp word={CLASS_WORDS.ranked} stat={event.name} from={event.from} to={event.to} format={rank} />
 }
 
 // Which stat rows to show, based on how the totals changed.
