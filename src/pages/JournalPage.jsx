@@ -12,7 +12,7 @@ import { classDayOf, classEvent } from '../lib/classes.js'
 import { longDate } from '../lib/format.js'
 
 // Let the System "read" for at least this long so the moment has weight.
-const MIN_JUDGING_MS = 1800
+const MIN_JUDGING_MS = 1000
 
 export default function JournalPage() {
   const { entries, stats, skills, skillNames, activityPaths, playerClass, addEntry, loadError } = useOutletContext()
