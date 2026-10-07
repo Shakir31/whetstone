@@ -1,6 +1,7 @@
 // Achievements: fixed milestones the System marks. Each is checked from the
 // person's record; once earned it is saved and kept for good (even if, say, the
 // skill that earned it is later demoted). Some grant a title the person can wear.
+// Unearned achievements are never shown: they are discovered by earning them.
 //
 // `check` receives { entries, stats, skills, playerClass, classDay }.
 
@@ -53,14 +54,14 @@ export const ACHIEVEMENTS = [
   { key: 'class-evolved', group: 'Class', name: 'Second Form', how: 'Evolve a class.', title: 'the Remade',
     check: (c) => Boolean(c.playerClass?.evolvedName) },
 
-  // Hidden: shown as "???" until earned.
-  { key: 'before-the-bell', group: 'Hidden', hidden: true, name: 'Before the Bell',
+  // Secret deeds
+  { key: 'before-the-bell', group: 'Hidden', name: 'Before the Bell',
     how: 'Record a deed between 3 and 5 in the morning.', title: 'Who Rises in the Dark',
     check: (c) => c.entries.some((e) => [3, 4].includes(new Date(e.createdAt).getHours())) },
-  { key: 'idle-hands', group: 'Hidden', hidden: true, name: 'Idle Hands',
+  { key: 'idle-hands', group: 'Hidden', name: 'Idle Hands',
     how: 'Submit an entry the System finds worthless.',
     check: (c) => c.entries.some((e) => e.body === 0 && e.mind === 0) },
-  { key: 'at-the-limit', group: 'Hidden', hidden: true, name: 'At the Limit',
+  { key: 'at-the-limit', group: 'Hidden', name: 'At the Limit',
     how: "Reach the day's limit in a stat.",
     check: (c) =>
       entriesByDay(c.entries, c.classDay).some((day) => {
@@ -68,8 +69,6 @@ export const ACHIEVEMENTS = [
         return day.body >= cap || day.mind >= cap
       }) },
 ]
-
-export const ACHIEVEMENT_GROUPS = ['Record', 'Streak', 'Stats', 'Skills', 'Class', 'Hidden']
 
 export const ACHIEVEMENTS_BY_KEY = Object.fromEntries(ACHIEVEMENTS.map((a) => [a.key, a]))
 

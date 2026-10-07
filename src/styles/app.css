@@ -608,15 +608,6 @@ a:hover {
 }
 
 /* ---------- Status: achievements ---------- */
-.achievements__group + .achievements__group {
-  margin-top: var(--space-5);
-}
-
-.achievements__group-name {
-  margin: 0 0 var(--space-3);
-  color: var(--ash);
-}
-
 .achievements__grid {
   list-style: none;
   margin: 0;
@@ -644,10 +635,6 @@ a:hover {
   color: var(--bone);
 }
 
-.achievement--sealed .achievement__name {
-  color: var(--ash-faint);
-}
-
 .achievement__title {
   font-style: italic;
   font-size: 14px;
@@ -655,12 +642,9 @@ a:hover {
   color: var(--pewter-light);
 }
 
-.achievement--sealed .achievement__title {
-  color: var(--ash-faint);
-}
-
 .achievement__foot {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-2);
@@ -670,12 +654,36 @@ a:hover {
 }
 
 .achievement__state {
-  color: var(--ash);
+  color: var(--blood-ink);
   white-space: nowrap;
 }
 
-.achievement--earned .achievement__state {
-  color: var(--blood-ink);
+.achievements__sealed {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 20px var(--space-4);
+  background: var(--void);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-well);
+  text-align: center;
+}
+
+.achievements__grid + .achievements__sealed {
+  margin-top: var(--space-3);
+}
+
+.achievements__slots {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+}
+
+.achievements__slots span {
+  width: 28px;
+  height: 28px;
 }
 
 /* ---------- Weekly judgement ---------- */
