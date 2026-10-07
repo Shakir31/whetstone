@@ -5,14 +5,29 @@ import EntryForm from '../components/EntryForm.jsx'
 import RecentEntries from '../components/RecentEntries.jsx'
 import JudgementOverlay from '../components/JudgementOverlay.jsx'
 import SkillWarning from '../components/SkillWarning.jsx'
+import WeeklySummary from '../components/WeeklySummary.jsx'
 import { submitEntry } from '../lib/entries.js'
 import { computeStats } from '../lib/stats.js'
 import { computeSkills, skillEvents } from '../lib/skills.js'
 import { classDayOf, classEvent } from '../lib/classes.js'
+import { ACHIEVEMENTS_BY_KEY, earnedKeys } from '../lib/achievements.js'
+import { lastCompletedWeek } from '../lib/weekly.js'
 import { longDate } from '../lib/format.js'
 
 export default function JournalPage() {
-  const { entries, stats, skills, skillNames, activityPaths, playerClass, addEntry, loadError } = useOutletContext()
+  const {
+    entries,
+    stats,
+    skills,
+    skillNames,
+    activityPaths,
+    playerClass,
+    achievements,
+    weeklySummaries,
+    addEntry,
+    loadError,
+  } = useOutletContext()
+  const lastWeek = lastCompletedWeek()
   const [result, setResult] = useState(null) // what the judgement reveal shows, or null
 
   // Errors are thrown on to EntryForm, which shows the message.
@@ -21,19 +36,32 @@ export default function JournalPage() {
     const { entry, newSkillNames } = submitted
     const allEntries = [entry, ...entries]
     const classAfter = submitted.playerClass ?? playerClass
+    const classDayAfter = classDayOf(classAfter)
     const pathsAfter = { ...activityPaths, ...submitted.activityPaths }
+    const statsAfter = computeStats(allEntries, classDayAfter)
+    const skillsAfter = computeSkills(allEntries)
+    const newAchievements = earnedKeys({
+      entries: allEntries,
+      stats: statsAfter,
+      skills: skillsAfter,
+      playerClass: classAfter,
+      classDay: classDayAfter,
+    })
+      .filter((key) => !(key in achievements))
+      .map((key) => ACHIEVEMENTS_BY_KEY[key])
 
     addEntry(submitted)
     setResult({
       entry,
       before: stats,
-      after: computeStats(allEntries, classDayOf(classAfter)),
-      skillEvents: skillEvents(skills, computeSkills(allEntries)),
+      after: statsAfter,
+      skillEvents: skillEvents(skills, skillsAfter),
       skillNames: { ...skillNames, ...newSkillNames },
       classEvent: classEvent(
         { playerClass, entries, paths: activityPaths },
         { playerClass: classAfter, entries: allEntries, paths: pathsAfter },
       ),
+      achievementEvents: newAchievements,
     })
   }
 
@@ -42,6 +70,9 @@ export default function JournalPage() {
   return (
     <main className="page page--journal">
       <StatsStrip stats={stats} />
+      {weeklySummaries[lastWeek.key] && (
+        <WeeklySummary weekKey={lastWeek.key} summary={weeklySummaries[lastWeek.key]} dismissible />
+      )}
       <SkillWarning skills={skills} skillNames={skillNames} />
 
       <section aria-labelledby="today-title" className="today">

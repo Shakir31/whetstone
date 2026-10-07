@@ -30,6 +30,7 @@ export function skillFromDays(days, today) {
   let unlocked = false
   let run = 0
   let prev = null
+  let everRestored = false
 
   for (const day of days) {
     if (prev) {
@@ -40,6 +41,7 @@ export function skillFromDays(days, today) {
     run += 1
     if (run === RUN_FOR_RANK) {
       run = 0
+      if (unlocked && rank === 0) everRestored = true
       unlocked = true
       rank = Math.min(MAX_RANK, rank + 1)
     }
@@ -61,6 +63,8 @@ export function skillFromDays(days, today) {
     // Days left before the next demotion, or null if there is nothing to lose.
     daysUntilDemotion: unlocked && rank > 0 ? DEMOTE_AFTER_DAYS - (missed % DEMOTE_AFTER_DAYS) : null,
     doneToday: prev === today,
+    // Has this skill ever been brought back from Lost?
+    everRestored,
   }
 }
 

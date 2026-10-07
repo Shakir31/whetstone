@@ -31,13 +31,14 @@ export default function JudgementOverlay(props) {
   )
 }
 
-function Reveal({ entry, before, after, skillEvents = [], skillNames = {}, classEvent = null, onClose }) {
+function Reveal({ entry, before, after, skillEvents = [], skillNames = {}, classEvent = null, achievementEvents = [], onClose }) {
   const rows = gainRows(entry, before, after)
   const levelUps = rows.filter((row) => row.to.level > row.from.level)
 
   const rowsDone = ROWS_START + rows.length * ROW_STAGGER + BAR_FILL
   const levelUpAt = rowsDone
-  const hasCeremony = levelUps.length > 0 || skillEvents.length > 0 || classEvent !== null
+  const hasCeremony =
+    levelUps.length > 0 || skillEvents.length > 0 || classEvent !== null || achievementEvents.length > 0
   const continueAt = hasCeremony ? levelUpAt + CEREMONY : rowsDone + CONTINUE_AFTER
 
   const [showLevelUps, setShowLevelUps] = useState(false)
@@ -97,6 +98,16 @@ function Reveal({ entry, before, after, skillEvents = [], skillNames = {}, class
         ))}
 
       {showLevelUps && classEvent && <ClassCeremony event={classEvent} />}
+
+      {showLevelUps &&
+        achievementEvents.map((a) => (
+          <LevelUp
+            key={a.key}
+            word="Achieved"
+            stat={a.name}
+            note={a.title ? `Title granted: ${a.title}.` : undefined}
+          />
+        ))}
 
       {canContinue && (
         <Button variant="primary" className="judgement__continue" onClick={onClose} autoFocus>

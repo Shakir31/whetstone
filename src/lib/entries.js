@@ -68,3 +68,53 @@ export async function submitEntry(text) {
     playerClass: classFromRow(data.playerClass),
   }
 }
+
+// { [achievement key]: earnedAt }
+export async function fetchAchievements() {
+  const { data, error } = await supabase.from('achievements').select('key, earned_at')
+  if (error) throw error
+  return Object.fromEntries(data.map((a) => [a.key, a.earned_at]))
+}
+
+// Records newly earned achievements. Saving one twice is harmless.
+export async function saveAchievements(keys) {
+  const { error } = await supabase
+    .from('achievements')
+    .upsert(keys.map((key) => ({ key })), { onConflict: 'user_id,key', ignoreDuplicates: true })
+  if (error) throw error
+}
+
+// The title the user has chosen to wear, or null.
+export async function fetchWornTitle() {
+  const { data, error } = await supabase.from('profiles').select('worn_title').maybeSingle()
+  if (error) throw error
+  return data?.worn_title ?? null
+}
+
+export async function saveWornTitle(title, userId) {
+  const { error } = await supabase
+    .from('profiles')
+    .upsert({ user_id: userId, worn_title: title, updated_at: new Date().toISOString() })
+  if (error) throw error
+}
+
+// { [week start "YYYY-MM-DD"]: { summary, facts } }
+function summariesFromRows(rows) {
+  return Object.fromEntries(rows.map((s) => [s.week_start, { summary: s.summary, facts: s.facts ?? {} }]))
+}
+
+export async function fetchWeeklySummaries() {
+  const { data, error } = await supabase.from('weekly_summaries').select('week_start, summary, facts')
+  if (error) throw error
+  return summariesFromRows(data)
+}
+
+// Asks the weekly-judgement Edge Function to judge a finished week (once).
+// `week` is { key, start, end } from lastCompletedWeek().
+export async function requestWeeklySummary(week, facts) {
+  const { data, error } = await supabase.functions.invoke('weekly-judgement', {
+    body: { weekStart: week.key, start: week.start.toISOString(), end: week.end.toISOString(), facts },
+  })
+  if (error) throw error
+  return summariesFromRows([data.summary])
+}

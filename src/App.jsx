@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import AppLayout from './components/AppLayout.jsx'
 import AuthPage from './pages/AuthPage.jsx'
@@ -6,10 +6,23 @@ import JournalPage from './pages/JournalPage.jsx'
 import StatusPage from './pages/StatusPage.jsx'
 import ChroniclePage from './pages/ChroniclePage.jsx'
 import { supabase } from './lib/supabase.js'
-import { fetchActivityPaths, fetchClass, fetchEntries, fetchSkillNames } from './lib/entries.js'
+import {
+  fetchAchievements,
+  fetchActivityPaths,
+  fetchClass,
+  fetchEntries,
+  fetchSkillNames,
+  fetchWeeklySummaries,
+  fetchWornTitle,
+  requestWeeklySummary,
+  saveAchievements,
+  saveWornTitle,
+} from './lib/entries.js'
 import { computeStats } from './lib/stats.js'
 import { computeSkills } from './lib/skills.js'
 import { classDayOf } from './lib/classes.js'
+import { earnedKeys } from './lib/achievements.js'
+import { lastCompletedWeek, weekFacts } from './lib/weekly.js'
 
 // Loads something the app can live without, falling back if it fails.
 function optional(promise, fallback, what) {
@@ -21,10 +34,14 @@ function optional(promise, fallback, what) {
 
 export default function App() {
   const [session, setSession] = useState(undefined) // undefined = still checking
+  const [loaded, setLoaded] = useState(false)
   const [entries, setEntries] = useState([])
   const [skillNames, setSkillNames] = useState({}) // { [tag]: { name, description } }
   const [activityPaths, setActivityPaths] = useState({}) // { [tag]: path }
   const [playerClass, setPlayerClass] = useState(null)
+  const [achievements, setAchievements] = useState({}) // { [key]: earnedAt }
+  const [wornTitle, setWornTitle] = useState(null)
+  const [weeklySummaries, setWeeklySummaries] = useState({}) // { [week start]: { summary, facts } }
   const [loadError, setLoadError] = useState(null)
 
   // Keep track of whether the user is signed in.
@@ -37,24 +54,35 @@ export default function App() {
   // Load the user's record whenever they sign in.
   const userId = session?.user.id
   useEffect(() => {
+    setLoaded(false)
     setEntries([])
     setSkillNames({})
     setActivityPaths({})
     setPlayerClass(null)
+    setAchievements({})
+    setWornTitle(null)
+    setWeeklySummaries({})
     setLoadError(null)
     if (!userId) return
-    // Only the entries are essential; without the rest, skills and the class just show less.
+    // Only the entries are essential; without the rest, the app just shows less.
     Promise.all([
       fetchEntries(),
       optional(fetchSkillNames(), {}, 'Skill names'),
       optional(fetchActivityPaths(), {}, 'Activity paths'),
       optional(fetchClass(), null, 'Class'),
+      optional(fetchAchievements(), {}, 'Achievements'),
+      optional(fetchWornTitle(), null, 'Worn title'),
+      optional(fetchWeeklySummaries(), {}, 'Weekly summaries'),
     ])
-      .then(([loadedEntries, loadedNames, loadedPaths, loadedClass]) => {
+      .then(([loadedEntries, names, paths, loadedClass, earned, title, summaries]) => {
         setEntries(loadedEntries)
-        setSkillNames(loadedNames)
-        setActivityPaths(loadedPaths)
+        setSkillNames(names)
+        setActivityPaths(paths)
         setPlayerClass(loadedClass)
+        setAchievements(earned)
+        setWornTitle(title)
+        setWeeklySummaries(summaries)
+        setLoaded(true)
       })
       .catch(() => setLoadError('The record could not be retrieved. Reload the page.'))
   }, [userId])
@@ -62,6 +90,31 @@ export default function App() {
   const classDay = classDayOf(playerClass)
   const stats = useMemo(() => computeStats(entries, classDay), [entries, classDay])
   const skills = useMemo(() => computeSkills(entries), [entries])
+
+  // Record any achievement the record now meets but that hasn't been saved yet.
+  useEffect(() => {
+    if (!loaded) return
+    const missing = earnedKeys({ entries, stats, skills, playerClass, classDay }).filter((k) => !(k in achievements))
+    if (missing.length === 0) return
+    const now = new Date().toISOString()
+    setAchievements((prev) => ({ ...prev, ...Object.fromEntries(missing.map((k) => [k, now])) }))
+    saveAchievements(missing).catch((err) => console.warn('Achievements could not be saved', err))
+  }, [loaded, entries, stats, skills, playerClass, classDay, achievements])
+
+  // Once a week has ended, ask the System to judge it (once per week). Only
+  // for people who were already recording before the current week began.
+  const requestedWeek = useRef(null)
+  useEffect(() => {
+    if (!loaded) return
+    const week = lastCompletedWeek()
+    const requestKey = `${userId}:${week.key}`
+    if (weeklySummaries[week.key] || requestedWeek.current === requestKey) return
+    if (!entries.some((e) => Date.parse(e.createdAt) < week.end.getTime())) return
+    requestedWeek.current = requestKey
+    requestWeeklySummary(week, weekFacts(entries, week, { classDay, skillNames }))
+      .then((summary) => setWeeklySummaries((prev) => ({ ...prev, ...summary })))
+      .catch((err) => console.warn('The week could not be judged', err))
+  }, [loaded, userId, entries, weeklySummaries, classDay, skillNames])
 
   // Takes what submitEntry() returns.
   const addEntry = useCallback(({ entry, newSkillNames, activityPaths: newPaths, playerClass: newClass }) => {
@@ -71,11 +124,33 @@ export default function App() {
     if (newClass) setPlayerClass(newClass)
   }, [])
 
+  const wearTitle = useCallback(
+    (title) => {
+      setWornTitle(title)
+      saveWornTitle(title, userId).catch((err) => console.warn('The title could not be saved', err))
+    },
+    [userId],
+  )
+
   if (session === undefined) return <div className="surface" />
   if (session === null) return <AuthPage />
 
   // Everything the pages need, shared through the layout.
-  const context = { entries, stats, skills, skillNames, activityPaths, playerClass, addEntry, loadError }
+  const context = {
+    entries,
+    stats,
+    skills,
+    skillNames,
+    activityPaths,
+    playerClass,
+    classDay,
+    achievements,
+    wornTitle,
+    wearTitle,
+    weeklySummaries,
+    addEntry,
+    loadError,
+  }
 
   return (
     <Routes>
