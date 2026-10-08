@@ -5,6 +5,7 @@ import App from './App.jsx'
 import './styles/tokens.css'
 import './styles/whetstone.css'
 import './styles/app.css'
+import './styles/pages.css'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

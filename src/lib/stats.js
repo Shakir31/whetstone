@@ -15,7 +15,7 @@ export function dailyCap(key, classDay) {
 const MEANINGFUL_GAIN = 0.2
 
 // Will +1 for every this-many consecutive meaningful days.
-const DAYS_PER_WILL = 3
+export const DAYS_PER_WILL = 3
 
 // "2026-10-02" in the user's local time zone.
 export function dayKey(isoDate) {

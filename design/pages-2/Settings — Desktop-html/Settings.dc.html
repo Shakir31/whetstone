@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Settings — Whetstone</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Condensed:wght@500;600;700&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;display=swap">
+<style>
+body{margin:0;background:#0b0c0d}
+a{color:#b7babd}a:hover{color:#d9d5cd}
+a:focus-visible,button:focus-visible{outline:2px solid #d9d5cd;outline-offset:2px}
+.ws-links a{transition:color 160ms cubic-bezier(0.2,0,0,1)}
+.ws-links a:hover{color:#d9d5cd}
+.ws-links .ws-active,.ws-links .ws-active:hover{color:#cd5e4f;box-shadow:inset 0 -2px 0 0 #b5372b}
+.ws-secondary{transition:background 160ms cubic-bezier(0.2,0,0,1),border-color 160ms cubic-bezier(0.2,0,0,1)}
+.ws-secondary:hover{background:#1b1c1f;border-color:#b7babd}
+.ws-primary:hover{background:#8e2118}
+.ws-primary:active{box-shadow:inset 0 2px 0 0 rgba(0,0,0,0.45)}
+@media (max-width:640px){
+.ws-links{position:fixed;left:0;right:0;bottom:0;z-index:10;height:64px;background:#131416;border-top:1px solid #2f3034;display:grid !important;grid-template-columns:repeat(4,minmax(0,1fr));gap:0 !important}
+.ws-links a{flex-direction:column;justify-content:center;gap:4px !important;height:64px !important;width:100%;padding:0 !important;font-size:12px !important;letter-spacing:0.16em !important}
+.ws-links .ws-active,.ws-links .ws-active:hover{box-shadow:inset 0 2px 0 0 #b5372b}
+.ws-main{padding:32px 16px 112px !important}
+.ws-title{font-size:28px !important;line-height:32px !important}
+.ws-pad{padding:16px !important}
+.ws-row{grid-template-columns:minmax(0,1fr) !important;gap:8px !important}
+}
+</style>
+</helmet>
+<div style="position: relative; min-height: 100vh; background: #0b0c0d; color: #d9d5cd; font-family: 'Source Serif 4', 'Iowan Old Style', Georgia, serif; overflow: hidden">
+<svg aria-hidden="true" width="0" height="0" style="position: absolute"><filter id="ws-grain-st"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter></svg>
+<svg aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.06; pointer-events: none"><rect width="100%" height="100%" filter="url(#ws-grain-st)"></rect></svg>
+
+<header style="position: relative; z-index: 2; background: #131416; border-bottom: 1px solid #2f3034">
+<div style="max-width: 1120px; margin: 0 auto; padding: 0 32px; height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 24px">
+<a href="Main.dc.html" style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 700; font-size: 18px; letter-spacing: 0.18em; text-transform: uppercase; color: #d9d5cd; text-decoration: none">Whetstone</a>
+<nav aria-label="Primary">
+<ul class="ws-links" style="list-style: none; margin: 0; padding: 0; display: flex; align-items: center; gap: 4px">
+<li><a href="Main.dc.html" style="display: flex; align-items: center; gap: 8px; height: 72px; padding: 0 16px; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 14px; letter-spacing: 0.14em; text-transform: uppercase; color: #8d9196; text-decoration: none">
+<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter"><path d="M5 3h14v18H5z"></path><path d="M8.5 8h7M8.5 12h7M8.5 16h4"></path></svg>Journal</a></li>
+<li><a href="Status.dc.html" style="display: flex; align-items: center; gap: 8px; height: 72px; padding: 0 16px; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 14px; letter-spacing: 0.14em; text-transform: uppercase; color: #8d9196; text-decoration: none">
+<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter"><path d="M4 13h4v8H4zM10 4h4v17h-4zM16 9h4v12h-4z"></path></svg>Status</a></li>
+<li><a href="Chronicle.dc.html" style="display: flex; align-items: center; gap: 8px; height: 72px; padding: 0 16px; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 14px; letter-spacing: 0.14em; text-transform: uppercase; color: #8d9196; text-decoration: none">
+<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter"><path d="M3 5h18v16H3zM3 10h18M8 3v4M16 3v4M7 14h2M11 14h2M15 14h2M7 17h2M11 17h2"></path></svg>Chronicle</a></li>
+<li><a href="Settings.dc.html" class="ws-active" aria-current="page" style="display: flex; align-items: center; gap: 8px; height: 72px; padding: 0 16px; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 14px; letter-spacing: 0.14em; text-transform: uppercase; color: #8d9196; text-decoration: none">
+<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter"><path d="M3 7h4M11 7h10M3 17h10M17 17h4"></path><path d="M7 4h4v6H7zM13 14h4v6h-4z"></path></svg>Settings</a></li>
+</ul>
+</nav>
+</div>
+</header>
+
+<main class="ws-main" style="position: relative; z-index: 1; max-width: 800px; box-sizing: border-box; margin: 0 auto; padding: 64px 32px 96px; display: flex; flex-direction: column; gap: 32px">
+
+<div style="display: flex; flex-direction: column; gap: 6px; padding-bottom: 20px; border-bottom: 3px double #676b70">
+<span style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 12px; line-height: 14px; letter-spacing: 0.16em; text-transform: uppercase; color: #a19e98">Account and record</span>
+<h1 class="ws-title" style="margin: 0; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 32px; line-height: 36px; letter-spacing: 0.06em; text-transform: uppercase; color: #d9d5cd">Settings</h1>
+</div>
+
+<!-- 1. Account -->
+<section aria-labelledby="acc-h" class="ws-pad" style="position: relative; background: #131416; border: 1px solid #2f3034; padding: 8px 24px; clip-path: polygon(7px 0, calc(100% - 5px) 0, 100% 4px, 100% calc(100% - 8px), calc(100% - 4px) 100%, 6px 100%, 0 calc(100% - 5px), 0 7px)">
+<h2 id="acc-h" style="margin: 0; padding: 16px 0; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 20px; line-height: 24px; letter-spacing: 0.08em; text-transform: uppercase; color: #d9d5cd">Account</h2>
+<div class="ws-row" style="display: grid; grid-template-columns: 140px minmax(0, 1fr) auto; align-items: center; gap: 20px; padding: 16px 0; border-top: 1px solid #2f3034">
+<span style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 12px; line-height: 14px; letter-spacing: 0.16em; text-transform: uppercase; color: #a19e98">Email</span>
+<span style="font-size: 16px; line-height: 26px; color: #d9d5cd; overflow-wrap: anywhere">you@example.com</span>
+<button type="button" class="ws-secondary" style="justify-self: start; height: 44px; padding: 0 18px; background: transparent; border: 1px solid #676b70; cursor: pointer; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: #b7babd">Change email</button>
+</div>
+<div class="ws-row" style="display: grid; grid-template-columns: 140px minmax(0, 1fr) auto; align-items: center; gap: 20px; padding: 16px 0; border-top: 1px solid #2f3034">
+<span style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 12px; line-height: 14px; letter-spacing: 0.16em; text-transform: uppercase; color: #a19e98">Password</span>
+<span aria-label="Hidden" style="font-size: 16px; line-height: 26px; letter-spacing: 0.2em; color: #a19e98">••••••••••</span>
+<a href="ResetPassword.dc.html" class="ws-secondary" style="justify-self: start; display: inline-flex; align-items: center; height: 44px; box-sizing: border-box; padding: 0 18px; border: 1px solid #676b70; text-decoration: none; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: #b7babd">Change password</a>
+</div>
+</section>
+
+<!-- 2. Time -->
+<section aria-labelledby="time-h" class="ws-pad" style="position: relative; background: #131416; border: 1px solid #2f3034; padding: 8px 24px; clip-path: polygon(5px 0, calc(100% - 7px) 0, 100% 6px, 100% calc(100% - 5px), calc(100% - 7px) 100%, 5px 100%, 0 calc(100% - 7px), 0 4px)">
+<h2 id="time-h" style="margin: 0; padding: 16px 0; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 20px; line-height: 24px; letter-spacing: 0.08em; text-transform: uppercase; color: #d9d5cd">Time</h2>
+<div class="ws-row" style="display: grid; grid-template-columns: 140px minmax(0, 1fr) auto; align-items: start; gap: 20px; padding: 16px 0 20px; border-top: 1px solid #2f3034">
+<span style="padding-top: 6px; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 12px; line-height: 14px; letter-spacing: 0.16em; text-transform: uppercase; color: #a19e98">Time zone</span>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<p style="margin: 0; font-size: 16px; line-height: 26px; color: #d9d5cd">Days are counted in Asia/Singapore <span style="color: #a19e98">(UTC+08:00)</span>.</p>
+<p style="margin: 0; font-size: 14px; line-height: 21px; color: #a19e98">Detected from this device. Streaks, day numbers and weekly judgements follow it. A day ends at midnight in this zone.</p>
+</div>
+<button type="button" class="ws-secondary" style="justify-self: start; height: 44px; padding: 0 18px; background: transparent; border: 1px solid #676b70; cursor: pointer; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: #b7babd">Change time zone</button>
+</div>
+</section>
+
+<!-- 3. Your record -->
+<section aria-labelledby="rec-h" class="ws-pad" style="position: relative; background: #131416; border: 1px solid #2f3034; padding: 8px 24px; clip-path: polygon(6px 0, calc(100% - 4px) 0, 100% 5px, 100% calc(100% - 7px), calc(100% - 5px) 100%, 8px 100%, 0 calc(100% - 4px), 0 6px)">
+<h2 id="rec-h" style="margin: 0; padding: 16px 0; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 20px; line-height: 24px; letter-spacing: 0.08em; text-transform: uppercase; color: #d9d5cd">Your record</h2>
+<div class="ws-row" style="display: grid; grid-template-columns: 140px minmax(0, 1fr) auto; align-items: start; gap: 20px; padding: 16px 0 20px; border-top: 1px solid #2f3034">
+<span style="padding-top: 6px; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 12px; line-height: 14px; letter-spacing: 0.16em; text-transform: uppercase; color: #a19e98">Export</span>
+<p style="margin: 0; font-size: 16px; line-height: 26px; color: #d9d5cd">Download every entry as one file, each with its date, time, gains and verdict. The record stays here as well.</p>
+<button type="button" class="ws-secondary" style="justify-self: start; display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px; background: transparent; border: 1px solid #676b70; cursor: pointer; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: #b7babd"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter"><path d="M12 3v12M7 10l5 5 5-5M4 20h16"></path></svg>Export journal</button>
+</div>
+</section>
+
+<!-- 4. Session -->
+<section aria-labelledby="ses-h" class="ws-pad" style="position: relative; background: #131416; border: 1px solid #2f3034; padding: 8px 24px; clip-path: polygon(7px 0, calc(100% - 5px) 0, 100% 4px, 100% calc(100% - 8px), calc(100% - 4px) 100%, 6px 100%, 0 calc(100% - 5px), 0 7px)">
+<h2 id="ses-h" style="margin: 0; padding: 16px 0; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 20px; line-height: 24px; letter-spacing: 0.08em; text-transform: uppercase; color: #d9d5cd">Session</h2>
+<div class="ws-row" style="display: grid; grid-template-columns: 140px minmax(0, 1fr) auto; align-items: center; gap: 20px; padding: 16px 0 20px; border-top: 1px solid #2f3034">
+<span style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 12px; line-height: 14px; letter-spacing: 0.16em; text-transform: uppercase; color: #a19e98">This device</span>
+<p style="margin: 0; font-size: 16px; line-height: 26px; color: #d9d5cd">Signed in. Entries are saved to the account, not the device.</p>
+<a href="SignIn.dc.html" class="ws-secondary" style="justify-self: start; display: inline-flex; align-items: center; gap: 8px; height: 44px; box-sizing: border-box; padding: 0 18px; border: 1px solid #676b70; text-decoration: none; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: #b7babd"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter"><path d="M11 3H4v18h7"></path><path d="M15 8l4 4-4 4M9 12h10"></path></svg>Sign out</a>
+</div>
+</section>
+
+<!-- 5. Danger -->
+<section aria-labelledby="del-h" class="ws-pad" style="position: relative; margin-top: 16px; background: #131416; border: 1px solid #676b70; padding: 8px 24px; clip-path: polygon(5px 0, calc(100% - 7px) 0, 100% 6px, 100% calc(100% - 5px), calc(100% - 7px) 100%, 5px 100%, 0 calc(100% - 7px), 0 4px)">
+<h2 id="del-h" style="margin: 0; padding: 16px 0; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 20px; line-height: 24px; letter-spacing: 0.08em; text-transform: uppercase; color: #d9d5cd">Delete account</h2>
+<div class="ws-row" style="display: grid; grid-template-columns: 140px minmax(0, 1fr) auto; align-items: start; gap: 20px; padding: 16px 0 20px; border-top: 1px solid #2f3034">
+<span style="padding-top: 6px; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 12px; line-height: 14px; letter-spacing: 0.16em; text-transform: uppercase; color: #a19e98">Permanent</span>
+<p style="margin: 0; font-size: 16px; line-height: 26px; color: #d9d5cd">Erases every entry, level, skill and class, permanently. Nothing can be recovered. Export the journal first to keep a copy.</p>
+<a href="SettingsDelete.dc.html" class="ws-primary" style="justify-self: start; display: inline-flex; align-items: center; height: 44px; box-sizing: border-box; padding: 0 20px; background: #7a1a14; text-decoration: none; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: #d9d5cd; clip-path: polygon(7px 0, 100% 0, 100% calc(100% - 7px), calc(100% - 7px) 100%, 0 100%, 0 7px)">Delete account</a>
+</div>
+</section>
+
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1420}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

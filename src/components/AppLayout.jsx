@@ -1,11 +1,11 @@
 import { NavLink, Outlet } from 'react-router-dom'
-import { supabase } from '../lib/supabase.js'
-import { ChronicleIcon, JournalIcon, SignOutIcon, StatusIcon } from './Icons.jsx'
+import { ChronicleIcon, JournalIcon, SettingsIcon, StatusIcon } from './Icons.jsx'
 
 const PAGES = [
   { to: '/', label: 'Journal', Icon: JournalIcon },
   { to: '/status', label: 'Status', Icon: StatusIcon },
   { to: '/chronicle', label: 'Chronicle', Icon: ChronicleIcon },
+  { to: '/settings', label: 'Settings', Icon: SettingsIcon },
 ]
 
 // The frame around every signed-in page: header with navigation (a bottom tab
@@ -28,12 +28,6 @@ export default function AppLayout({ context }) {
                   </NavLink>
                 </li>
               ))}
-              <li className="nav-item--signout">
-                <button type="button" className="nav-link" onClick={() => supabase.auth.signOut()}>
-                  <SignOutIcon />
-                  Sign out
-                </button>
-              </li>
             </ul>
           </nav>
         </div>

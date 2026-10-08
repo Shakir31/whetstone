@@ -1,6 +1,8 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Button, Panel, TextInput } from '../ui/whetstone.jsx'
 import { supabase } from '../lib/supabase.js'
+import AuthHero from '../components/AuthHero.jsx'
 
 const COPY = {
   signIn: {
@@ -8,17 +10,19 @@ const COPY = {
     button: 'Sign in',
     switchPrompt: 'No record yet?',
     switchLabel: 'Sign up',
+    switchTo: '/signup',
   },
   signUp: {
     line: 'A System has been assigned to you.',
     button: 'Sign up',
     switchPrompt: 'Already recorded?',
     switchLabel: 'Sign in',
+    switchTo: '/signin',
   },
 }
 
-export default function AuthPage() {
-  const [mode, setMode] = useState('signIn')
+// Sign in (/signin) or sign up (/signup).
+export default function AuthPage({ mode }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [message, setMessage] = useState(null) // { text, isError }
@@ -45,18 +49,11 @@ export default function AuthPage() {
   return (
     <div className="surface auth-page">
       <main className="auth">
-        <div className="auth__hero">
-          <h1 className="auth__name">Whetstone</h1>
-          <div className="auth__ornament" aria-hidden="true">
-            <span />
-            <span className="auth__lozenge" />
-            <span />
-          </div>
-          <p className="auth__line">{copy.line}</p>
+        <AuthHero line={copy.line}>
           <p className="ws-small auth__blurb">
-            Each day's deeds are written down and weighed. Body, Mind and Will rise only by what is recorded.
+            Each day's deeds are written down and weighed. Body, Mind and Will rise with what you record.
           </p>
-        </div>
+        </AuthHero>
 
         <Panel as="form" className="auth__form" onSubmit={handleSubmit}>
           <TextInput
@@ -85,20 +82,18 @@ export default function AuthPage() {
           <Button type="submit" variant="primary" block disabled={busy}>
             {copy.button}
           </Button>
+          {!isSignUp && (
+            <Link to="/forgot-password" className="ws-small auth__forgot">
+              Forgot your password?
+            </Link>
+          )}
         </Panel>
 
         <p className="ws-small auth__switch">
           {copy.switchPrompt}{' '}
-          <button
-            type="button"
-            className="ws-label text-link"
-            onClick={() => {
-              setMode(isSignUp ? 'signIn' : 'signUp')
-              setMessage(null)
-            }}
-          >
+          <Link to={copy.switchTo} className="ws-label text-link">
             {copy.switchLabel}
-          </button>
+          </Link>
         </p>
       </main>
     </div>

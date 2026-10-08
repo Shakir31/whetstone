@@ -118,3 +118,13 @@ export async function requestWeeklySummary(week, facts) {
   if (error) throw error
   return summariesFromRows([data.summary])
 }
+
+// Permanently deletes the signed-in account and everything in it, through the
+// delete-account Edge Function.
+export async function deleteAccount() {
+  const { error } = await supabase.functions.invoke('delete-account', { body: {} })
+  if (error) {
+    const body = await error.context?.json?.().catch(() => null)
+    throw new Error(body?.error ?? 'The account could not be deleted. Try again.')
+  }
+}

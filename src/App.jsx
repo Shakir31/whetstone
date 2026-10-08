@@ -5,6 +5,14 @@ import AuthPage from './pages/AuthPage.jsx'
 import JournalPage from './pages/JournalPage.jsx'
 import StatusPage from './pages/StatusPage.jsx'
 import ChroniclePage from './pages/ChroniclePage.jsx'
+import SettingsPage from './pages/SettingsPage.jsx'
+import CodexPage from './pages/CodexPage.jsx'
+import LandingPage from './pages/LandingPage.jsx'
+import ForgotPasswordPage from './pages/ForgotPasswordPage.jsx'
+import ResetPasswordPage from './pages/ResetPasswordPage.jsx'
+import IntroPage, { introSeen } from './pages/IntroPage.jsx'
+import LegalPage from './pages/LegalPage.jsx'
+import NotFoundPage from './pages/NotFoundPage.jsx'
 import { supabase } from './lib/supabase.js'
 import {
   fetchAchievements,
@@ -133,7 +141,28 @@ export default function App() {
   )
 
   if (session === undefined) return <div className="surface" />
-  if (session === null) return <AuthPage />
+
+  // Not signed in: the public pages. The app's own pages lead to sign in.
+  if (session === null) {
+    return (
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/signin" element={<AuthPage mode="signIn" />} />
+        <Route path="/signup" element={<AuthPage mode="signUp" />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage signedIn={false} />} />
+        <Route path="/privacy" element={<LegalPage doc="privacy" />} />
+        <Route path="/terms" element={<LegalPage doc="terms" />} />
+        {APP_PATHS.map((path) => (
+          <Route key={path} path={path} element={<Navigate to="/signin" replace />} />
+        ))}
+        <Route path="*" element={<NotFoundPage signedIn={false} />} />
+      </Routes>
+    )
+  }
+
+  // Someone with no entries yet sees the introduction once.
+  const needsIntro = loaded && entries.length === 0 && !introSeen()
 
   // Everything the pages need, shared through the layout.
   const context = {
@@ -150,16 +179,30 @@ export default function App() {
     weeklySummaries,
     addEntry,
     loadError,
+    email: session.user.email,
   }
 
   return (
     <Routes>
       <Route element={<AppLayout context={context} />}>
-        <Route index element={<JournalPage />} />
+        <Route index element={needsIntro ? <Navigate to="/welcome" replace /> : <JournalPage />} />
         <Route path="status" element={<StatusPage />} />
         <Route path="chronicle" element={<ChroniclePage />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="settings" element={<SettingsPage />} />
+        <Route path="codex" element={<CodexPage />} />
       </Route>
+      <Route path="/welcome" element={<IntroPage />} />
+      <Route path="/reset-password" element={<ResetPasswordPage signedIn />} />
+      <Route path="/privacy" element={<LegalPage doc="privacy" />} />
+      <Route path="/terms" element={<LegalPage doc="terms" />} />
+      {PUBLIC_ONLY_PATHS.map((path) => (
+        <Route key={path} path={path} element={<Navigate to="/" replace />} />
+      ))}
+      <Route path="*" element={<NotFoundPage signedIn />} />
     </Routes>
   )
 }
+
+// Pages that need an account, and pages only for people without a session.
+const APP_PATHS = ['/status', '/chronicle', '/settings', '/codex', '/welcome']
+const PUBLIC_ONLY_PATHS = ['/signin', '/signup', '/forgot-password']

@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Whetstone — Record your deeds</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Condensed:wght@500;600;700&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;display=swap">
+<style>
+body{margin:0;background:#0b0c0d}
+a{color:#b7babd}a:hover{color:#d9d5cd}
+a:focus-visible{outline:2px solid #d9d5cd;outline-offset:2px}
+.ws-primary{transition:background 160ms cubic-bezier(0.2,0,0,1)}
+.ws-primary:hover{background:#8e2118;color:#d9d5cd}
+.ws-primary:active{box-shadow:inset 0 2px 0 0 rgba(0,0,0,0.45)}
+@media (max-width:640px){
+.ws-hero{min-height:720px !important;padding:72px 16px !important}
+.ws-hero-name{font-size:44px !important;line-height:48px !important}
+.ws-hero-line{font-size:22px !important;line-height:32px !important}
+.ws-sec{padding:72px 16px !important}
+.ws-h2{font-size:28px !important;line-height:32px !important}
+.ws-close-line{font-size:24px !important;line-height:34px !important}
+.ws-pad{padding:16px !important}
+.ws-step-text{font-size:18px !important;line-height:28px !important}
+}
+</style>
+</helmet>
+<div style="position: relative; background: #0b0c0d; color: #d9d5cd; font-family: 'Source Serif 4', 'Iowan Old Style', Georgia, serif; overflow: hidden">
+<svg aria-hidden="true" width="0" height="0" style="position: absolute"><filter id="ws-grain-l"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter></svg>
+<svg aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.06; pointer-events: none"><rect width="100%" height="100%" filter="url(#ws-grain-l)"></rect></svg>
+
+<main>
+<!-- 1. Hero -->
+<section aria-labelledby="hero-name" class="ws-hero" style="position: relative; min-height: 860px; box-sizing: border-box; padding: 96px 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px; text-align: center">
+<div aria-hidden="true" style="position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 15%, rgba(0,0,0,0.75) 100%)"></div>
+<span style="position: relative; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 12px; line-height: 14px; letter-spacing: 0.3em; text-transform: uppercase; color: #a19e98; padding-left: 0.3em">Day 1</span>
+<h1 id="hero-name" class="ws-hero-name" style="position: relative; margin: 0; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 700; font-size: 112px; line-height: 112px; letter-spacing: 0.18em; text-transform: uppercase; color: #d9d5cd; padding-left: 0.18em">Whetstone</h1>
+<div aria-hidden="true" style="position: relative; display: flex; align-items: center; gap: 14px; width: 280px; max-width: 70%">
+<span style="flex: 1; height: 1px; background: #676b70"></span>
+<span style="width: 8px; height: 8px; border: 1px solid #8d9196; transform: rotate(45deg)"></span>
+<span style="flex: 1; height: 1px; background: #676b70"></span>
+</div>
+<p class="ws-hero-line" style="position: relative; margin: 0; max-width: 24ch; font-style: italic; font-size: 30px; line-height: 42px; color: #d9d5cd">Record your deeds. The System will judge them.</p>
+<div style="position: relative; margin-top: 16px; display: flex; flex-direction: column; align-items: center; gap: 8px">
+<a href="SignUp.dc.html" class="ws-primary" style="display: inline-flex; align-items: center; justify-content: center; width: 240px; height: 52px; background: #7a1a14; text-decoration: none; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 15px; letter-spacing: 0.16em; text-transform: uppercase; color: #d9d5cd; clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px)">Begin</a>
+<a href="SignIn.dc.html" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none; color: #a19e98">Sign in</a>
+</div>
+<div aria-hidden="true" style="position: absolute; left: 50%; bottom: 32px; width: 1px; height: 72px; background: linear-gradient(to bottom, rgba(141,145,150,0), #8d9196)"></div>
+</section>
+
+<!-- 2. How it works -->
+<section aria-labelledby="how-h" class="ws-sec" style="position: relative; max-width: 1120px; box-sizing: border-box; margin: 0 auto; padding: 120px 32px; display: flex; flex-direction: column; gap: 56px">
+<div style="display: flex; flex-direction: column; gap: 6px; padding-bottom: 20px; border-bottom: 3px double #676b70">
+<span style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 12px; line-height: 14px; letter-spacing: 0.16em; text-transform: uppercase; color: #a19e98">How it works</span>
+<h2 id="how-h" class="ws-h2" style="margin: 0; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 32px; line-height: 36px; letter-spacing: 0.06em; text-transform: uppercase; color: #d9d5cd">The daily rite</h2>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 64px; align-items: flex-start">
+<ol style="flex: 1 1 360px; min-width: 0; list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column">
+<li style="display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 16px; padding: 24px 0; border-bottom: 1px solid #2f3034">
+<span aria-hidden="true" style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 40px; line-height: 40px; color: #8d9196">1</span>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 14px; line-height: 16px; letter-spacing: 0.14em; text-transform: uppercase; color: #b7babd">Write</span>
+<p class="ws-step-text" style="margin: 0; font-size: 22px; line-height: 32px; color: #d9d5cd">Write what you did today.</p>
+<p style="margin: 0; font-size: 15px; line-height: 23px; color: #a19e98">Plainly. The System reads every word.</p>
+</div>
+</li>
+<li style="display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 16px; padding: 24px 0; border-bottom: 1px solid #2f3034">
+<span aria-hidden="true" style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 40px; line-height: 40px; color: #8d9196">2</span>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 14px; line-height: 16px; letter-spacing: 0.14em; text-transform: uppercase; color: #b7babd">Weigh</span>
+<p class="ws-step-text" style="margin: 0; font-size: 22px; line-height: 32px; color: #d9d5cd">The System weighs it.</p>
+<p style="margin: 0; font-size: 15px; line-height: 23px; color: #a19e98">Effort is counted. Excuses are not.</p>
+</div>
+</li>
+<li style="display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 16px; padding: 24px 0">
+<span aria-hidden="true" style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 40px; line-height: 40px; color: #8d9196">3</span>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 14px; line-height: 16px; letter-spacing: 0.14em; text-transform: uppercase; color: #b7babd">Rise</span>
+<p class="ws-step-text" style="margin: 0; font-size: 22px; line-height: 32px; color: #d9d5cd">Body, Mind and Will rise.</p>
+<p style="margin: 0; font-size: 15px; line-height: 23px; color: #a19e98">Slowly. Never for free.</p>
+</div>
+</li>
+</ol>
+
+<figure aria-label="A sample entry and its judgement" class="ws-pad" style="flex: 1 1 460px; min-width: 0; margin: 0; position: relative; background: #131416; border: 1px solid #2f3034; padding: 28px; display: flex; flex-direction: column; gap: 20px; clip-path: polygon(7px 0, calc(100% - 5px) 0, 100% 4px, 100% calc(100% - 8px), calc(100% - 4px) 100%, 6px 100%, 0 calc(100% - 5px), 0 7px)">
+<svg aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.06; pointer-events: none"><rect width="100%" height="100%" filter="url(#ws-grain-l)"></rect></svg>
+<div style="position: relative; display: flex; justify-content: space-between; gap: 12px; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 12px; line-height: 14px; letter-spacing: 0.16em; text-transform: uppercase; color: #a19e98"><span>Today's deeds</span><span>21:14</span></div>
+<p style="position: relative; margin: 0; padding: 14px 20px; background-color: #1b1c1f; background-image: repeating-linear-gradient(to bottom, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 30px, #2f3034 30px, #2f3034 31px); background-position: 0 14px; border: 1px solid #676b70; border-radius: 1px; box-shadow: inset 0 2px 4px 0 rgba(0,0,0,0.6); font-size: 19px; line-height: 31px; color: #d9d5cd">5 sets of weighted decline pushups, each to failure. Then read two chapters on Roman history.</p>
+<div style="position: relative; display: flex; flex-direction: column; gap: 8px; padding-top: 4px">
+<span style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 12px; line-height: 14px; letter-spacing: 0.3em; text-transform: uppercase; color: #b7babd"><span aria-hidden="true" style="color: #8d9196">[ </span>System<span aria-hidden="true" style="color: #8d9196"> ]</span></span>
+<p style="margin: 0; font-style: italic; font-size: 21px; line-height: 31px; color: #d9d5cd">Physical exertion recorded. Do not grow complacent.</p>
+</div>
+<div style="position: relative; display: flex; gap: 24px; padding-top: 16px; border-top: 1px solid #2f3034; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 14px; line-height: 16px; letter-spacing: 0.14em; text-transform: uppercase; font-variant-numeric: tabular-nums; color: #cd5e4f"><span>Body +0.7</span><span>Mind +0.3</span></div>
+</figure>
+</div>
+</section>
+
+<!-- 3. What awaits -->
+<section aria-labelledby="await-h" class="ws-sec" style="position: relative; max-width: 1120px; box-sizing: border-box; margin: 0 auto; padding: 40px 32px 120px; display: flex; flex-direction: column; gap: 40px">
+<div style="display: flex; flex-direction: column; gap: 6px; padding-bottom: 20px; border-bottom: 3px double #676b70">
+<span style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 12px; line-height: 14px; letter-spacing: 0.16em; text-transform: uppercase; color: #a19e98">Glimpses</span>
+<h2 id="await-h" class="ws-h2" style="margin: 0; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 32px; line-height: 36px; letter-spacing: 0.06em; text-transform: uppercase; color: #d9d5cd">What awaits</h2>
+</div>
+<ul style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px">
+
+<li style="position: relative; background: #131416; border: 1px solid #2f3034; padding: 20px; display: flex; flex-direction: column; gap: 16px; clip-path: polygon(6px 0, calc(100% - 4px) 0, 100% 5px, 100% calc(100% - 7px), calc(100% - 5px) 100%, 8px 100%, 0 calc(100% - 4px), 0 6px)">
+<h3 style="margin: 0; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 20px; line-height: 24px; letter-spacing: 0.08em; text-transform: uppercase; color: #d9d5cd">Levels</h3>
+<div style="height: 128px; background: #0b0c0d; border: 1px solid #2f3034; box-shadow: inset 0 2px 4px 0 rgba(0,0,0,0.6); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px">
+<span style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 36px; line-height: 36px; letter-spacing: 0.04em; text-transform: uppercase; color: #d9d5cd">Lv. 7</span>
+<div aria-hidden="true" style="width: 140px; height: 8px; background: #0b0c0d; border: 1px solid #676b70"><div style="width: 40%; height: 100%; background: #b5372b"></div></div>
+</div>
+<p style="margin: 0; font-size: 15px; line-height: 23px; color: #a19e98">Three measures. Each rises slowly, and none rises for free.</p>
+</li>
+
+<li style="position: relative; background: #131416; border: 1px solid #2f3034; padding: 20px; display: flex; flex-direction: column; gap: 16px; clip-path: polygon(5px 0, calc(100% - 7px) 0, 100% 6px, 100% calc(100% - 5px), calc(100% - 7px) 100%, 5px 100%, 0 calc(100% - 7px), 0 4px)">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 8px">
+<h3 style="margin: 0; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 20px; line-height: 24px; letter-spacing: 0.08em; text-transform: uppercase; color: #d9d5cd">Skills</h3>
+<span style="padding: 4px 8px; border: 1px solid #676b70; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 12px; line-height: 14px; letter-spacing: 0.16em; text-transform: uppercase; color: #a19e98">Sealed</span>
+</div>
+<div aria-hidden="true" style="height: 128px; background: #0b0c0d; border: 1px solid #2f3034; box-shadow: inset 0 2px 4px 0 rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; gap: 8px">
+<span style="width: 36px; height: 36px; border: 1px solid #2f3034; background: repeating-linear-gradient(45deg, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 6px, #17181a 6px, #17181a 7px)"></span>
+<span style="width: 36px; height: 36px; border: 1px solid #2f3034; background: repeating-linear-gradient(45deg, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 6px, #17181a 6px, #17181a 7px)"></span>
+<span style="width: 36px; height: 36px; border: 1px solid #2f3034; background: repeating-linear-gradient(45deg, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 6px, #17181a 6px, #17181a 7px)"></span>
+<span style="width: 36px; height: 36px; border: 1px solid #2f3034; background: repeating-linear-gradient(45deg, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 6px, #17181a 6px, #17181a 7px)"></span>
+</div>
+<p style="margin: 0; font-size: 15px; line-height: 23px; color: #a19e98">Repeat a deed for long enough and it will be given a name.</p>
+</li>
+
+<li style="position: relative; background: #131416; border: 1px solid #2f3034; padding: 20px; display: flex; flex-direction: column; gap: 16px; clip-path: polygon(7px 0, calc(100% - 5px) 0, 100% 4px, 100% calc(100% - 8px), calc(100% - 4px) 100%, 6px 100%, 0 calc(100% - 5px), 0 7px)">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 8px">
+<h3 style="margin: 0; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 20px; line-height: 24px; letter-spacing: 0.08em; text-transform: uppercase; color: #d9d5cd">Class</h3>
+<span style="padding: 4px 8px; border: 1px solid #676b70; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 12px; line-height: 14px; letter-spacing: 0.16em; text-transform: uppercase; color: #a19e98">Sealed</span>
+</div>
+<div style="height: 128px; background: #0b0c0d; border: 1px solid #2f3034; box-shadow: inset 0 2px 4px 0 rgba(0,0,0,0.6); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px">
+<svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#8d9196" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter"><path d="M5 11h14v10H5z"></path><path d="M8 11V6h8v5"></path><path d="M12 15v2"></path></svg>
+<span role="img" aria-label="Class name sealed" style="display: flex; gap: 6px"><span style="width: 72px; height: 12px; background: #232428"></span><span style="width: 44px; height: 12px; background: #232428"></span></span>
+</div>
+<p style="margin: 0; font-size: 15px; line-height: 23px; color: #a19e98">Not chosen. Assigned. It will not stay the same.</p>
+</li>
+
+<li style="position: relative; background: #131416; border: 1px solid #2f3034; padding: 20px; display: flex; flex-direction: column; gap: 16px; clip-path: polygon(6px 0, calc(100% - 6px) 0, 100% 4px, 100% calc(100% - 6px), calc(100% - 6px) 100%, 4px 100%, 0 calc(100% - 6px), 0 5px)">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 8px">
+<h3 style="margin: 0; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 20px; line-height: 24px; letter-spacing: 0.08em; text-transform: uppercase; color: #d9d5cd">Judgement</h3>
+<span style="padding: 4px 8px; border: 1px solid #676b70; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 12px; line-height: 14px; letter-spacing: 0.16em; text-transform: uppercase; color: #a19e98">Weekly</span>
+</div>
+<div style="height: 128px; box-sizing: border-box; padding: 0 20px; background: #0b0c0d; border: 1px solid #2f3034; box-shadow: inset 0 2px 4px 0 rgba(0,0,0,0.6); display: flex; flex-direction: column; align-items: stretch; justify-content: center; gap: 14px">
+<div style="display: flex; align-items: center; gap: 10px"><span aria-hidden="true" style="flex: 1; height: 1px; background: #2f3034"></span><span style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: #a19e98">Week I</span><span aria-hidden="true" style="flex: 1; height: 1px; background: #2f3034"></span></div>
+<span role="img" aria-label="Verdict sealed" style="display: flex; flex-direction: column; align-items: center; gap: 6px"><span style="width: 150px; height: 10px; background: #232428"></span><span style="width: 96px; height: 10px; background: #232428"></span></span>
+</div>
+<p style="margin: 0; font-size: 15px; line-height: 23px; color: #a19e98">On the seventh day, the System looks back.</p>
+</li>
+</ul>
+</section>
+
+<!-- 4. Closing -->
+<section aria-labelledby="close-h" class="ws-sec" style="position: relative; box-sizing: border-box; padding: 160px 24px; display: flex; flex-direction: column; align-items: center; gap: 24px; text-align: center; border-top: 1px solid #2f3034">
+<div aria-hidden="true" style="position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0) 20%, rgba(0,0,0,0.7) 100%)"></div>
+<span style="position: relative; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 12px; line-height: 14px; letter-spacing: 0.3em; text-transform: uppercase; color: #b7babd"><span aria-hidden="true" style="color: #8d9196">[ </span>System<span aria-hidden="true" style="color: #8d9196"> ]</span></span>
+<h2 id="close-h" class="ws-close-line" style="position: relative; margin: 0; max-width: 22ch; font-weight: 400; font-style: italic; font-size: 36px; line-height: 48px; color: #d9d5cd">The System is watching. It does not forget.</h2>
+<a href="SignUp.dc.html" class="ws-primary" style="position: relative; margin-top: 16px; display: inline-flex; align-items: center; justify-content: center; width: 240px; height: 52px; background: #7a1a14; text-decoration: none; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 15px; letter-spacing: 0.16em; text-transform: uppercase; color: #d9d5cd; clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px)">Begin</a>
+</section>
+</main>
+
+<!-- 5. Footer -->
+<footer style="position: relative; border-top: 1px solid #2f3034; background: #131416">
+<div style="max-width: 1120px; box-sizing: border-box; margin: 0 auto; padding: 20px 32px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 24px">
+<span style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 700; font-size: 14px; letter-spacing: 0.18em; text-transform: uppercase; color: #a19e98">Whetstone</span>
+<nav aria-label="Footer">
+<ul style="list-style: none; margin: 0; padding: 0; display: flex; gap: 8px">
+<li><a href="#" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 10px; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none">Privacy</a></li>
+<li><a href="#" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 10px; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none">Terms</a></li>
+<li><a href="SignIn.dc.html" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 10px; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none">Sign in</a></li>
+</ul>
+</nav>
+</div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2960}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

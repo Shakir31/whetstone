@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Link sent — Whetstone</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Condensed:wght@500;600;700&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;display=swap">
+<style>
+body{margin:0;background:#0b0c0d}
+a{color:#b7babd}a:hover{color:#d9d5cd}
+a:focus-visible{outline:2px solid #d9d5cd;outline-offset:2px}
+.ws-secondary:hover{background:#1b1c1f;border-color:#b7babd}
+@media (max-width:640px){
+.ws-name{font-size:40px !important;line-height:44px !important}
+.ws-pad{padding:16px !important}
+}
+</style>
+</helmet>
+<div style="position: relative; min-height: 100vh; box-sizing: border-box; padding: 64px 16px; display: flex; align-items: center; justify-content: center; background: #0b0c0d; color: #d9d5cd; font-family: 'Source Serif 4', 'Iowan Old Style', Georgia, serif; overflow: hidden">
+<svg aria-hidden="true" width="0" height="0" style="position: absolute"><filter id="ws-grain-p"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter></svg>
+<svg aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.06; pointer-events: none"><rect width="100%" height="100%" filter="url(#ws-grain-p)"></rect></svg>
+<div aria-hidden="true" style="position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 30%, rgba(0,0,0,0.6) 100%)"></div>
+
+<main style="position: relative; width: 100%; max-width: 420px; display: flex; flex-direction: column; align-items: center; gap: 32px">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 20px; text-align: center">
+<p class="ws-name" style="margin: 0; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 700; font-size: 56px; line-height: 60px; letter-spacing: 0.18em; text-transform: uppercase; color: #d9d5cd; padding-left: 0.18em">Whetstone</p>
+<div aria-hidden="true" style="display: flex; align-items: center; gap: 12px; width: 200px">
+<span style="flex: 1; height: 1px; background: #676b70"></span>
+<span style="width: 7px; height: 7px; border: 1px solid #8d9196; transform: rotate(45deg)"></span>
+<span style="flex: 1; height: 1px; background: #676b70"></span>
+</div>
+<h1 style="margin: 0; font-weight: 400; font-style: italic; font-size: 20px; line-height: 30px; color: #d9d5cd">The System will send a way back.</h1>
+</div>
+
+<div role="status" class="ws-pad" style="position: relative; width: 100%; box-sizing: border-box; background: #131416; border: 1px solid #2f3034; padding: 28px 24px; display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; clip-path: polygon(7px 0, calc(100% - 5px) 0, 100% 4px, 100% calc(100% - 8px), calc(100% - 4px) 100%, 6px 100%, 0 calc(100% - 5px), 0 7px)">
+<svg aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.06; pointer-events: none"><rect width="100%" height="100%" filter="url(#ws-grain-p)"></rect></svg>
+<span style="position: relative; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 12px; line-height: 14px; letter-spacing: 0.3em; text-transform: uppercase; color: #b7babd"><span aria-hidden="true" style="color: #8d9196">[ </span>System<span aria-hidden="true" style="color: #8d9196"> ]</span></span>
+<p style="position: relative; margin: 0; font-style: italic; font-size: 18px; line-height: 28px; color: #d9d5cd">If that address is on record, a link has been sent.</p>
+<p style="position: relative; margin: 0; font-size: 14px; line-height: 21px; color: #a19e98">Nothing arrived? Check the spam folder, or <a href="ForgotPassword.dc.html">send it again</a>.</p>
+</div>
+
+<a href="SignIn.dc.html" class="ws-secondary" style="display: inline-flex; align-items: center; justify-content: center; height: 48px; padding: 0 24px; border: 1px solid #676b70; text-decoration: none; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 14px; letter-spacing: 0.14em; text-transform: uppercase; color: #b7babd">Back to sign in</a>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

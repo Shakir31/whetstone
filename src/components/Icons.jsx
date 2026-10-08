@@ -51,3 +51,22 @@ export const LockIcon = () => (
     <path d="M12 15v2" />
   </Icon>
 )
+
+export const SettingsIcon = () => (
+  <Icon>
+    <path d="M3 7h4M11 7h10M3 17h10M17 17h4" />
+    <path d="M7 4h4v6H7zM13 14h4v6h-4z" />
+  </Icon>
+)
+
+export const DownloadIcon = () => (
+  <Icon size={18}>
+    <path d="M12 3v12M7 10l5 5 5-5M4 20h16" />
+  </Icon>
+)
+
+export const BackIcon = () => (
+  <Icon size={16}>
+    <path d="M10 6l-6 6 6 6M4 12h16" />
+  </Icon>
+)

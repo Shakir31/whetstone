@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Codex — Whetstone</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Condensed:wght@500;600;700&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;display=swap">
+<style>
+body{margin:0;background:#0b0c0d}
+a{color:#b7babd}a:hover{color:#d9d5cd}
+a:focus-visible{outline:2px solid #d9d5cd;outline-offset:2px}
+.ws-links a{transition:color 160ms cubic-bezier(0.2,0,0,1)}
+.ws-links a:hover{color:#d9d5cd}
+.ws-toc a{text-decoration:none}
+.ws-toc a:hover .ws-toc-t{color:#d9d5cd}
+@media (max-width:640px){
+.ws-links{position:fixed;left:0;right:0;bottom:0;z-index:10;height:64px;background:#131416;border-top:1px solid #2f3034;display:grid !important;grid-template-columns:repeat(4,minmax(0,1fr));gap:0 !important}
+.ws-links a{flex-direction:column;justify-content:center;gap:4px !important;height:64px !important;width:100%;padding:0 !important;font-size:12px !important;letter-spacing:0.16em !important}
+.ws-main{padding:32px 16px 112px !important}
+.ws-title{font-size:28px !important;line-height:32px !important}
+.ws-read{font-size:17px !important;line-height:29px !important}
+.ws-num{font-size:40px !important;line-height:40px !important}
+.ws-pad{padding:16px !important}
+}
+</style>
+</helmet>
+<div style="position: relative; min-height: 100vh; background: #0b0c0d; color: #d9d5cd; font-family: 'Source Serif 4', 'Iowan Old Style', Georgia, serif; overflow: hidden">
+<svg aria-hidden="true" width="0" height="0" style="position: absolute"><filter id="ws-grain-cx"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter></svg>
+<svg aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.06; pointer-events: none"><rect width="100%" height="100%" filter="url(#ws-grain-cx)"></rect></svg>
+
+<header style="position: relative; z-index: 2; background: #131416; border-bottom: 1px solid #2f3034">
+<div style="max-width: 1120px; margin: 0 auto; padding: 0 32px; height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 24px">
+<a href="Main.dc.html" style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 700; font-size: 18px; letter-spacing: 0.18em; text-transform: uppercase; color: #d9d5cd; text-decoration: none">Whetstone</a>
+<nav aria-label="Primary">
+<ul class="ws-links" style="list-style: none; margin: 0; padding: 0; display: flex; align-items: center; gap: 4px">
+<li><a href="Main.dc.html" style="display: flex; align-items: center; gap: 8px; height: 72px; padding: 0 16px; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 14px; letter-spacing: 0.14em; text-transform: uppercase; color: #8d9196; text-decoration: none">
+<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter"><path d="M5 3h14v18H5z"></path><path d="M8.5 8h7M8.5 12h7M8.5 16h4"></path></svg>Journal</a></li>
+<li><a href="Status.dc.html" style="display: flex; align-items: center; gap: 8px; height: 72px; padding: 0 16px; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 14px; letter-spacing: 0.14em; text-transform: uppercase; color: #8d9196; text-decoration: none">
+<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter"><path d="M4 13h4v8H4zM10 4h4v17h-4zM16 9h4v12h-4z"></path></svg>Status</a></li>
+<li><a href="Chronicle.dc.html" style="display: flex; align-items: center; gap: 8px; height: 72px; padding: 0 16px; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 14px; letter-spacing: 0.14em; text-transform: uppercase; color: #8d9196; text-decoration: none">
+<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter"><path d="M3 5h18v16H3zM3 10h18M8 3v4M16 3v4M7 14h2M11 14h2M15 14h2M7 17h2M11 17h2"></path></svg>Chronicle</a></li>
+<li><a href="Settings.dc.html" style="display: flex; align-items: center; gap: 8px; height: 72px; padding: 0 16px; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 14px; letter-spacing: 0.14em; text-transform: uppercase; color: #8d9196; text-decoration: none">
+<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter"><path d="M3 7h4M11 7h10M3 17h10M17 17h4"></path><path d="M7 4h4v6H7zM13 14h4v6h-4z"></path></svg>Settings</a></li>
+</ul>
+</nav>
+</div>
+</header>
+
+<main class="ws-main" style="position: relative; z-index: 1; max-width: 1120px; box-sizing: border-box; margin: 0 auto; padding: 64px 32px 120px; display: flex; flex-direction: column; gap: 48px">
+
+<div style="display: flex; flex-direction: column; gap: 6px; padding-bottom: 20px; border-bottom: 3px double #676b70">
+<span style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 12px; line-height: 14px; letter-spacing: 0.16em; text-transform: uppercase; color: #a19e98">The rules of the System</span>
+<h1 class="ws-title" style="margin: 0; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 32px; line-height: 36px; letter-spacing: 0.06em; text-transform: uppercase; color: #d9d5cd">The Codex</h1>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 64px; align-items: flex-start">
+
+<nav aria-labelledby="toc-h" class="ws-toc ws-pad" style="flex: 1 1 240px; max-width: 300px; min-width: 0; box-sizing: border-box; position: relative; background: #131416; border: 1px solid #2f3034; padding: 20px 24px; clip-path: polygon(7px 0, calc(100% - 5px) 0, 100% 4px, 100% calc(100% - 8px), calc(100% - 4px) 100%, 6px 100%, 0 calc(100% - 5px), 0 7px)">
+<h2 id="toc-h" style="margin: 0 0 8px; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 12px; line-height: 14px; letter-spacing: 0.16em; text-transform: uppercase; color: #a19e98">Contents</h2>
+<ol style="list-style: none; margin: 0; padding: 0">
+<li style="border-bottom: 1px solid #2f3034"><a href="#ch-1" style="display: grid; grid-template-columns: 36px 1fr; align-items: baseline; min-height: 44px; padding: 10px 0; box-sizing: border-box"><span style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 14px; letter-spacing: 0.08em; color: #8d9196">I</span><span class="ws-toc-t" style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 14px; letter-spacing: 0.14em; text-transform: uppercase; color: #b7babd">Judgement</span></a></li>
+<li style="border-bottom: 1px solid #2f3034"><a href="#ch-2" style="display: grid; grid-template-columns: 36px 1fr; align-items: baseline; min-height: 44px; padding: 10px 0; box-sizing: border-box"><span style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 14px; letter-spacing: 0.08em; color: #8d9196">II</span><span class="ws-toc-t" style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 14px; letter-spacing: 0.14em; text-transform: uppercase; color: #b7babd">Body, Mind and Will</span></a></li>
+<li style="border-bottom: 1px solid #2f3034"><a href="#ch-3" style="display: grid; grid-template-columns: 36px 1fr; align-items: baseline; min-height: 44px; padding: 10px 0; box-sizing: border-box"><span style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 14px; letter-spacing: 0.08em; color: #8d9196">III</span><span class="ws-toc-t" style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 14px; letter-spacing: 0.14em; text-transform: uppercase; color: #b7babd">The daily limit</span></a></li>
+<li style="border-bottom: 1px solid #2f3034"><a href="#ch-4" style="display: grid; grid-template-columns: 36px 1fr; align-items: baseline; min-height: 44px; padding: 10px 0; box-sizing: border-box"><span style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 14px; letter-spacing: 0.08em; color: #8d9196">IV</span><span class="ws-toc-t" style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 14px; letter-spacing: 0.14em; text-transform: uppercase; color: #b7babd">Skills</span></a></li>
+<li style="border-bottom: 1px solid #2f3034"><a href="#ch-5" style="display: grid; grid-template-columns: 36px 1fr; align-items: baseline; min-height: 44px; padding: 10px 0; box-sizing: border-box"><span style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 14px; letter-spacing: 0.08em; color: #8d9196">V</span><span class="ws-toc-t" style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 14px; letter-spacing: 0.14em; text-transform: uppercase; color: #b7babd">Classes</span></a></li>
+<li><a href="#ch-6" style="display: grid; grid-template-columns: 36px 1fr; align-items: baseline; min-height: 44px; padding: 10px 0; box-sizing: border-box"><span style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 14px; letter-spacing: 0.08em; color: #8d9196">VI</span><span class="ws-toc-t" style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 14px; letter-spacing: 0.14em; text-transform: uppercase; color: #b7babd">Weekly judgement</span></a></li>
+</ol>
+</nav>
+
+<ol style="flex: 999 1 560px; min-width: 0; max-width: 680px; list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 56px">
+
+<li id="ch-1" style="display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; align-items: baseline; gap: 20px; padding-bottom: 14px; border-bottom: 1px solid #2f3034">
+<span class="ws-num" aria-hidden="true" style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 52px; line-height: 52px; color: #8d9196">I</span>
+<h2 style="margin: 0; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 24px; line-height: 28px; letter-spacing: 0.1em; text-transform: uppercase; color: #d9d5cd">Judgement</h2>
+</div>
+<p class="ws-read" style="margin: 0; font-size: 19px; line-height: 33px; color: #d9d5cd">Every entry is read in full. The System weighs what was done, how much of it, and how hard. It does not weigh what was meant, planned or felt.</p>
+<p class="ws-read" style="margin: 0; font-size: 19px; line-height: 33px; color: #d9d5cd">Detail is rewarded because detail can be weighed. A count, a weight, a distance, a length of time: each gives the System something to hold. Vague words give it nothing, and nothing is what they earn.</p>
+<div aria-label="Two entries compared" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin: 8px 0">
+<figure style="margin: 0; background: #131416; border: 1px solid #2f3034; padding: 18px; display: flex; flex-direction: column; gap: 12px; clip-path: polygon(6px 0, calc(100% - 4px) 0, 100% 5px, 100% calc(100% - 7px), calc(100% - 5px) 100%, 8px 100%, 0 calc(100% - 4px), 0 6px)">
+<figcaption style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: #a19e98">Vague</figcaption>
+<p style="margin: 0; font-size: 17px; line-height: 28px; color: #d9d5cd">Exercised and read a bit.</p>
+<p style="margin: 0; padding-top: 12px; border-top: 1px solid #2f3034; font-style: italic; font-size: 16px; line-height: 25px; color: #b7babd">The System cannot judge what it cannot see.</p>
+<span style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: #cd5e4f">Body +0.2</span>
+</figure>
+<figure style="margin: 0; background: #131416; border: 1px solid #2f3034; padding: 18px; display: flex; flex-direction: column; gap: 12px; clip-path: polygon(5px 0, calc(100% - 7px) 0, 100% 6px, 100% calc(100% - 5px), calc(100% - 7px) 100%, 5px 100%, 0 calc(100% - 7px), 0 4px)">
+<figcaption style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: #a19e98">Specific</figcaption>
+<p style="margin: 0; font-size: 17px; line-height: 28px; color: #d9d5cd">5 sets of weighted decline pushups, each to failure. Then read two chapters on Roman history.</p>
+<p style="margin: 0; padding-top: 12px; border-top: 1px solid #2f3034; font-style: italic; font-size: 16px; line-height: 25px; color: #b7babd">Physical exertion recorded. Do not grow complacent.</p>
+<span style="display: flex; gap: 16px; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: #cd5e4f"><span>Body +0.7</span><span>Mind +0.3</span></span>
+</figure>
+</div>
+<p class="ws-read" style="margin: 0; font-size: 19px; line-height: 33px; color: #d9d5cd">Exaggeration is noted. Each day is weighed against the days before it.</p>
+</li>
+
+<li id="ch-2" style="display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; align-items: baseline; gap: 20px; padding-bottom: 14px; border-bottom: 1px solid #2f3034">
+<span class="ws-num" aria-hidden="true" style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 52px; line-height: 52px; color: #8d9196">II</span>
+<h2 style="margin: 0; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 24px; line-height: 28px; letter-spacing: 0.1em; text-transform: uppercase; color: #d9d5cd">Body, Mind and Will</h2>
+</div>
+<p class="ws-read" style="margin: 0; font-size: 19px; line-height: 33px; color: #d9d5cd">Three measures are kept. Each rises by level, and every level asks more than the one before.</p>
+<dl style="margin: 0; display: flex; flex-direction: column">
+<div style="display: grid; grid-template-columns: 88px minmax(0, 1fr); gap: 20px; padding: 16px 0; border-top: 1px solid #2f3034">
+<dt style="padding-top: 6px; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 14px; letter-spacing: 0.14em; text-transform: uppercase; color: #d9d5cd">Body</dt>
+<dd class="ws-read" style="margin: 0; font-size: 19px; line-height: 33px; color: #d9d5cd">Physical exertion. Labour, training, distance, endurance: effort the body pays for.</dd>
+</div>
+<div style="display: grid; grid-template-columns: 88px minmax(0, 1fr); gap: 20px; padding: 16px 0; border-top: 1px solid #2f3034">
+<dt style="padding-top: 6px; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 14px; letter-spacing: 0.14em; text-transform: uppercase; color: #d9d5cd">Mind</dt>
+<dd class="ws-read" style="margin: 0; font-size: 19px; line-height: 33px; color: #d9d5cd">Deliberate mental effort. Study, practice, problems worked through to the end. What is merely consumed is not effort.</dd>
+</div>
+<div style="display: grid; grid-template-columns: 88px minmax(0, 1fr); gap: 20px; padding: 16px 0; border-top: 1px solid #2f3034; border-bottom: 1px solid #2f3034">
+<dt style="padding-top: 6px; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 14px; letter-spacing: 0.14em; text-transform: uppercase; color: #d9d5cd">Will</dt>
+<dd class="ws-read" style="margin: 0; font-size: 19px; line-height: 33px; color: #d9d5cd">Discipline through consistency. Will does not grow from any single deed. It grows with each day recorded in a row. A day left unrecorded wears it down.</dd>
+</div>
+</dl>
+</li>
+
+<li id="ch-3" style="display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; align-items: baseline; gap: 20px; padding-bottom: 14px; border-bottom: 1px solid #2f3034">
+<span class="ws-num" aria-hidden="true" style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 52px; line-height: 52px; color: #8d9196">III</span>
+<h2 style="margin: 0; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 24px; line-height: 28px; letter-spacing: 0.1em; text-transform: uppercase; color: #d9d5cd">The daily limit</h2>
+</div>
+<p class="ws-read" style="margin: 0; font-size: 19px; line-height: 33px; color: #d9d5cd">A day can hold only so much. The System weighs at most [N] entries in a day. Anything written beyond that is recorded, but not weighed.</p>
+<p class="ws-read" style="margin: 0; font-size: 19px; line-height: 33px; color: #d9d5cd">Gains within a single day are also bounded. Ten hours of one deed is not ten times one hour. The day ends at midnight, in the time zone the record keeps.</p>
+</li>
+
+<li id="ch-4" style="display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; align-items: baseline; gap: 20px; padding-bottom: 14px; border-bottom: 1px solid #2f3034">
+<span class="ws-num" aria-hidden="true" style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 52px; line-height: 52px; color: #8d9196">IV</span>
+<h2 style="margin: 0; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 24px; line-height: 28px; letter-spacing: 0.1em; text-transform: uppercase; color: #d9d5cd">Skills</h2>
+</div>
+<p class="ws-read" style="margin: 0; font-size: 19px; line-height: 33px; color: #d9d5cd">Skills are not chosen. When the same deed is recorded day after day, the System gives it a name.</p>
+<p class="ws-read" style="margin: 0; font-size: 19px; line-height: 33px; color: #d9d5cd">A named skill has ranks. Each rank asks for more days, and harder ones. A skill that is neglected weakens. Left long enough, it is <span style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase">Lost</span>, and must be earned again from nothing.</p>
+</li>
+
+<li id="ch-5" style="display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; align-items: baseline; gap: 20px; padding-bottom: 14px; border-bottom: 1px solid #2f3034">
+<span class="ws-num" aria-hidden="true" style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 52px; line-height: 52px; color: #8d9196">V</span>
+<h2 style="margin: 0; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 24px; line-height: 28px; letter-spacing: 0.1em; text-transform: uppercase; color: #d9d5cd">Classes</h2>
+</div>
+<p class="ws-read" style="margin: 0; font-size: 19px; line-height: 33px; color: #d9d5cd">A class is assigned, not picked. It comes only when Will is strong enough to carry one.</p>
+<p class="ws-read" style="margin: 0; font-size: 19px; line-height: 33px; color: #d9d5cd">The class is drawn from the record itself: what was done most, and how it was done. It grows with the record. When the record changes, the class takes a different form.</p>
+</li>
+
+<li id="ch-6" style="display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; align-items: baseline; gap: 20px; padding-bottom: 14px; border-bottom: 1px solid #2f3034">
+<span class="ws-num" aria-hidden="true" style="font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 52px; line-height: 52px; color: #8d9196">VI</span>
+<h2 style="margin: 0; font-family: 'Libre Caslon Condensed', 'Iowan Old Style', Georgia, serif; font-weight: 600; font-size: 24px; line-height: 28px; letter-spacing: 0.1em; text-transform: uppercase; color: #d9d5cd">Weekly judgement</h2>
+</div>
+<p class="ws-read" style="margin: 0; font-size: 19px; line-height: 33px; color: #d9d5cd">On the seventh day, the System looks back over the week as a whole. It weighs balance and constancy, not single deeds.</p>
+<p class="ws-read" style="margin: 0; font-size: 19px; line-height: 33px; color: #d9d5cd">The verdict is given once. It is kept in the Chronicle and is not revised.</p>
+</li>
+</ol>
+</div>
+
+<div style="display: flex; flex-direction: column; align-items: center; gap: 24px; padding-top: 24px">
+<div aria-hidden="true" style="display: flex; align-items: center; gap: 14px; width: 240px">
+<span style="flex: 1; height: 1px; background: #676b70"></span>
+<span style="width: 7px; height: 7px; border: 1px solid #8d9196; transform: rotate(45deg)"></span>
+<span style="flex: 1; height: 1px; background: #676b70"></span>
+</div>
+<p style="margin: 0; text-align: center; font-style: italic; font-size: 24px; line-height: 34px; color: #d9d5cd">Not everything is written here.</p>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":3300}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

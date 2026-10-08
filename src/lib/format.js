@@ -49,3 +49,11 @@ export function gainsOf({ body, mind }) {
 export function plural(n, word, pluralWord = `${word}s`) {
   return `${n} ${n === 1 ? word : pluralWord}`
 }
+
+const NUMBER_WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten',
+  'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen', 'twenty']
+
+// 5 → "five" (up to twenty; larger numbers stay as digits).
+export function numberWord(n) {
+  return NUMBER_WORDS[n] ?? String(n)
+}
