@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Navigate, Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom'
 import AppLayout from './components/AppLayout.jsx'
 import AuthPage from './pages/AuthPage.jsx'
 import JournalPage from './pages/JournalPage.jsx'
@@ -41,6 +41,10 @@ function optional(promise, fallback, what) {
 }
 
 export default function App() {
+  // Held in a ref so the sign-in listener below is set up only once.
+  const navigate = useNavigate()
+  const navigateRef = useRef(navigate)
+  navigateRef.current = navigate
   const [session, setSession] = useState(undefined) // undefined = still checking
   const [loaded, setLoaded] = useState(false)
   const [entries, setEntries] = useState([])
@@ -55,10 +59,14 @@ export default function App() {
   const [introDone, setIntroDone] = useState(introSeen)
   const [loadError, setLoadError] = useState(null)
 
-  // Keep track of whether the user is signed in.
+  // Keep track of whether the user is signed in. Signing out (or deleting the
+  // account) always leads back to the landing page.
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setSession(data.session))
-    const { data } = supabase.auth.onAuthStateChange((_event, newSession) => setSession(newSession))
+    const { data } = supabase.auth.onAuthStateChange((event, newSession) => {
+      setSession(newSession)
+      if (event === 'SIGNED_OUT') navigateRef.current('/', { replace: true })
+    })
     return () => data.subscription.unsubscribe()
   }, [])
 
