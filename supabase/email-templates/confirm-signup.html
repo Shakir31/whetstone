@@ -1,5 +1,6 @@
 <!-- Whetstone email template. Paste into Supabase: Authentication → Emails → Templates.
-     {{ .ConfirmationURL }}, {{ .Email }} and {{ .NewEmail }} are filled in by Supabase. -->
+     {{ .ConfirmationURL }}, {{ .Email }} and {{ .NewEmail }} are filled in by Supabase.
+     The logo image is served by the live site from public/email/whetstone-mark.png. -->
 <!doctype html>
 <html lang="en">
 <head>
@@ -13,6 +14,7 @@
 <tr><td align="center" style="padding:48px 16px;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:480px;">
 
+<tr><td align="center" style="padding:0 0 16px;"><img src="https://whetstone-mauve.vercel.app/email/whetstone-mark.png" width="48" height="48" alt="" style="display:block;border:0;outline:none;text-decoration:none;"></td></tr>
 <tr><td align="center" style="padding:0 0 20px;font-family:Georgia,'Times New Roman',serif;font-size:30px;line-height:34px;font-weight:bold;letter-spacing:6px;text-transform:uppercase;color:#d9d5cd;">Whetstone</td></tr>
 <tr><td align="center" style="padding:0 0 28px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td width="160" height="1" style="background:#676b70;font-size:0;line-height:0;">&nbsp;</td></tr></table></td></tr>
 
