@@ -1,0 +1,36 @@
+<!-- Whetstone email template. Paste into Supabase: Authentication → Emails → Templates.
+     {{ .ConfirmationURL }}, {{ .Email }} and {{ .NewEmail }} are filled in by Supabase. -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Confirm your new address</title>
+</head>
+<body style="margin:0;padding:0;background:#0b0c0d;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#0b0c0d;">
+<tr><td align="center" style="padding:48px 16px;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:480px;">
+
+<tr><td align="center" style="padding:0 0 20px;font-family:Georgia,'Times New Roman',serif;font-size:30px;line-height:34px;font-weight:bold;letter-spacing:6px;text-transform:uppercase;color:#d9d5cd;">Whetstone</td></tr>
+<tr><td align="center" style="padding:0 0 28px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td width="160" height="1" style="background:#676b70;font-size:0;line-height:0;">&nbsp;</td></tr></table></td></tr>
+
+<tr><td style="background:#131416;border:1px solid #2f3034;padding:28px 28px 24px;">
+<p style="margin:0 0 12px;font-family:Georgia,'Times New Roman',serif;font-size:12px;line-height:14px;letter-spacing:3px;text-transform:uppercase;color:#b7babd;"><span style="color:#8d9196;">[</span> System <span style="color:#8d9196;">]</span></p>
+<p style="margin:0 0 16px;font-family:Georgia,'Times New Roman',serif;font-size:22px;line-height:32px;font-style:italic;color:#d9d5cd;">Your record is moving to a new address.</p>
+<p style="margin:0 0 24px;font-family:Georgia,'Times New Roman',serif;font-size:16px;line-height:26px;color:#d9d5cd;">Confirm the change from {{ .Email }} to {{ .NewEmail }}. Until then, you can keep signing in with the old address.</p>
+<table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+<td bgcolor="#7a1a14" style="background:#7a1a14;border:1px solid #b5372b;">
+<a href="{{ .ConfirmationURL }}" style="display:inline-block;padding:14px 28px;font-family:Georgia,'Times New Roman',serif;font-size:14px;line-height:16px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;color:#d9d5cd;text-decoration:none;">Confirm the change</a>
+</td></tr></table>
+<p style="margin:24px 0 0;padding-top:16px;border-top:1px solid #2f3034;font-family:Georgia,'Times New Roman',serif;font-size:13px;line-height:20px;color:#a19e98;">If you did not ask for this change, ignore this email and nothing will change.</p>
+</td></tr>
+
+<tr><td style="padding:20px 4px 0;font-family:Georgia,'Times New Roman',serif;font-size:12px;line-height:18px;color:#86847f;">If the button does not work, copy this link into your browser:<br><a href="{{ .ConfirmationURL }}" style="color:#a19e98;word-break:break-all;">{{ .ConfirmationURL }}</a></td></tr>
+
+</table>
+</td></tr>
+</table>
+</body>
+</html>
