@@ -25,7 +25,7 @@ function markIntroSeen() {
 const STEPS = [Assigned, Write, Grow, Sealed]
 
 // A short introduction shown once to someone with no entries yet.
-export default function IntroPage() {
+export default function IntroPage({ onFinish }) {
   const navigate = useNavigate()
   const [step, setStep] = useState(0)
   const Step = STEPS[step]
@@ -33,6 +33,7 @@ export default function IntroPage() {
 
   function finish() {
     markIntroSeen()
+    onFinish()
     navigate('/', { replace: true })
   }
 

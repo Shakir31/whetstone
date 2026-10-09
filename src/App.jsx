@@ -50,6 +50,9 @@ export default function App() {
   const [achievements, setAchievements] = useState({}) // { [key]: earnedAt }
   const [wornTitle, setWornTitle] = useState(null)
   const [weeklySummaries, setWeeklySummaries] = useState({}) // { [week start]: { summary, facts } }
+  // Kept in state (not just read from storage) so finishing the introduction
+  // immediately changes what the Journal route shows.
+  const [introDone, setIntroDone] = useState(introSeen)
   const [loadError, setLoadError] = useState(null)
 
   // Keep track of whether the user is signed in.
@@ -162,7 +165,7 @@ export default function App() {
   }
 
   // Someone with no entries yet sees the introduction once.
-  const needsIntro = loaded && entries.length === 0 && !introSeen()
+  const needsIntro = loaded && entries.length === 0 && !introDone
 
   // Everything the pages need, shared through the layout.
   const context = {
@@ -191,7 +194,7 @@ export default function App() {
         <Route path="settings" element={<SettingsPage />} />
         <Route path="codex" element={<CodexPage />} />
       </Route>
-      <Route path="/welcome" element={<IntroPage />} />
+      <Route path="/welcome" element={<IntroPage onFinish={() => setIntroDone(true)} />} />
       <Route path="/reset-password" element={<ResetPasswordPage signedIn />} />
       <Route path="/privacy" element={<LegalPage doc="privacy" />} />
       <Route path="/terms" element={<LegalPage doc="terms" />} />
