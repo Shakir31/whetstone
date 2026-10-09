@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Navigate, Route, Routes, useNavigate } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import AppLayout from './components/AppLayout.jsx'
 import AuthPage from './pages/AuthPage.jsx'
 import JournalPage from './pages/JournalPage.jsx'
@@ -41,11 +41,10 @@ function optional(promise, fallback, what) {
 }
 
 export default function App() {
-  // Held in a ref so the sign-in listener below is set up only once.
-  const navigate = useNavigate()
-  const navigateRef = useRef(navigate)
-  navigateRef.current = navigate
   const [session, setSession] = useState(undefined) // undefined = still checking
+  // True once the person signs out (or deletes their account) in this visit:
+  // the app's pages then lead to the landing page rather than to sign in.
+  const [signedOut, setSignedOut] = useState(false)
   const [loaded, setLoaded] = useState(false)
   const [entries, setEntries] = useState([])
   const [skillNames, setSkillNames] = useState({}) // { [tag]: { name, description } }
@@ -59,13 +58,13 @@ export default function App() {
   const [introDone, setIntroDone] = useState(introSeen)
   const [loadError, setLoadError] = useState(null)
 
-  // Keep track of whether the user is signed in. Signing out (or deleting the
-  // account) always leads back to the landing page.
+  // Keep track of whether the user is signed in.
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setSession(data.session))
     const { data } = supabase.auth.onAuthStateChange((event, newSession) => {
       setSession(newSession)
-      if (event === 'SIGNED_OUT') navigateRef.current('/', { replace: true })
+      if (event === 'SIGNED_OUT') setSignedOut(true)
+      if (event === 'SIGNED_IN') setSignedOut(false)
     })
     return () => data.subscription.unsubscribe()
   }, [])
@@ -153,7 +152,8 @@ export default function App() {
 
   if (session === undefined) return <div className="surface" />
 
-  // Not signed in: the public pages. The app's own pages lead to sign in.
+  // Not signed in: the public pages. The app's own pages lead to sign in, or
+  // to the landing page right after signing out.
   if (session === null) {
     return (
       <Routes>
@@ -165,7 +165,7 @@ export default function App() {
         <Route path="/privacy" element={<LegalPage doc="privacy" />} />
         <Route path="/terms" element={<LegalPage doc="terms" />} />
         {APP_PATHS.map((path) => (
-          <Route key={path} path={path} element={<Navigate to="/signin" replace />} />
+          <Route key={path} path={path} element={<Navigate to={signedOut ? '/' : '/signin'} replace />} />
         ))}
         <Route path="*" element={<NotFoundPage signedIn={false} />} />
       </Routes>

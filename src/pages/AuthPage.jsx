@@ -76,6 +76,7 @@ export default function AuthPage({ mode }) {
           <TextInput
             label="Password"
             type="password"
+            revealable
             autoComplete={isSignUp ? 'new-password' : 'current-password'}
             value={password}
             onChange={(e) => setPassword(e.target.value)}

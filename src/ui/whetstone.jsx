@@ -1,7 +1,7 @@
 // Whetstone design system components, ported from
 // design/whetstone-design-system/components/bundle.js. Styles: src/styles/whetstone.css.
 
-import { useId } from 'react'
+import { useId, useState } from 'react'
 
 const cx = (...classes) => classes.filter(Boolean).join(' ')
 
@@ -22,10 +22,25 @@ export function Button({ variant = 'secondary', size, block, className, type = '
   )
 }
 
-export function TextInput({ label, hint, error, id, className, ...rest }) {
+// `revealable` (password fields only) adds an eye button to show the password.
+export function TextInput({ label, hint, error, id, className, revealable, type = 'text', ...rest }) {
   const autoId = useId()
   const inputId = id ?? autoId
   const hintId = hint ? `${inputId}-hint` : undefined
+  const [shown, setShown] = useState(false)
+  const canReveal = revealable && type === 'password'
+
+  const input = (
+    <input
+      {...rest}
+      type={canReveal && shown ? 'text' : type}
+      id={inputId}
+      className={cx('ws-input', canReveal && 'ws-input--revealable')}
+      aria-describedby={hintId}
+      aria-invalid={error || undefined}
+    />
+  )
+
   return (
     <div className={cx('ws-field', error && 'ws-field--error', className)}>
       {label && (
@@ -35,20 +50,41 @@ export function TextInput({ label, hint, error, id, className, ...rest }) {
           </label>
         </div>
       )}
-      <input
-        type="text"
-        {...rest}
-        id={inputId}
-        className="ws-input"
-        aria-describedby={hintId}
-        aria-invalid={error || undefined}
-      />
+      {canReveal ? (
+        <div className="ws-reveal">
+          {input}
+          <button
+            type="button"
+            className="ws-reveal__toggle"
+            onClick={() => setShown((s) => !s)}
+            aria-label={shown ? 'Hide password' : 'Show password'}
+            aria-pressed={shown}
+            aria-controls={inputId}
+          >
+            <EyeIcon crossed={shown} />
+          </button>
+        </div>
+      ) : (
+        input
+      )}
       {hint && (
         <p id={hintId} className="ws-field__hint">
           {hint}
         </p>
       )}
     </div>
+  )
+}
+
+// A watchful eye in the icon style: a lozenge with a square pupil, struck
+// through when the password is showing.
+function EyeIcon({ crossed }) {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" strokeLinejoin="miter" aria-hidden="true">
+      <path d="M2 12l10-7 10 7-10 7z" />
+      <path d="M10.5 10.5h3v3h-3z" />
+      {crossed && <path d="M4 20L20 4" />}
+    </svg>
   )
 }
 

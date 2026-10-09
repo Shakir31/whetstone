@@ -57,6 +57,7 @@ export default function ResetPasswordPage({ signedIn }) {
             <TextInput
               label="New password"
               type="password"
+              revealable
               autoComplete="new-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -67,6 +68,7 @@ export default function ResetPasswordPage({ signedIn }) {
             <TextInput
               label="Confirm password"
               type="password"
+              revealable
               autoComplete="new-password"
               value={confirm}
               onChange={(e) => setConfirm(e.target.value)}
