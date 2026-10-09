@@ -46,7 +46,11 @@ export default function AuthPage({ mode }) {
     setBusy(false)
 
     if (error) setMessage({ text: error.message, isError: true })
-    else if (isSignUp && !data.session) {
+    else if (isSignUp && data.user?.identities?.length === 0) {
+      // Supabase doesn't report a taken email as an error (so addresses can't be
+      // probed); it returns a user with no identities instead.
+      setMessage({ text: 'An account with this email already exists.', isError: true, existing: true })
+    } else if (isSignUp && !data.session) {
       setMessage({ text: 'Check your email to confirm your account.', isError: false })
     }
   }
@@ -82,6 +86,12 @@ export default function AuthPage({ mode }) {
           {message && (
             <p className={message.isError ? 'form-error' : 'ws-small'} role={message.isError ? 'alert' : 'status'}>
               {message.text}
+              {message.existing && (
+                <>
+                  {' '}
+                  <Link to="/signin">Sign in</Link> or <Link to="/forgot-password">reset the password</Link>.
+                </>
+              )}
             </p>
           )}
           <Button type="submit" variant="primary" block disabled={busy}>

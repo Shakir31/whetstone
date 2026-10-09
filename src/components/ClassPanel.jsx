@@ -11,6 +11,7 @@ import {
 } from '../lib/classes.js'
 import { numeral } from '../lib/skills.js'
 import { plural } from '../lib/format.js'
+import { CLASS_DAILY_CAP } from '../lib/stats.js'
 import { LockIcon } from './Icons.jsx'
 
 export default function ClassPanel({ playerClass, will, entries, activityPaths }) {
@@ -39,6 +40,7 @@ export default function ClassPanel({ playerClass, will, entries, activityPaths }
         <p className="class__name">{className(playerClass)}</p>
         {playerClass.title && <p className="class__title">{playerClass.title}</p>}
         <p className="class__desc">{evolved ? playerClass.evolvedDescription || base.description : base.description}</p>
+        <p className="ws-micro class__cap">Daily limit: {CLASS_DAILY_CAP} Body, {CLASS_DAILY_CAP} Mind</p>
       </div>
 
       <div className="class__progress">

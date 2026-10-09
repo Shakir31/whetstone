@@ -742,6 +742,11 @@ a:hover {
   color: var(--ash);
 }
 
+.class__cap {
+  margin: var(--space-2) 0 0;
+  color: var(--pewter-light);
+}
+
 .class__progress {
   display: flex;
   flex-direction: column;
@@ -1027,6 +1032,10 @@ a:hover {
   line-height: 21px;
   font-style: italic;
   color: var(--ash);
+}
+
+.judgement__cap {
+  animation: ws-fade var(--duration-fade) var(--ease-weight) 1600ms both;
 }
 
 .judgement__continue {

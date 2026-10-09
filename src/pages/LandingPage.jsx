@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { LockIcon } from '../components/Icons.jsx'
 import SiteFooter from '../components/SiteFooter.jsx'
+import LandingDemo from '../components/LandingDemo.jsx'
 import { LogoMark } from '../components/Logo.jsx'
 
 const STEPS = [
@@ -60,23 +61,7 @@ export default function LandingPage() {
               ))}
             </ol>
 
-            <figure className="ws-panel ws-grain ws-worn landing-sample" aria-label="A sample entry and its judgement">
-              <div className="ws-micro landing-sample__head">
-                <span>Today's deeds</span>
-                <span>21:14</span>
-              </div>
-              <p className="landing-sample__entry">
-                5 sets of weighted decline pushups, each to failure. Then read two chapters on Roman history.
-              </p>
-              <div className="landing-sample__verdict">
-                <span className="system-tag">System</span>
-                <p>Physical exertion recorded. Do not grow complacent.</p>
-              </div>
-              <div className="ws-label landing-sample__gains">
-                <span>Body +0.7</span>
-                <span>Mind +0.3</span>
-              </div>
-            </figure>
+            <LandingDemo />
           </div>
         </section>
 

@@ -281,8 +281,13 @@ a.auth__name {
   color: var(--ash);
 }
 
+.landing-sample__field {
+  position: relative;
+}
+
 .landing-sample__entry {
   margin: 0;
+  transition: color var(--duration-fade) var(--ease-weight);
   padding: 14px 20px;
   background-color: var(--slate);
   background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 30px, var(--line) 30px, var(--line) 31px);
@@ -294,7 +299,31 @@ a.auth__name {
   line-height: 31px;
 }
 
+.landing-sample__entry--reading {
+  color: var(--ash);
+}
+
+/* Fixed height so the panel doesn't jump as the result appears. */
+.landing-sample__result {
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-4);
+}
+
+.landing-sample__hint {
+  margin: 0;
+  font-style: italic;
+}
+
+.landing-sample__actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .landing-sample__verdict {
+  animation: ws-fade var(--duration-fade) var(--ease-weight) both;
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
@@ -306,6 +335,10 @@ a.auth__name {
   font-style: italic;
   font-size: 21px;
   line-height: 31px;
+}
+
+.landing-sample__gains span {
+  animation: ws-fade var(--duration-fade) var(--ease-weight) both;
 }
 
 .landing-sample__gains {
@@ -1155,7 +1188,9 @@ a.auth__name {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .intro__step {
+  .intro__step,
+  .landing-sample__verdict,
+  .landing-sample__gains span {
     animation: none;
   }
 }

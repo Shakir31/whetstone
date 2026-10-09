@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Button, LevelUp, SystemMessage } from '../ui/whetstone.jsx'
-import { statLevels } from '../lib/stats.js'
+import { CLASS_DAILY_CAP, DAILY_CAP, statLevels } from '../lib/stats.js'
 import { numeral, skillName } from '../lib/skills.js'
 import { time } from '../lib/format.js'
 
@@ -121,7 +121,17 @@ function Reveal({ entry, before, after, skillEvents = [], skillNames = {}, class
 function ClassCeremony({ event }) {
   const rank = (n) => 'Rank ' + numeral(n)
   if (event.kind === 'assigned') {
-    return <LevelUp word={CLASS_WORDS.assigned} stat={event.name} to={event.to} format={rank} note={event.title} />
+    return (
+      <>
+        <LevelUp word={CLASS_WORDS.assigned} stat={event.name} to={event.to} format={rank} note={event.title} />
+        <SystemMessage className="judgement__cap">
+          <p>
+            The daily limit has risen. From today, Body and Mind can each gain up to {CLASS_DAILY_CAP} in a day, up
+            from {DAILY_CAP}.
+          </p>
+        </SystemMessage>
+      </>
+    )
   }
   if (event.kind === 'evolved') {
     return (
