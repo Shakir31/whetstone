@@ -2,7 +2,7 @@
 
 // Where people can send questions about privacy and the terms. Shown on the
 // legal pages; set this before inviting other people to Whetstone.
-export const CONTACT_EMAIL = null
+export const CONTACT_EMAIL = "dummyemail@gmail.com";
 
 // When the privacy policy and terms were last changed.
-export const LEGAL_UPDATED = '9 October 2026'
+export const LEGAL_UPDATED = "9 October 2026";

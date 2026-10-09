@@ -36,7 +36,12 @@ export default function AuthPage({ mode }) {
     setBusy(true)
     setMessage(null)
     const { data, error } = isSignUp
-      ? await supabase.auth.signUp({ email, password })
+      ? await supabase.auth.signUp({
+          email,
+          password,
+          // The confirmation email links back to this site (live or local).
+          options: { emailRedirectTo: `${window.location.origin}/` },
+        })
       : await supabase.auth.signInWithPassword({ email, password })
     setBusy(false)
 
