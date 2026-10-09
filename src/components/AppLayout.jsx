@@ -1,5 +1,6 @@
 import { NavLink, Outlet } from 'react-router-dom'
 import { ChronicleIcon, JournalIcon, SettingsIcon, StatusIcon } from './Icons.jsx'
+import { LogoMark } from './Logo.jsx'
 
 const PAGES = [
   { to: '/', label: 'Journal', Icon: JournalIcon },
@@ -16,6 +17,7 @@ export default function AppLayout({ context }) {
       <header className="site-header">
         <div className="site-header__inner">
           <NavLink to="/" className="brand">
+            <LogoMark size={26} />
             Whetstone
           </NavLink>
           <nav aria-label="Primary">

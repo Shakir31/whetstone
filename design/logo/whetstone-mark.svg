@@ -1,0 +1,8 @@
+<!-- Whetstone mark (version C, "honed, with a core"): the divider lozenge with its
+     right corner ground flat, the shaving beside it, and a solid bone core.
+     Drawn on a 32 × 32 grid. Red #b5372b, bone #d9d5cd. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <polygon points="15,3.5 24,12.5 24,19.5 15,28.5 2.5,16" fill="none" stroke="#b5372b" stroke-width="2.5" stroke-linejoin="miter" stroke-miterlimit="10"/>
+  <polygon points="15,10 20.5,15.5 20.5,16.5 15,22 9,16" fill="#d9d5cd"/>
+  <polygon points="27,12 29.5,14.5 29.5,17.5 27,20" fill="#b5372b"/>
+</svg>

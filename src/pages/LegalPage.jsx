@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { BackIcon } from '../components/Icons.jsx'
+import { LogoMark } from '../components/Logo.jsx'
 import { CONTACT_EMAIL, LEGAL_UPDATED } from '../lib/site.js'
 
 // The privacy policy (/privacy) and terms (/terms). Plain reading pages that
@@ -12,6 +13,7 @@ export default function LegalPage({ doc }) {
       <header className="legal__header">
         <div className="legal__bar">
           <Link to="/" className="brand">
+            <LogoMark size={24} />
             Whetstone
           </Link>
           <nav aria-label="Legal">

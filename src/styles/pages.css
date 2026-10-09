@@ -129,6 +129,10 @@ a.auth__name {
   text-align: center;
 }
 
+.landing-hero__mark {
+  color: var(--bone);
+}
+
 .landing-hero__eyebrow {
   color: var(--ash);
   letter-spacing: 0.3em;

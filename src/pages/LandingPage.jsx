@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { LockIcon } from '../components/Icons.jsx'
 import SiteFooter from '../components/SiteFooter.jsx'
+import { LogoMark } from '../components/Logo.jsx'
 
 const STEPS = [
   { label: 'Write', line: 'Write what you did today.', note: 'In plain words. The System reads all of it.' },
@@ -14,6 +15,7 @@ export default function LandingPage() {
     <div className="surface landing">
       <main>
         <section className="landing-hero" aria-labelledby="hero-name">
+          <LogoMark size={72} className="landing-hero__mark" />
           <span className="ws-micro landing-hero__eyebrow">Day 1</span>
           <h1 id="hero-name" className="landing-hero__name">
             Whetstone

@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Whetstone — combined mark drafts</title>
+<style>
+  @font-face { font-family: 'Libre Caslon Condensed'; src: url('../../src/styles/fonts/LibreCaslonCondensed-Bold.woff2') format('woff2'); font-weight: 700; }
+  @font-face { font-family: 'Libre Caslon Condensed'; src: url('../../src/styles/fonts/LibreCaslonCondensed-SemiBold.woff2') format('woff2'); font-weight: 600; }
+  body { margin: 0; padding: 40px; background: #0b0c0d; color: #d9d5cd; font-family: Georgia, serif; }
+  h1 { margin: 0 0 8px; font: 600 28px/32px 'Libre Caslon Condensed', Georgia, serif; letter-spacing: .06em; text-transform: uppercase; }
+  .intro { margin: 0 0 32px; color: #a19e98; max-width: 70ch; }
+  .row { display: grid; grid-template-columns: 200px 120px 260px 140px 1fr; gap: 20px; align-items: center; padding: 24px 0; border-top: 1px solid #2f3034; }
+  .big { width: 200px; height: 200px; background: #0b0c0d; border: 1px solid #2f3034; display: flex; align-items: center; justify-content: center; }
+  .tabs { display: flex; flex-direction: column; gap: 14px; align-items: center; }
+  .tab { display: flex; align-items: center; gap: 8px; padding: 7px 12px; background: #131416; font: 12px system-ui, sans-serif; color: #b7babd; }
+  .tab.light { background: #f5f3ef; color: #2f3034; }
+  .lockup { display: flex; align-items: center; gap: 12px; padding: 18px 20px; background: #131416; border: 1px solid #2f3034; }
+  .lockup span { font: 700 18px/1 'Libre Caslon Condensed', Georgia, serif; letter-spacing: .18em; text-transform: uppercase; }
+  .light-box { width: 140px; height: 140px; background: #d9d5cd; display: flex; align-items: center; justify-content: center; }
+  .caption b { display: block; font: 600 15px 'Libre Caslon Condensed', Georgia, serif; letter-spacing: .14em; text-transform: uppercase; margin-bottom: 6px; }
+  .caption { color: #a19e98; font-size: 15px; line-height: 23px; }
+  .ref { opacity: .8; }
+</style>
+</head>
+<body>
+<h1>Combined mark — drafts</h1>
+<p class="intro">The thin red diamond from the current tab icon, with the ground-flat corner and the shaving from direction II. Each row shows the mark large, as browser tab icons at 32px and 16px, beside the wordmark, and on a light background.</p>
+
+<!-- Shared shapes, on a 32 × 32 grid. The diamond's right corner is ground flat at x = 25. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- The current placeholder, for reference -->
+    <symbol id="placeholder" viewBox="0 0 32 32">
+      <polygon points="16,6.1 25.9,16 16,25.9 6.1,16" fill="none" stroke="#b5372b" stroke-width="2.5" />
+    </symbol>
+    <!-- A: red honed outline, red shaving -->
+    <symbol id="a" viewBox="0 0 32 32">
+      <polygon points="15,3.5 24,12.5 24,19.5 15,28.5 2.5,16" fill="none" stroke="#b5372b" stroke-width="2.5" stroke-linejoin="miter" stroke-miterlimit="10" />
+      <polygon points="27,12 29.5,14.5 29.5,17.5 27,20" fill="#b5372b" />
+    </symbol>
+    <!-- B: red honed outline, bone shaving -->
+    <symbol id="b" viewBox="0 0 32 32">
+      <polygon points="15,3.5 24,12.5 24,19.5 15,28.5 2.5,16" fill="none" stroke="#b5372b" stroke-width="2.5" stroke-linejoin="miter" stroke-miterlimit="10" />
+      <polygon points="27,12 29.5,14.5 29.5,17.5 27,20" fill="currentColor" />
+    </symbol>
+    <!-- C: placeholder kept whole, with the honed edge as a bone mark inside the flat side -->
+    <symbol id="c" viewBox="0 0 32 32">
+      <polygon points="15,3.5 24,12.5 24,19.5 15,28.5 2.5,16" fill="none" stroke="#b5372b" stroke-width="2.5" stroke-linejoin="miter" stroke-miterlimit="10" />
+      <polygon points="15,10 20.5,15.5 20.5,16.5 15,22 9,16" fill="currentColor" />
+      <polygon points="27,12 29.5,14.5 29.5,17.5 27,20" fill="#b5372b" />
+    </symbol>
+  </defs>
+</svg>
+
+<template id="row">
+  <div class="row">
+    <div class="big"><svg width="150" height="150" style="color:#d9d5cd"><use /></svg></div>
+    <div class="tabs">
+      <div class="tab"><svg width="32" height="32" style="color:#d9d5cd;background:#0b0c0d"><use /></svg></div>
+      <div class="tab"><svg width="16" height="16" style="color:#d9d5cd;background:#0b0c0d"><use /></svg>Whetstone</div>
+      <div class="tab light"><svg width="16" height="16" style="color:#d9d5cd;background:#0b0c0d"><use /></svg>Whetstone</div>
+    </div>
+    <div class="lockup"><svg width="26" height="26" style="color:#d9d5cd"><use /></svg><span>Whetstone</span></div>
+    <div class="light-box"><svg width="100" height="100" style="color:#131416"><use /></svg></div>
+    <p class="caption"></p>
+  </div>
+</template>
+
+<div id="rows"></div>
+
+<script>
+  const rows = [
+    ['placeholder', 'Current placeholder', 'For reference: the tab icon in use today.', true],
+    ['a', 'A. Honed, all red', 'The same thin red outline, with the right corner ground flat and the shaving beside it, also red. Closest to the placeholder: one colour, one idea.'],
+    ['b', 'B. Honed, bone shaving', 'As A, but the shaving is bone. The cut stands out more, and the mark gains a second colour.'],
+    ['c', 'C. Honed, with a core', 'As A, with a small solid bone lozenge inside, echoing the solid mark of direction II. Heaviest of the three.'],
+  ]
+  const tpl = document.getElementById('row')
+  for (const [id, name, text, isRef] of rows) {
+    const node = tpl.content.cloneNode(true)
+    node.querySelectorAll('use').forEach((u) => u.setAttribute('href', '#' + id))
+    node.querySelectorAll('svg').forEach((s) => s.setAttribute('viewBox', '0 0 32 32'))
+    node.querySelector('.caption').innerHTML = `<b>${name}</b>${text}`
+    if (isRef) node.querySelector('.row').classList.add('ref')
+    document.getElementById('rows').appendChild(node)
+  }
+</script>
+</body>
+</html>
