@@ -92,7 +92,7 @@ function Judgement() {
           <p className="codex__example-entry">
             5 sets of weighted decline pushups, each to failure. Then read two chapters on Roman history.
           </p>
-          <p className="codex__example-verdict">Physical exertion recorded. Do not grow complacent.</p>
+          <p className="codex__example-verdict">The exertion has been recorded. Do not grow complacent.</p>
           <span className="ws-micro codex__example-gains">
             <span>Body +0.7</span>
             <span>Mind +0.3</span>

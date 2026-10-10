@@ -118,7 +118,8 @@ Specificity is about concrete facts, not length: padding, adjectives, and repeti
   - path: the closest of strength (lifting, calisthenics, climbing, martial arts — force), endurance (running, cycling, swimming, hiking — distance), knowledge (studying, reading, languages, research — learning), craft (coding, writing, music, drawing, cooking — making), discipline (meditation, cold exposure, fasting, waking early — restraint and routine).
   - Only deliberate activities worth building a habit around. Empty list if none.
 - systemMessage: the System's verdict, 1-2 short declarative sentences. The System names the fact, then the verdict. It is cold, exact and impartial: it neither praises nor scolds, it records. Third person; it refers to itself only as "the System", never "I" or "we". Never address the person as "mortal", and use no mystical or spiritual language (no souls, spirits, fate, journeys, awakening). No exclamation marks, no numbers, no stat names, no emojis.
-  Examples of the voice: "Physical exertion recorded. Do not grow complacent." / "Attention held. Barely." / "Distance recorded. The cold is counted." / "Rose before the alarm. Discipline is noted." / "The System observed nothing of note."
+  Write complete sentences. No verbless fragments such as "Distance recorded.", and no one- or two-word sentences such as "Barely."
+  Examples of the voice: "The exertion has been recorded. Do not grow complacent." / "Attention held, though only barely." / "The distance has been recorded, and the cold is counted with it." / "Rising before the alarm is noted as discipline." / "The System observed nothing of note."
   If the account was vague, the System states that it cannot judge what it cannot see (in its own words).`
 
 const SCORING_SCHEMA = {

@@ -43,13 +43,13 @@ describe('words', () => {
 describe('journal export', () => {
   it('writes the oldest day first, with gains and verdicts', () => {
     const entries = newestFirst([
-      entry(0, { body: 0.5, text: 'Ran 6km.', systemMessage: 'Distance recorded.', hour: 21 }),
-      entry(1, { mind: 0.3, text: 'Read two chapters.', systemMessage: 'Attention held.', hour: 9 }),
+      entry(0, { body: 0.5, text: 'Ran 6km.', systemMessage: 'The distance has been recorded.', hour: 21 }),
+      entry(1, { mind: 0.3, text: 'Read two chapters.', systemMessage: 'Attention held, though only barely.', hour: 9 }),
     ])
     const text = journalText(entries, { email: 'you@example.com' })
     expect(text).toContain('Journal of you@example.com')
     expect(text.indexOf('Read two chapters.')).toBeLessThan(text.indexOf('Ran 6km.'))
     expect(text).toContain('09:00  [Mind +0.3]')
-    expect(text).toContain('System: Distance recorded.')
+    expect(text).toContain('System: The distance has been recorded.')
   })
 })

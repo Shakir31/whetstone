@@ -6,7 +6,7 @@ import { Button } from '../ui/whetstone.jsx'
 const SAMPLES = [
   {
     entry: '5 sets of weighted decline pushups, each to failure. Then read two chapters on Roman history.',
-    verdict: 'Physical exertion recorded. Do not grow complacent.',
+    verdict: 'The exertion has been recorded. Do not grow complacent.',
     gains: ['Body +0.7', 'Mind +0.3'],
   },
   {
@@ -16,12 +16,12 @@ const SAMPLES = [
   },
   {
     entry: 'Ran 8km before work in the rain, the last two at threshold pace.',
-    verdict: 'Distance recorded. The cold is counted.',
+    verdict: 'The distance has been recorded, and the cold is counted with it.',
     gains: ['Body +0.6'],
   },
   {
     entry: 'Two hours of Spanish grammar without my phone in the room, then twenty minutes of meditation.',
-    verdict: 'Attention held. The System takes note.',
+    verdict: 'Attention held for the whole session, and the System takes note.',
     gains: ['Mind +0.6'],
   },
 ]
