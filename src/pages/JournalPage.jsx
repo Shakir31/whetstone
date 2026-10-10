@@ -55,7 +55,7 @@ export default function JournalPage() {
       entry,
       before: stats,
       after: statsAfter,
-      skillEvents: skillEvents(skills, skillsAfter),
+      skillEvents: skillEvents(skills, skillsAfter, Object.keys(newSkillNames)),
       skillNames: { ...skillNames, ...newSkillNames },
       classEvent: classEvent(
         { playerClass, entries, paths: activityPaths },

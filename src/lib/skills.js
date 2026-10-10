@@ -113,13 +113,22 @@ export function skillName(tag, names) {
 
 // What changed for each activity between two computeSkills() results:
 // a skill acquired, ranked up, or restored from Lost.
-export function skillEvents(before, after) {
+// `newlyNamed` lists activities the System named with this entry: a skill that
+// unlocked earlier without a judgement (e.g. after a rule change) is announced
+// when it gets its name.
+export function skillEvents(before, after, newlyNamed = []) {
   const events = []
   for (const [tag, now] of Object.entries(after)) {
     const was = before[tag]
     if (now.rank <= (was?.rank ?? 0)) continue
     const kind = !was?.unlocked ? 'acquired' : was.lost ? 'restored' : 'ranked'
     events.push({ tag, kind, from: was?.rank ?? 0, to: now.rank })
+  }
+  for (const tag of newlyNamed) {
+    const now = after[tag]
+    if (now?.rank > 0 && !events.some((e) => e.tag === tag)) {
+      events.push({ tag, kind: 'acquired', from: 0, to: now.rank })
+    }
   }
   return events
 }

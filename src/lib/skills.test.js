@@ -107,6 +107,19 @@ describe('computeSkills and events', () => {
     ])
   })
 
+  it('announces a skill unlocked earlier when the System names it', () => {
+    const running = { rank: 1, unlocked: true, lost: false }
+    const before = { running, reading: { rank: 0, unlocked: false } }
+    const after = { running, reading: { rank: 1, unlocked: true } }
+    // Running unlocked before this entry (no rank change) but was named now.
+    expect(skillEvents(before, after, ['running', 'reading'])).toEqual([
+      { tag: 'reading', kind: 'acquired', from: 0, to: 1 },
+      { tag: 'running', kind: 'acquired', from: 0, to: 1 },
+    ])
+    // A Lost skill being named is not announced as acquired.
+    expect(skillEvents({}, { cycling: { rank: 0, unlocked: true, lost: true } }, ['cycling'])).toEqual([])
+  })
+
   it('warns when a demotion is within 3 days and the deed was not done today', () => {
     expect(isWeakening({ daysUntilDemotion: 3, doneToday: false })).toBe(true)
     expect(isWeakening({ daysUntilDemotion: 4, doneToday: false })).toBe(false)

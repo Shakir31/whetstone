@@ -369,6 +369,9 @@ function daysApart(a: string, b: string) {
   return Math.round((Date.parse(b) - Date.parse(a)) / 86_400_000)
 }
 
+// At most this many skills are named in one judgement (each name is an AI call).
+const MAX_SKILLS_NAMED_PER_ENTRY = 3
+
 // Has this activity ever been done RUN_FOR_RANK days in a row, allowing
 // `restDays` missed days in a row?
 function hasUnlocked(sortedDays: string[], restDays: number) {
@@ -385,22 +388,26 @@ function hasUnlocked(sortedDays: string[], restDays: number) {
 
 type HistoryRow = { created_at: string; tags: string[] | null; body: number | string; mind: number | string }
 
-// Names and saves a skill for each of this entry's activities that has now
-// been unlocked but has no name yet. Returns the newly named skills.
+// Names and saves skills that have been unlocked but have no name yet.
+// Returns the newly named skills.
 async function nameNewSkills(
   admin: ReturnType<typeof createClient>,
   userId: string,
-  tags: string[],
+  entryTags: string[],
   history: HistoryRow[],
   timeZone: string,
   alreadyNamed: Set<string>,
   paths: Record<string, string>,
 ) {
-  if (tags.length === 0) return []
+  // This entry's activities first, then any other activity in the record: a
+  // skill can also be unlocked without a new entry, e.g. when a rule changes.
+  const candidates = [...new Set([...entryTags, ...history.flatMap((row) => row.tags ?? [])])].filter(
+    (tag) => !alreadyNamed.has(tag),
+  )
 
   const newSkills = []
-  for (const tag of tags) {
-    if (alreadyNamed.has(tag)) continue
+  for (const tag of candidates) {
+    if (newSkills.length >= MAX_SKILLS_NAMED_PER_ENTRY) break
     const days = [
       ...new Set(history.filter((row) => row.tags?.includes(tag)).map((row) => dayKeyIn(row.created_at, timeZone))),
     ].sort()
