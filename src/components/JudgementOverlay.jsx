@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { Button, LevelUp, SystemMessage } from '../ui/whetstone.jsx'
 import { CLASS_DAILY_CAP, DAILY_CAP, statLevels } from '../lib/stats.js'
 import { numeral, skillName } from '../lib/skills.js'
@@ -23,11 +24,20 @@ const SKILL_NOTES = { ranked: 'The habit deepens.', restored: 'What was lost has
 const CLASS_WORDS = { assigned: 'Class assigned', ranked: 'Class advanced', evolved: 'Class evolved' }
 
 // Full-screen reveal of the System's verdict once an entry has been judged.
+// Drawn straight into <body> so it covers everything, including the header
+// and the bottom navigation bar on phones.
 export default function JudgementOverlay(props) {
-  return (
+  // While open: hide the phone navigation bar and keep the page behind still.
+  useEffect(() => {
+    document.body.classList.add('judgement-open')
+    return () => document.body.classList.remove('judgement-open')
+  }, [])
+
+  return createPortal(
     <div className="judgement" role="dialog" aria-modal="true" aria-label="Judgement" aria-live="polite">
       <Reveal {...props} />
-    </div>
+    </div>,
+    document.body,
   )
 }
 

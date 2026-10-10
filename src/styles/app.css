@@ -1030,6 +1030,10 @@ a:hover {
   animation: ws-fade var(--duration-fade) var(--ease-weight) both;
 }
 
+body.judgement-open {
+  overflow: hidden;
+}
+
 .judgement__reveal {
   width: 100%;
   max-width: 560px;
@@ -1207,6 +1211,11 @@ a:hover {
   .nav-link--active,
   .nav-link--active:hover {
     box-shadow: inset 0 2px 0 0 var(--blood-bar);
+  }
+
+  /* The judgement screen takes the whole phone screen. */
+  body.judgement-open .nav-list {
+    display: none;
   }
 
   .page,
