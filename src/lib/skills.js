@@ -7,6 +7,9 @@ import { dayKey } from './stats.js'
 
 export const RUN_FOR_RANK = 5 // days of the same activity in a row for each rank
 export const REST_DAYS_ALLOWED = 1 // a single missed day doesn't break the run
+// Physical training needs recovery, so its runs allow longer rests.
+export const PHYSICAL_PATHS = ['strength', 'endurance']
+export const PHYSICAL_REST_DAYS_ALLOWED = 2
 export const MAX_RANK = 5
 export const DEMOTE_AFTER_DAYS = 7 // each this many days without the activity costs a rank
 export const WARN_WITHIN_DAYS = 3 // warn when a demotion is this close
@@ -22,10 +25,16 @@ function daysApart(a, b) {
   return Math.round((Date.parse(b) - Date.parse(a)) / 86_400_000)
 }
 
+// Rest days in a row an activity's run allows, from its path.
+export function restDaysFor(path) {
+  return PHYSICAL_PATHS.includes(path) ? PHYSICAL_REST_DAYS_ALLOWED : REST_DAYS_ALLOWED
+}
+
 // Plays through the days an activity was done (sorted "YYYY-MM-DD" keys):
 // each unbroken run of RUN_FOR_RANK days raises the rank, each
-// DEMOTE_AFTER_DAYS days without it lowers the rank.
-export function skillFromDays(days, today) {
+// DEMOTE_AFTER_DAYS days without it lowers the rank. `restDays` is how many
+// days in a row can be missed without breaking a run.
+export function skillFromDays(days, today, restDays = REST_DAYS_ALLOWED) {
   let rank = 0
   let unlocked = false
   let run = 0
@@ -36,7 +45,7 @@ export function skillFromDays(days, today) {
     if (prev) {
       const missed = daysApart(prev, day) - 1
       if (unlocked) rank = Math.max(0, rank - Math.floor(missed / DEMOTE_AFTER_DAYS))
-      if (missed > REST_DAYS_ALLOWED) run = 0
+      if (missed > restDays) run = 0
     }
     run += 1
     if (run === RUN_FOR_RANK) {
@@ -52,7 +61,7 @@ export function skillFromDays(days, today) {
   // missed until it is over.
   const missed = prev ? Math.max(0, daysApart(prev, today) - 1) : 0
   if (unlocked) rank = Math.max(0, rank - Math.floor(missed / DEMOTE_AFTER_DAYS))
-  const runAlive = missed <= REST_DAYS_ALLOWED
+  const runAlive = missed <= restDays
 
   return {
     rank,
@@ -68,8 +77,9 @@ export function skillFromDays(days, today) {
   }
 }
 
-// { [tag]: skill } for every activity in the entries.
-export function computeSkills(entries, now = new Date()) {
+// { [tag]: skill } for every activity in the entries. `paths` is
+// { [activity]: path }, used for the rest days each activity allows.
+export function computeSkills(entries, now = new Date(), paths = {}) {
   const daysByTag = new Map()
   for (const entry of entries) {
     for (const tag of entry.tags ?? []) {
@@ -81,7 +91,7 @@ export function computeSkills(entries, now = new Date()) {
   const today = dayKey(now)
   const skills = {}
   for (const [tag, days] of daysByTag) {
-    skills[tag] = { tag, ...skillFromDays([...days].sort(), today) }
+    skills[tag] = { tag, ...skillFromDays([...days].sort(), today, restDaysFor(paths[tag])) }
   }
   return skills
 }

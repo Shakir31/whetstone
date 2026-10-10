@@ -1,5 +1,5 @@
 import { CLASS_DAILY_CAP, DAILY_CAP, DAYS_PER_WILL } from '../lib/stats.js'
-import { DEMOTE_AFTER_DAYS, MAX_RANK, REST_DAYS_ALLOWED, RUN_FOR_RANK, numeral } from '../lib/skills.js'
+import { DEMOTE_AFTER_DAYS, MAX_RANK, PHYSICAL_REST_DAYS_ALLOWED, REST_DAYS_ALLOWED, RUN_FOR_RANK, numeral } from '../lib/skills.js'
 import { DAYS_PER_CLASS_RANK, EVOLVE_AT_RANK, FINAL_AT_RANK, WILL_FOR_CLASS } from '../lib/classes.js'
 import { numberWord } from '../lib/format.js'
 
@@ -150,8 +150,9 @@ function Skills() {
     <>
       <p className="codex__text">
         When the same kind of deed is recorded {numberWord(RUN_FOR_RANK)} days in a row, the System gives it a name and
-        it becomes a skill. {REST_DAYS_ALLOWED === 1 ? 'A single rest day' : `Up to ${REST_DAYS_ALLOWED} rest days`} in
-        between will not break the run.
+        it becomes a skill. Missing {REST_DAYS_ALLOWED === 1 ? 'a single day' : `up to ${numberWord(REST_DAYS_ALLOWED)} days`}{' '}
+        between sessions will not break the run. Physical training such as lifting or running needs recovery, so it can
+        rest for {numberWord(PHYSICAL_REST_DAYS_ALLOWED)} days in a row.
       </p>
       <p className="codex__text">
         Each further run of {numberWord(RUN_FOR_RANK)} days raises the skill one rank, up to Rank {numeral(MAX_RANK)}.

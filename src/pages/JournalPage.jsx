@@ -39,7 +39,7 @@ export default function JournalPage() {
     const classDayAfter = classDayOf(classAfter)
     const pathsAfter = { ...activityPaths, ...submitted.activityPaths }
     const statsAfter = computeStats(allEntries, classDayAfter)
-    const skillsAfter = computeSkills(allEntries)
+    const skillsAfter = computeSkills(allEntries, new Date(), pathsAfter)
     const newAchievements = earnedKeys({
       entries: allEntries,
       stats: statsAfter,

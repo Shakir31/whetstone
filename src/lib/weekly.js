@@ -38,7 +38,7 @@ export function weekLabel(weekKey) {
 const round1 = (n) => Math.round(n * 10) / 10
 
 // The facts the System is given about one week, worked out from the record.
-export function weekFacts(entries, week, { classDay = null, skillNames = {} } = {}) {
+export function weekFacts(entries, week, { classDay = null, skillNames = {}, paths = {} } = {}) {
   const t = (e) => Date.parse(e.createdAt)
   const before = entries.filter((e) => t(e) < week.start.getTime())
   const upToEnd = entries.filter((e) => t(e) < week.end.getTime())
@@ -61,8 +61,8 @@ export function weekFacts(entries, week, { classDay = null, skillNames = {} } = 
     .map(([tag, days]) => ({ name: tag, days: days.size }))
 
   // Skills as they stood at the start and at the end of the week.
-  const skillsBefore = computeSkills(before, new Date(week.start.getTime() - DAY_MS))
-  const skillsAfter = computeSkills(upToEnd, new Date(week.end.getTime() - DAY_MS))
+  const skillsBefore = computeSkills(before, new Date(week.start.getTime() - DAY_MS), paths)
+  const skillsAfter = computeSkills(upToEnd, new Date(week.end.getTime() - DAY_MS), paths)
   const skillsGained = skillEvents(skillsBefore, skillsAfter).map((e) => skillName(e.tag, skillNames))
   const skillsWeakened = Object.values(skillsAfter)
     .filter((s) => s.rank < (skillsBefore[s.tag]?.rank ?? 0))

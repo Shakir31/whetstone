@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
-import { computeSkills, isWeakening, numeral, skillEvents, skillFromDays, skillName } from './skills.js'
+import { computeSkills, isWeakening, numeral, restDaysFor, skillEvents, skillFromDays, skillName } from './skills.js'
 import { dayKeys, entry, freezeTime, newestFirst, unfreezeTime } from '../test/helpers.js'
 
 // A skill's state after the activity was done on `days`, viewed on day `today`
@@ -19,6 +19,28 @@ describe('unlocking', () => {
 
   it('breaks the run after two missed days', () => {
     expect(skill([0, 1, 4, 5, 6], 6)).toMatchObject({ rank: 0, progress: 3 })
+  })
+})
+
+describe('rest days by path', () => {
+  // Sessions on Mon, Wed, Fri with weekends off: 1 missed day, then 2 at the weekend.
+  const monWedFri = [0, 2, 4, 7, 9, 11, 14, 16, 18, 21, 23]
+
+  it('allows two rest days in a row for physical training, one for the rest', () => {
+    expect(restDaysFor('strength')).toBe(2)
+    expect(restDaysFor('endurance')).toBe(2)
+    expect(restDaysFor('knowledge')).toBe(1)
+    expect(restDaysFor('discipline')).toBe(1)
+    expect(restDaysFor(undefined)).toBe(1) // not yet sorted into a path
+  })
+
+  it('lets a Mon/Wed/Fri lifter unlock and rank up through weekends', () => {
+    expect(skill(monWedFri, 23).rank).toBe(0) // with the strict rule: never unlocks
+    expect(skillFromDays(dayKeys(monWedFri), dayKeys([23])[0], restDaysFor('strength')).rank).toBe(2)
+  })
+
+  it('still breaks a physical run after three missed days', () => {
+    expect(skillFromDays(dayKeys([0, 1, 2, 3, 7]), dayKeys([7])[0], 2)).toMatchObject({ rank: 0, progress: 1 })
   })
 })
 
@@ -64,6 +86,15 @@ describe('computeSkills and events', () => {
     const skills = computeSkills(newestFirst([...run('running', range(0, 4)), ...run('reading', [0, 1])]))
     expect(skills.running.rank).toBe(1)
     expect(skills.reading).toMatchObject({ rank: 0, progress: 2 })
+  })
+
+  it('applies each activity\'s rest days from its path', () => {
+    // The same Mon/Wed/Fri rhythm for two activities, ending today.
+    const days = [11, 9, 7, 4, 2, 0]
+    const entries = newestFirst([...run('weightlifting', days), ...run('reading', days)])
+    const skills = computeSkills(entries, new Date(), { weightlifting: 'strength', reading: 'knowledge' })
+    expect(skills.weightlifting.rank).toBe(1)
+    expect(skills.reading.rank).toBe(0)
   })
 
   it('reports acquired, ranked and restored skills', () => {

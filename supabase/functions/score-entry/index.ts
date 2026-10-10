@@ -29,6 +29,9 @@ const KNOWN_TAGS_LIMIT = 60
 // Skill unlock rule. Keep in sync with src/lib/skills.js.
 const RUN_FOR_RANK = 5 // days of the same activity in a row
 const REST_DAYS_ALLOWED = 1 // a single missed day doesn't break the run
+// Physical training needs recovery, so its runs allow longer rests.
+const PHYSICAL_PATHS = ['strength', 'endurance']
+const PHYSICAL_REST_DAYS_ALLOWED = 2
 
 // Will rule. Keep in sync with src/lib/stats.js.
 const MEANINGFUL_GAIN = 0.2 // an entry counts towards the streak if Body or Mind gained this much
@@ -366,12 +369,13 @@ function daysApart(a: string, b: string) {
   return Math.round((Date.parse(b) - Date.parse(a)) / 86_400_000)
 }
 
-// Has this activity ever been done RUN_FOR_RANK days in a row (rest days allowed)?
-function hasUnlocked(sortedDays: string[]) {
+// Has this activity ever been done RUN_FOR_RANK days in a row, allowing
+// `restDays` missed days in a row?
+function hasUnlocked(sortedDays: string[], restDays: number) {
   let run = 0
   let prev: string | null = null
   for (const day of sortedDays) {
-    if (prev && daysApart(prev, day) - 1 > REST_DAYS_ALLOWED) run = 0
+    if (prev && daysApart(prev, day) - 1 > restDays) run = 0
     run += 1
     if (run >= RUN_FOR_RANK) return true
     prev = day
@@ -390,6 +394,7 @@ async function nameNewSkills(
   history: HistoryRow[],
   timeZone: string,
   alreadyNamed: Set<string>,
+  paths: Record<string, string>,
 ) {
   if (tags.length === 0) return []
 
@@ -399,7 +404,8 @@ async function nameNewSkills(
     const days = [
       ...new Set(history.filter((row) => row.tags?.includes(tag)).map((row) => dayKeyIn(row.created_at, timeZone))),
     ].sort()
-    if (!hasUnlocked(days)) continue
+    const restDays = PHYSICAL_PATHS.includes(paths[tag]) ? PHYSICAL_REST_DAYS_ALLOWED : REST_DAYS_ALLOWED
+    if (!hasUnlocked(days, restDays)) continue
 
     const { name, description } = await nameSkill(tag)
     const { data: skill, error: insertError } = await admin
@@ -795,7 +801,10 @@ Deno.serve(async (req) => {
     const zone = validTimeZone(timeZone)
 
     // Skills and class don't depend on each other, so they run side by side.
-    const skillsTask = nameNewSkills(admin, userId, score.tags, allRows, zone, namedSkills).catch((err) => {
+    const skillsTask = nameNewSkills(admin, userId, score.tags, allRows, zone, namedSkills, {
+      ...score.tagPaths,
+      ...knownPaths,
+    }).catch((err) => {
       console.error('Skill check failed', err)
       return []
     })

@@ -107,7 +107,7 @@ export default function App() {
 
   const classDay = classDayOf(playerClass)
   const stats = useMemo(() => computeStats(entries, classDay), [entries, classDay])
-  const skills = useMemo(() => computeSkills(entries), [entries])
+  const skills = useMemo(() => computeSkills(entries, new Date(), activityPaths), [entries, activityPaths])
 
   // Record any achievement the record now meets but that hasn't been saved yet.
   useEffect(() => {
@@ -129,10 +129,10 @@ export default function App() {
     if (weeklySummaries[week.key] || requestedWeek.current === requestKey) return
     if (!entries.some((e) => Date.parse(e.createdAt) < week.end.getTime())) return
     requestedWeek.current = requestKey
-    requestWeeklySummary(week, weekFacts(entries, week, { classDay, skillNames }))
+    requestWeeklySummary(week, weekFacts(entries, week, { classDay, skillNames, paths: activityPaths }))
       .then((summary) => setWeeklySummaries((prev) => ({ ...prev, ...summary })))
       .catch((err) => console.warn('The week could not be judged', err))
-  }, [loaded, userId, entries, weeklySummaries, classDay, skillNames])
+  }, [loaded, userId, entries, weeklySummaries, classDay, skillNames, activityPaths])
 
   // Takes what submitEntry() returns.
   const addEntry = useCallback(({ entry, newSkillNames, activityPaths: newPaths, playerClass: newClass }) => {
