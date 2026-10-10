@@ -405,25 +405,35 @@ async function nameNewSkills(
     (tag) => !alreadyNamed.has(tag),
   )
 
-  const newSkills = []
+  // Find the unlocked ones first (quick: no database or AI calls)...
+  const toName: string[] = []
   for (const tag of candidates) {
-    if (newSkills.length >= MAX_SKILLS_NAMED_PER_ENTRY) break
+    if (toName.length >= MAX_SKILLS_NAMED_PER_ENTRY) break
     const days = [
       ...new Set(history.filter((row) => row.tags?.includes(tag)).map((row) => dayKeyIn(row.created_at, timeZone))),
     ].sort()
     const restDays = PHYSICAL_PATHS.includes(paths[tag]) ? PHYSICAL_REST_DAYS_ALLOWED : REST_DAYS_ALLOWED
-    if (!hasUnlocked(days, restDays)) continue
-
-    const { name, description } = await nameSkill(tag)
-    const { data: skill, error: insertError } = await admin
-      .from('skills')
-      .insert({ user_id: userId, tag, name, description })
-      .select('tag, name, description')
-      .single()
-    if (insertError) console.error('Could not save skill', tag, insertError)
-    else newSkills.push(skill)
+    if (hasUnlocked(days, restDays)) toName.push(tag)
   }
-  return newSkills
+
+  // ...then name and save them all at the same time, so several names take
+  // about as long as one.
+  const named = await Promise.all(
+    toName.map(async (tag) => {
+      const { name, description } = await nameSkill(tag)
+      const { data: skill, error: insertError } = await admin
+        .from('skills')
+        .insert({ user_id: userId, tag, name, description })
+        .select('tag, name, description')
+        .single()
+      if (insertError) {
+        console.error('Could not save skill', tag, insertError)
+        return null
+      }
+      return skill
+    }),
+  )
+  return named.filter(Boolean)
 }
 
 // ---------- Classes ----------
