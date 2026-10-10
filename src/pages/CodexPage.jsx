@@ -1,6 +1,6 @@
 import { CLASS_DAILY_CAP, DAILY_CAP, DAYS_PER_WILL } from '../lib/stats.js'
 import { DEMOTE_AFTER_DAYS, MAX_RANK, REST_DAYS_ALLOWED, RUN_FOR_RANK, numeral } from '../lib/skills.js'
-import { DAYS_PER_CLASS_RANK, EVOLVE_AT_RANK, WILL_FOR_CLASS } from '../lib/classes.js'
+import { DAYS_PER_CLASS_RANK, EVOLVE_AT_RANK, FINAL_AT_RANK, WILL_FOR_CLASS } from '../lib/classes.js'
 import { numberWord } from '../lib/format.js'
 
 // The rules of the System, written as a short manual. The numbers come from
@@ -172,6 +172,10 @@ function Classes() {
       <p className="codex__text">
         The class gains a rank for every {numberWord(DAYS_PER_CLASS_RANK)} days you spend on its path. At Rank{' '}
         {numeral(EVOLVE_AT_RANK)} it changes form, shaped by whatever else you have been doing.
+      </p>
+      <p className="codex__text">
+        At Rank {numeral(FINAL_AT_RANK)} it takes its final form. What you did after the first change matters, and so
+        does how steadily you kept at it.
       </p>
     </>
   )
