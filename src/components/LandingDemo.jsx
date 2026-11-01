@@ -16,7 +16,7 @@ const SAMPLES = [
   },
   {
     entry: 'Ran 8km before work in the rain, the last two at threshold pace.',
-    verdict: 'The distance has been recorded, and the cold is counted with it.',
+    verdict: 'The distance has been recorded, and the rain is counted with it.',
     gains: ['Body +0.6'],
   },
   {

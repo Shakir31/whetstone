@@ -5,9 +5,9 @@ import LandingDemo from '../components/LandingDemo.jsx'
 import { LogoMark } from '../components/Logo.jsx'
 
 const STEPS = [
-  { label: 'Write', line: 'Write what you did today.', note: 'In plain words. The System reads all of it.' },
+  { label: 'Write', line: 'Write what you did today.', note: 'Write it however you like, as a list or a few sentences.' },
   { label: 'Weigh', line: 'The System weighs it.', note: 'Each deed is scored for the effort it took.' },
-  { label: 'Rise', line: 'Body, Mind and Will rise.', note: 'A little at a time, with every day you keep.' },
+  { label: 'Rise', line: 'Body, Mind and Will rise.', note: 'They grow a little with each day you write.' },
 ]
 
 // The public front page for visitors who aren't signed in.
@@ -26,7 +26,7 @@ export default function LandingPage() {
             <span className="auth__lozenge" />
             <span />
           </div>
-          <p className="landing-hero__line">Record your deeds. The System will judge them.</p>
+          <p className="landing-hero__line">Write down what you did each day, and the System will judge it.</p>
           <div className="landing-hero__actions">
             <Link to="/signup" className="ws-btn ws-btn--primary landing-cta">
               Begin
@@ -96,7 +96,7 @@ export default function LandingPage() {
                   <span />
                 </div>
               </div>
-              <p className="glimpse__text">Repeat a deed for long enough and it will be given a name.</p>
+              <p className="glimpse__text">Keep doing something for long enough and it becomes a named skill.</p>
             </li>
             <li className="ws-panel ws-grain ws-worn glimpse">
               <div className="glimpse__head">
@@ -110,7 +110,7 @@ export default function LandingPage() {
                   <span style={{ width: 44 }} />
                 </span>
               </div>
-              <p className="glimpse__text">Assigned once your Will is strong, then shaped by what you do after.</p>
+              <p className="glimpse__text">Once your Will is strong enough, you're given a class, and it changes with what you do after.</p>
             </li>
             <li className="ws-panel ws-grain ws-worn glimpse">
               <div className="glimpse__head">
@@ -126,7 +126,7 @@ export default function LandingPage() {
                   <span style={{ width: 96 }} />
                 </span>
               </div>
-              <p className="glimpse__text">On the seventh day, the System looks back over your week.</p>
+              <p className="glimpse__text">At the end of each week, the System looks back over it.</p>
             </li>
           </ul>
         </section>
@@ -134,7 +134,7 @@ export default function LandingPage() {
         <section className="landing-close" aria-labelledby="close-h">
           <span className="system-tag">System</span>
           <h2 id="close-h" className="landing-close__line">
-            The System is watching. It does not forget.
+            The System keeps a record of every day you write.
           </h2>
           <Link to="/signup" className="ws-btn ws-btn--primary landing-cta">
             Begin

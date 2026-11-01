@@ -1,4 +1,4 @@
-import { CLASS_DAILY_CAP, DAILY_CAP, DAYS_PER_WILL } from '../lib/stats.js'
+import { CLASS_DAILY_CAP, DAILY_CAP, DAYS_PER_WILL, MEANINGFUL_GAIN } from '../lib/stats.js'
 import { DEMOTE_AFTER_DAYS, MAX_RANK, PHYSICAL_REST_DAYS_ALLOWED, REST_DAYS_ALLOWED, RUN_FOR_RANK, numeral } from '../lib/skills.js'
 import { DAYS_PER_CLASS_RANK, EVOLVE_AT_RANK, FINAL_AT_RANK, WILL_FOR_CLASS } from '../lib/classes.js'
 import { numberWord } from '../lib/format.js'
@@ -73,12 +73,12 @@ function Judgement() {
   return (
     <>
       <p className="codex__text">
-        Every entry is read in full. The System looks at what you did, how much of it, and how hard it was. Plans and
-        good intentions earn nothing until they turn into deeds.
+        Every entry is read in full, and the System looks at what you did, how much of it, and how hard it was. Plans
+        and intentions earn nothing until you've actually done them.
       </p>
       <p className="codex__text">
-        Detail is rewarded. Counts, weights, distances and times give the System something to measure, so a specific
-        entry can earn far more than a vague one. Writing more words does not help on its own.
+        Counts, weights, distances and times give the System something to measure, so a specific entry can earn far
+        more than a vague one. Additionally, a longer entry doesn't score higher just for being longer.
       </p>
       <div className="codex__compare" aria-label="Two entries compared">
         <figure className="ws-panel ws-worn codex__example">
@@ -108,27 +108,26 @@ function Measures() {
   return (
     <>
       <p className="codex__text">
-        Three measures are kept, and each is shown as a level. Every level takes the same amount to fill.
+        The System tracks three measures, each shown as a level, and every level takes the same amount to fill.
       </p>
       <dl className="codex__terms">
         <div>
           <dt className="ws-label">Body</dt>
-          <dd className="codex__text">
-            Physical exertion: training, labour, distance, anything that taxes the body.
-          </dd>
+          <dd className="codex__text">Physical effort, such as training, manual work or covering distance.</dd>
         </div>
         <div>
           <dt className="ws-label">Mind</dt>
           <dd className="codex__text">
-            Deliberate mental effort: study, practice, and problems worked through. Watching or scrolling earns
-            nothing.
+            Deliberate mental effort, such as studying, practising a skill or working through a hard problem. Watching
+            or scrolling doesn't count.
           </dd>
         </div>
         <div>
           <dt className="ws-label">Will</dt>
           <dd className="codex__text">
-            Discipline. Will rises by one for every {numberWord(DAYS_PER_WILL)} days in a row on which you record
-            something of substance. Missing a day ends the streak, though Will you have already earned stays.
+            Will measures discipline. It rises by one for every {numberWord(DAYS_PER_WILL)} days in a row with an entry
+            that earns at least {MEANINGFUL_GAIN} Body or Mind. Missing a day ends the streak, but the Will you've
+            already earned stays.
           </dd>
         </div>
       </dl>
@@ -151,13 +150,14 @@ function Skills() {
       <p className="codex__text">
         When the same kind of deed is recorded {numberWord(RUN_FOR_RANK)} days in a row, the System gives it a name and
         it becomes a skill. Missing {REST_DAYS_ALLOWED === 1 ? 'a single day' : `up to ${numberWord(REST_DAYS_ALLOWED)} days`}{' '}
-        between sessions will not break the run. Physical training such as lifting or running needs recovery, so it can
-        rest for {numberWord(PHYSICAL_REST_DAYS_ALLOWED)} days in a row.
+        between sessions will not break the run. Furthermore, lifting, running and other physical training need
+        recovery, so for those you can rest {numberWord(PHYSICAL_REST_DAYS_ALLOWED)} days in a row.
       </p>
       <p className="codex__text">
         Each further run of {numberWord(RUN_FOR_RANK)} days raises the skill one rank, up to Rank {numeral(MAX_RANK)}.
-        A skill left alone for {DEMOTE_AFTER_DAYS === 7 ? 'a week' : `${numberWord(DEMOTE_AFTER_DAYS)} days`} loses a
-        rank. If it falls below the first rank it is <em>Lost</em>, and another run brings it back.
+        Going {DEMOTE_AFTER_DAYS === 7 ? 'a week' : `${numberWord(DEMOTE_AFTER_DAYS)} days`} without it costs a skill
+        one rank, and if it falls below the first rank, it becomes <em>Lost</em> until another{' '}
+        {numberWord(RUN_FOR_RANK)}-day run brings it back.
       </p>
     </>
   )
@@ -175,8 +175,8 @@ function Classes() {
         {numeral(EVOLVE_AT_RANK)} it changes form, shaped by whatever else you have been doing.
       </p>
       <p className="codex__text">
-        At Rank {numeral(FINAL_AT_RANK)} it takes its final form. What you did after the first change matters, and so
-        does how steadily you kept at it.
+        At Rank {numeral(FINAL_AT_RANK)} it takes its final form, which depends on what you did after the first change
+        and how steadily you kept at it.
       </p>
     </>
   )
@@ -186,7 +186,7 @@ function Weekly() {
   return (
     <p className="codex__text">
       When a week ends, Monday to Sunday, the System looks back over it as a whole and writes a short judgement. You
-      will find it at the top of the Journal, and it stays in the Chronicle. Each week is judged once.
+      will find it at the top of the Journal, and it stays in the Chronicle. Each week is judged only once.
     </p>
   )
 }

@@ -75,7 +75,7 @@ function Write() {
         <span className="system-tag">System</span>
         <p className="intro__big intro__big--medium">Write down what you did today.</p>
         <p className="intro__note">
-          Be specific. Sets, distances, pages and hours give the System something to weigh.
+          Details like sets, distances, pages and hours give the System more to weigh.
         </p>
       </div>
       <ul className="ws-panel ws-worn intro__compare" aria-label="Two entries compared">
@@ -99,7 +99,7 @@ function Grow() {
       <div className="intro__message">
         <span className="system-tag">System</span>
         <p className="intro__big intro__big--medium">
-          Body grows with physical effort and Mind with mental effort. Will grows each day you return.
+          Body grows with physical effort and Mind with mental effort. Will grows when you keep writing day after day.
         </p>
       </div>
       <ul className="ws-panel ws-worn intro__levels" aria-label="Starting levels">
@@ -149,7 +149,7 @@ function Sealed() {
           </div>
         </div>
       </div>
-      <p className="intro__note">Keep recording and they will open.</p>
+      <p className="intro__note">They open as you keep writing.</p>
     </>
   )
 }

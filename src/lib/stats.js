@@ -12,7 +12,7 @@ export function dailyCap(key, classDay) {
 }
 
 // An entry counts toward a streak if Body or Mind gained at least this much.
-const MEANINGFUL_GAIN = 0.2
+export const MEANINGFUL_GAIN = 0.2
 
 // Will +1 for every this-many consecutive meaningful days.
 export const DAYS_PER_WILL = 3
