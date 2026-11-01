@@ -10,9 +10,9 @@
 
 ---
 
-You write down what you did today. An impersonal "System" reads the entry, scores it, and gives a short verdict. Over time your record turns into levels, skills and a class, in a dark style borrowed from games like Bloodborne and Dark Souls.
+You write down what you did today, and a game-inspired "System" reads the entry, scores it, and gives a short verdict. Over time your records turns into levels, skills and a class, in a dark style borrowed from games like Bloodborne and Dark Souls.
 
-Nothing has to be set up by hand. There are no quests to create and no rewards to assign yourself. You only write entries, and the System decides what each one is worth.
+Nothing has to be set up by hand, and there are no quests to create and no rewards to assign yourself. You only write entries, and the System decides what each one is worth.
 
 ## How it works
 
@@ -23,19 +23,19 @@ Every entry is scored on two stats, each from 0 to 1:
 - **Body** for physical effort, such as training, running or manual work.
 - **Mind** for deliberate mental effort, such as study, practice or solving a hard problem.
 
-Specific entries score higher than vague ones. "5 sets of weighted pushups to failure" gives the System something to measure, while "worked out" does not. Writing more words does not raise the score on its own.
+Specific entries score higher than vague ones. "5 sets of weighted pushups to failure" gives the System something to measure, while "worked out" does not. Although, writing more words does not raise the score on its own.
 
 **Will** is not scored by the AI. It goes up by one for every three days in a row with an entry that gained at least 0.2 in Body or Mind.
 
 Stats are shown as levels. A Body of 7.4 is shown as Lv. 7, 40% of the way to Lv. 8.
 
-Body and Mind can each gain at most 1.5 in a day. Once you have a class, the limit is 3.
+Body and Mind can each gain at most 1.5 in a day. Once you have a class, the limit will increase to 3.
 
 ### Skills
 
-Doing the same kind of activity five days in a row turns it into a skill, and the System gives it a name (running might become "Iron Lungs"). A single missed day does not break the run. For physical activities in the Strength and Endurance paths, two missed days in a row are allowed, since training needs rest.
+Doing the same kind of activity five days in a row turns it into a skill, and the System gives it a name (running might become "Iron Lungs"). A single missed day does not break the streak. Additionally, for physical activities in the Strength and Endurance paths, two missed days in a row are allowed, since training needs rest.
 
-Each further run of five days raises the skill one rank, up to Rank V. A week without the activity costs a rank, and a skill that drops below Rank I is Lost until another run brings it back.
+Each further streak of five days raises the skill one rank, up to Rank V. A week without the activity costs a rank, and a skill that drops below Rank I is Lost until another streak brings it back.
 
 ### Classes
 
@@ -46,7 +46,7 @@ The class gains a rank for every 15 days spent on its path. At Rank III it evolv
 ### Other features
 
 - A weekly judgement for each calendar week, written once the week is over.
-- Achievements, which stay hidden until earned. Some of them grant a title you can wear.
+- Achievements, which stay hidden until earned, some of them granting a title you can wear.
 - A Chronicle of every past entry, grouped by day.
 - A Codex inside the app that explains the rules.
 - Export of the whole journal as a text file, and account deletion, from Settings.
@@ -77,7 +77,7 @@ design/         Reference designs and the design system, made in Claude Design
 public/         Static files, including the logo
 ```
 
-Most of the game is worked out in the browser from your entries, so changing a rule in `src/lib` applies to your whole history. The server functions handle the parts that need the AI or must not be faked: scoring entries, naming skills and classes, and writing the weekly judgement.
+Most of the app is worked out in the browser from your entries, so changing a rule in `src/lib` applies to your whole history. The server functions handle the parts that need the AI or must not be faked: scoring entries, naming skills and classes, and writing the weekly judgement.
 
 A few rules exist in two places, in `src/lib` and again in `supabase/functions/score-entry`, because the server needs them to decide when to name a skill or evolve a class. If you change one of these, change both. The comments in both files point at each other.
 
