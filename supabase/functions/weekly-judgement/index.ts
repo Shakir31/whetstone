@@ -65,7 +65,8 @@ const MAX_ATTEMPTS = 3
 
 async function askGemini(systemPrompt: string, userText: string, schema: object) {
   let lastError: unknown
-  for (const model of GEMINI_MODELS) {
+  for (const [index, model] of GEMINI_MODELS.entries()) {
+    const hasNext = index < GEMINI_MODELS.length - 1
     for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
       try {
         return await callGemini(model, systemPrompt, userText, schema)
@@ -73,6 +74,8 @@ async function askGemini(systemPrompt: string, userText: string, schema: object)
         lastError = err
         // Quota used up: retrying the same model won't help, so move on to the next one.
         if (err instanceof HttpError && err.status === 429) break
+        // Model busy: the other model usually isn't, so try it before waiting on this one.
+        if (err instanceof HttpError && err.status === 503 && hasNext) break
         console.error(`Gemini ${model} attempt ${attempt} of ${MAX_ATTEMPTS} failed:`, err instanceof Error ? err.message : err)
         if (attempt < MAX_ATTEMPTS) await new Promise((resolve) => setTimeout(resolve, 800 * attempt))
       }
@@ -98,6 +101,11 @@ async function callGemini(model: string, systemPrompt: string, userText: string,
   if (res.status === 429) {
     console.error(`Gemini ${model} quota exceeded`, await res.text())
     throw new HttpError(429, 'The System is overwhelmed. Try again later.')
+  }
+  if (res.status === 503) {
+    // "High demand" on Google's side. It usually passes within minutes.
+    console.error(`Gemini ${model} busy`, await res.text())
+    throw new HttpError(503, 'The System is overwhelmed. Try again in a minute.')
   }
   if (!res.ok) {
     console.error(`Gemini ${model} error`, res.status, await res.text())
